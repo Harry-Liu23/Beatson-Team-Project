@@ -3,7 +3,7 @@ build:
   tags:
     - docker
   script:
-    - latexmk -pdf dissertation.tex
+    - latexmk -pdf Change_Log.tex
   artifacts:
     paths:
       - "*.pdf"
