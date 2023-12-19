@@ -1,4 +1,6 @@
+"use client";
 import { useState } from 'react';
+import './LoginForm.css';
 
 /* <LoginForm /> is a component for a form 
 which has a username and password field
@@ -18,29 +20,31 @@ const LoginForm = () => {
     }
 
     return (
-        <div>
+        <div className="container">
             <form onSubmit={handleSubmit}>
-                <label> 
-                    Username   
-                    <input
+                <div className="header"> 
+                    Login
+                </div>
+                <br />
+                <div className="inputs">
+                    <input className="input" 
                         type="text"
                         value={username}
                         placeholder="Enter username"
                         onChange={(event) => setUsername(event.target.value)}
                     />
-                </label>
-                <br />
-                <label> 
-                    Password   
-                    <input
+                    <br /> 
+                    <input className="input" 
                         type="password"
                         value={password}
                         placeholder="Enter password"
                         onChange={(event) => setPassword(event.target.value)}
                     />
-                </label>
-                <br />
-                <button type="submit"> Login </button>
+                    <br />
+                    <button type="submit" className="button"> 
+                        Login
+                    </button>
+                </div>
             </form>
         </div>
     );
