@@ -38,7 +38,10 @@ def login():
     
     if request.method == 'POST':
         print("Login POST")
-        return jsonify(msg = "post OK")
+        print(request.json)
+        return jsonify(
+            msg = "post OK",
+            data = request.json)
     
     print("Unknown request recived: " + request.method)
     return jsonify(msg = 'Unknow request :(')
