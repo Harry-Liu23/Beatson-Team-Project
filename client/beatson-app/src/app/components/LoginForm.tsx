@@ -1,7 +1,6 @@
 "use client"
 
 import { FormEvent, useState} from "react"
-import internal from "stream"
 
 export default function LoginForm(){
 
@@ -13,17 +12,16 @@ export default function LoginForm(){
     setLoading(true) // disables the button so the user dosent submit multiple times
 
     try{
-      const formData = new FormData(event.currentTarget)
-      const formJson = {
-        'username' : formData.get("uname"),
-        'password' : formData.get("pword")
-      }
+      // Converts Form data to Object, which can be passed as a JSON
+      const formData = Object.fromEntries(new FormData(event.currentTarget).entries())
+      
       const resp = await fetch("http://127.0.0.1:2020/login", {
         method : 'POST',
         mode : 'cors',
         headers : {
           'Content-Type' : 'application/json'
-        }
+        },
+        body : JSON.stringify(formData) 
       })
 
       if(!resp.ok){

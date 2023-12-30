@@ -1,5 +1,1 @@
-import { FormEvent } from "react";
-
-export function FormToJson(formEvent : FormEvent<HTMLFormElement>){
-  
-}
+// Custom functions go here
