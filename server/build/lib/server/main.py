@@ -1,9 +1,8 @@
 from flask import Flask, request
 from neo4j import GraphDatabase, basic_auth
 import Infrastructure.entity.study as study_entity
-import Infrastructure.entity.constraint.sample as sample
+import Infrastructure.entity.constraint.sample as Sample
 import Infrastructure.dao.study_dao as study_dao
-
 
 app=Flask(__name__)
 
@@ -33,7 +32,7 @@ def create_study():
     study_data = data.get('study_data', {})
 
     # Create a Sample object
-    sample_obj = sample.sample(
+    sample_obj = Sample(
         name=sample_data.get('name', ''),
         id=sample_data.get('id', ''),
         group=sample_data.get('group', ''),
@@ -41,7 +40,7 @@ def create_study():
     )
 
     # Create a Study object
-    study_obj = study_entity.study(
+    study_obj = study_entity(
         sample=sample_obj,
         description=study_data.get('description', ''),
         organism=study_data.get('organism', ''),
@@ -52,26 +51,23 @@ def create_study():
         biometric_provider=study_data.get('biometric_provider', '')
     )
 
-    dao = study_dao.study_dao(driver)
-    created_node_id = dao.create_study_node(study_obj)
+    created_node_id = study_dao.create_study_node(study_obj)
     return f"Study node created with ID: {created_node_id}"
 
-@app.route('/get_study/<study_id>', methods=['GET'])
+@app.route('/create_study', methods=['GET'])
 def get_study(study_id):
-    dao = study_dao.study_dao(driver)
-    study_node = dao.get_study_node(study_id)
+    study_node = study_dao.get_study_node_by_id(study_id)
 
     if study_node:
         return f"Found study node: {study_node}"
     else:
         return "Study node not found."
     
-@app.route('/update_study/<study_id>', methods=['PUT'])
+@app.route('/update_study', methods=['PUT'])
 def update_study(study_id):
     data = request.json
-    dao = study_dao.study_dao(driver)
 
-    update_study_node = dao.update_study_node(study_id, data)
+    update_study_node = study_dao.update_study_node(study_id, data)
 
     if update_study_node:
         return f"Updated study node: {update_study_node}"

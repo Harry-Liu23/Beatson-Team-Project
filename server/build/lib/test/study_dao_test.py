@@ -1,19 +1,10 @@
-import sys
-import os
-
-# Assuming this script is located in the 'test' directory
-current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.abspath(os.path.join(current_dir, '..', '..'))
-sys.path.insert(0, project_root)
-
-
 import unittest
 import json
-from server.server.main import app
+import server.server.main as app
 
 class TestStudyCreation(unittest.TestCase):
     def setUp(self):
-        # self.app.testing = True
+        app.testing = True
         self.app = app.test_client()
 
     def tearDown(self):

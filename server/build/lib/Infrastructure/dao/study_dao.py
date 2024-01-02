@@ -8,9 +8,6 @@ import server.Infrastructure.entity.constraint.sample as Sample
 
 class study_dao:
 
-    def __init__(self, driver):
-        self.driver = driver
-
     def create_study_node(self, study):
         sample_name = study.sample.get_sample_name()
         sample_id = study.sample.get_sample_ID()
@@ -39,11 +36,7 @@ class study_dao:
 
         with self.driver.session() as session:
             result = session.run(cypher_query, parameters=parameters)
-            single_result = result.single()
-            if single_result is not None:
-                return single_result[0]  # Returns a single ID as a result
-            else:
-                return None
+            return result.single()[0]  # Returns a single ID as a result
         
     def get_study_node(self, study_id):
         cypher_query = (
@@ -96,7 +89,6 @@ class study_dao:
             
 
     def delete_study_node(self, study_id):
-    
         cypher_query = (
             "MATCH (s:Study {study_id: $study_id}) "
             "DELETE s"
