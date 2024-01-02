@@ -53,6 +53,35 @@ def create_study():
     created_node_id = study_dao.create_study_node(study_obj)
     return f"Study node created with ID: {created_node_id}"
 
+@app.route('/create_study', methods=['GET'])
+def get_study(study_id):
+    study_node = study_dao.get_study_node_by_id(study_id)
+
+    if study_node:
+        return f"Found study node: {study_node}"
+    else:
+        return "Study node not found."
+    
+@app.route('/update_study', methods=['PUT'])
+def update_study(study_id):
+    data = request.json
+
+    update_study_node = study_dao.update_study_node(study_id, data)
+
+    if update_study_node:
+        return f"Updated study node: {update_study_node}"
+    else:
+        return "Failed to update study node."
+
+@app.route('/delete_study', methods=['PUT'])
+def delete_study(study_id):
+    deletion_result = study_dao.delete_study_node(study_id)
+
+    if deletion_result:
+        return "Study node deleted successfully."
+    else:
+        return "Failed to delete study node."
+
 if __name__ == '__main__':
     app.run(debug=True)
 

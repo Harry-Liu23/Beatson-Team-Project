@@ -29,16 +29,35 @@ class TestStudyCreation(unittest.TestCase):
                 "biometric_provider": "Provider XYZ"
             }
         }
-
-        # Simulate a POST request to the Flask endpoint
         response = self.app.post('/create_study', json=data)
-
-        # Check if the response status code is 200 (successful)
         self.assertEqual(response.status_code, 200)
-
-        # You can perform further assertions on the response if needed
-        # For instance, checking if the response contains a specific message or data
         self.assertIn(b"Study node created", response.data)
 
+
+
+    def test_get_study(self):
+        study_id = "123" 
+        response = self.app.get(f'/get_study/{study_id}')
+        self.assertEqual(response.status_code, 200) 
+
+
+
+    def test_update_study(self):
+        study_id = "123"
+        update_data = {
+            'description': 'Updated Description',
+            'organism': 'Updated Organism'
+            # Add other attributes to update if required
+        }
+        response = self.app.put(f'/update_study/{study_id}', json=update_data)
+        self.assertEqual(response.status_code, 200) 
+
+
+    def test_delete_study(self):
+        study_id = "123"
+        response = self.app.delete(f'/delete_study/{study_id}')
+        self.assertEqual(response.status_code, 200) 
+
+    
 if __name__ == '__main__':
     unittest.main()
