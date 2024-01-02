@@ -16,7 +16,7 @@ driver = GraphDatabase.driver(DATABASE_URI, auth=(DATABASE_USERNAME,DATABASE_PAS
 
 session = driver.session()
 
-
+dao = study_dao.study_dao(driver)
 
 @app.route('/')
 def main():
@@ -52,13 +52,12 @@ def create_study():
         biometric_provider=study_data.get('biometric_provider', '')
     )
 
-    dao = study_dao.study_dao(driver)
     created_node_id = dao.create_study_node(study_obj)
     return f"Study node created with ID: {created_node_id}"
 
 @app.route('/get_study/<study_id>', methods=['GET'])
 def get_study(study_id):
-    dao = study_dao.study_dao(driver)
+    
     study_node = dao.get_study_node(study_id)
 
     if study_node:
@@ -69,7 +68,6 @@ def get_study(study_id):
 @app.route('/update_study/<study_id>', methods=['PUT'])
 def update_study(study_id):
     data = request.json
-    dao = study_dao.study_dao(driver)
 
     update_study_node = dao.update_study_node(study_id, data)
 
@@ -80,7 +78,7 @@ def update_study(study_id):
 
 @app.route('/delete_study', methods=['PUT'])
 def delete_study(study_id):
-    deletion_result = study_dao.delete_study_node(study_id)
+    deletion_result = dao.delete_study_node(study_id)
 
     if deletion_result:
         return "Study node deleted successfully."
