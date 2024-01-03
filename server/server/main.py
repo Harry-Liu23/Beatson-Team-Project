@@ -76,7 +76,7 @@ def update_study(study_id):
     else:
         return "Failed to update study node."
 
-@app.route('/delete_study', methods=['PUT'])
+@app.route('/delete_study/<study_id>', methods=['DELETE'])
 def delete_study(study_id):
     deletion_result = dao.delete_study_node(study_id)
 
@@ -84,6 +84,7 @@ def delete_study(study_id):
         return "Study node deleted successfully."
     else:
         return "Failed to delete study node."
+
 
 if __name__=="__main__":
     app.run(port=2020,host="127.0.0.1",debug=True)
