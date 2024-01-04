@@ -1,3 +1,11 @@
+import sys
+import os
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, '..', '..'))
+sys.path.insert(0, project_root)
+
+
 from flask import Flask, request
 from neo4j import GraphDatabase, basic_auth
 import Infrastructure.entity.study as study_entity
