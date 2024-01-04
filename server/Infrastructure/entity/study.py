@@ -1,8 +1,6 @@
 import flask
 import neo4j
 import os
-import server.Infrastructure.entity.constraint.constraint as Constraint
-import server.Infrastructure.entity.constraint.sample as Sample
 
 class study:
     def __init__(self,sample,description,organism,tissue,sex,cell_line,mouse_model,biometric_provider):
@@ -16,25 +14,25 @@ class study:
         self.biometric_provider = biometric_provider
 
     def get_sample(self):
-        return self.sample;
+        return self.sample
 
     def get_description(self):
-        return self.description;
+        return self.description
 
     def get_organism(self):
-        return self.organism;
+        return self.organism
 
     def get_tissue(self):
-        return self.tissue;
+        return self.tissue
 
     def get_sex(self):
-        return self.sex;
+        return self.sex
 
     def get_cell_line(self):
-        return self.cell_line;
+        return self.cell_line
 
     def get_mouse_model(self):
-        return self.mouse_model;
+        return self.mouse_model
 
     def get_biometric_provider(self):
-        return self.biometric_provider;
+        return self.biometric_provider
