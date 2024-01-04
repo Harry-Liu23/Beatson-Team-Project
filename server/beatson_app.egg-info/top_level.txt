@@ -1,4 +1,0 @@
-Infrastructure
-application
-server
-test
