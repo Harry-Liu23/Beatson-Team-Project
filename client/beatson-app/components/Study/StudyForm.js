@@ -6,6 +6,11 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 
 
@@ -18,7 +23,7 @@ const StudyForm = () => {
     const [sampleNumber, setSampleNumber] = useState("");
     const [sampleCount, setSampleCount] = useState(0);
     const [rows, setRows] = useState([]);
-    
+    const [state, setState] = useState("");
     
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -30,12 +35,19 @@ const StudyForm = () => {
         console.log("Number of Samples: " + sampleNumber);
     }
 
-    const columns = [
+    // js object that allows us to use key/value pairs (similar to dictionary in python)
+    const additionalColumns = {
+        cancerType: {field: "cancerType", headerName: "Cancer Type", editable: true},
+        weight: {field: "weight", headerName: "Weight", editable: true},
+        control: {field: "control", headerName: "Control", editable: true},
+        anotherField: {field: "anotherField", headerName: "Another Field", editable: true}, // add more like this on mayanks request.
+    }
 
+    const [columns, setColumns] = useState([
+    
     {
         field: "id",
         headerName: "Sample ID",
-        editable: true,
         width: 100,
     },
     {
@@ -109,9 +121,9 @@ const StudyForm = () => {
         field: "sampleFastQ",
         headerName: "FASTQ",
         editable: true,
-        width: 150,
+        width: 70,
     },
-    ]
+    ])
 
     const createNewRow = () =>{
         //below is same as sampleCount = sampleCount+1
@@ -120,10 +132,10 @@ const StudyForm = () => {
      }
 
 
-     const addNewRow = () =>{
+    const addNewRow = () =>{
         console.log("Sample Count" + sampleCount);
         setRows((rows) => [...rows, createNewRow()]);
-     }
+    }
 
     let numSamples = 4;
     const setInitialRows = () => {
@@ -132,9 +144,16 @@ const StudyForm = () => {
             setRows((rows) => [...rows, {id: i}]);
         };
         setSampleCount(numSamples+1);
-    }
+     }
 
-    
+    const handleChange = (event) => {
+        setState(event.target.value);
+    };
+
+    const addColumn = () => {
+        const add = additionalColumns[state];
+        setColumns([ ...columns, add]);
+    };
 
     return(
         <div>
@@ -222,7 +241,6 @@ const StudyForm = () => {
         direction="column"
         alignItems="center"
         justifyContent="center"
-        autoWidth
         >
             <Grid item sx = {{m: 2}}>
                 <Typography 
@@ -235,6 +253,23 @@ const StudyForm = () => {
             <Grid item>
                 <Button onClick={addNewRow}>Add row</Button>
                 <Button onClick={setInitialRows}>Create Table</Button>
+                <FormControl>
+                    <InputLabel id="addField">New Field</InputLabel>
+                        <Select
+                            labelId="addField"
+                            id="addField"
+                            value={state}
+                            label="Add Field"
+                            onChange={handleChange}
+                            >
+                                <MenuItem value="cancerType">Cancer Type</MenuItem>
+                                <MenuItem value="weight">Weight</MenuItem>
+                                <MenuItem value="control">Control</MenuItem>
+                                <MenuItem value="anotherField">Another Field</MenuItem>
+                        </Select>
+                </FormControl>
+                <Button onClick={addColumn}>Add Column</Button>
+                
                 <DataGrid 
                     rows = {rows} 
                     columns = {columns}
