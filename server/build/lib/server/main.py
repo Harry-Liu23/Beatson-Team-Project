@@ -15,17 +15,20 @@ driver = GraphDatabase.driver(DATABASE_URI, auth=(DATABASE_USERNAME,DATABASE_PAS
 session = driver.session()
 
 
-@app.route('/')
-def index():
-    return jsonify(
-        {
-            'message' : 'Welcome to my webapp!'
-        }
-    )
-
-#return render_template("something.html")
-#Above defaults to a html file in a folder called Templates, need to replace it with real file paths
-
+@app.route("/login", methods=['POST'])
+def login():
+    
+    print("Post Recived")
+    print(request.json)
+    
+    # [TODO]
+    # Create session ID with data
+    # Store sessiosn ID
+    # Retrun session ID to client
+    
+    return jsonify({
+        'message' : 'hello'
+    })
 
 if __name__=="__main__":
     app.run(port=2020,host="127.0.0.1",debug=True)

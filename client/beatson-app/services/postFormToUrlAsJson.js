@@ -1,8 +1,6 @@
 export default async function postFormToUrlAsJson(event, url){
 
   event.preventDefault();
-
-  /* [TODO] create a function that sends POST requests via url and body and returns response */
   const formData = new FormData(event.target)
   const userData = Object.fromEntries(formData.entries())
 
