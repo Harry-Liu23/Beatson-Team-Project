@@ -11,13 +11,13 @@ from neo4j import GraphDatabase, basic_auth
 import Infrastructure.entity.study as study_entity
 import Infrastructure.entity.constraint.sample as sample
 import Infrastructure.dao.study_dao as study_dao
+from keys import DATABASE_PASSWORD 
 
 
 app=Flask(__name__)
 
 
 DATABASE_USERNAME = "neo4j"
-DATABASE_PASSWORD = "12345678"
 DATABASE_URI = "bolt://localhost:7687"
 
 driver = GraphDatabase.driver(DATABASE_URI, auth=(DATABASE_USERNAME,DATABASE_PASSWORD))
