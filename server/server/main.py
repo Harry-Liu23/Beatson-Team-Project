@@ -20,32 +20,20 @@ driver = GraphDatabase.driver(DATABASE_URI, auth=(DATABASE_USERNAME,DATABASE_PAS
 
 session = driver.session()
 
-
-@app.route('/')
-def index():
-    return jsonify(
-        {
-            'message' : 'Welcome to my webapp!'
-        }
-    )
-
-@app.route("/login", methods=['POST','GET'])
+@app.route("/login", methods=['POST'])
 def login():
-
-    if request.method == 'GET':
-        print("Login GET")
-        return jsonify(msg = "get OK")
     
-    if request.method == 'POST':
-        print("Login POST")
-        print(request.json)
-        return jsonify(
-            msg = "post OK",
-            data = request.json)
+    print("Post Recived")
+    print(request.json)
     
-    print("Unknown request recived: " + request.method)
-    return jsonify(msg = 'Unknow request :(')
-
+    # [TODO]
+    # Create session ID with data
+    # Store sessiosn ID
+    # Retrun session ID to client
+    
+    return jsonify({
+        'message' : 'hello'
+    })
 
 
 #return render_template("something.html")
