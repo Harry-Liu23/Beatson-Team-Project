@@ -1,5 +1,6 @@
 "use client";
-import {useState} from 'react';
+
+import React, {useState, useEffect} from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -15,8 +16,10 @@ const StudyForm = () => {
     const [organism, setOrganism] = useState("");
     const [description, setDescription] = useState("");
     const [sampleNumber, setSampleNumber] = useState("");
-    //let [rows, setRows] = useState([]);
-
+    const [sampleCount, setSampleCount] = useState(0);
+    const [rows, setRows] = useState([]);
+    
+    
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log("Accession: " + accession);
@@ -110,20 +113,28 @@ const StudyForm = () => {
     },
     ]
 
-    const rows = [];
+    const createNewRow = () =>{
+        //below is same as sampleCount = sampleCount+1
+        setSampleCount(sampleCount+1);
+        return {id: sampleCount};
+     }
 
-    for(let i=0; i<4; i++) {
-        rows.push({id: i});
-    };
-  
-    // setRows((rows) => {
-    // for(let i=0; i<4; i++) {
-    //     rows.push({id: i});
-    // }});
+
+     const addNewRow = () =>{
+        console.log("Sample Count" + sampleCount);
+        setRows((rows) => [...rows, createNewRow()]);
+     }
+
+    let numSamples = 4;
+    const setInitialRows = () => {
+        console.log("IN INITIAL ROWS");
+        for (let i = 1; i <= numSamples; i++) {
+            setRows((rows) => [...rows, {id: i}]);
+        };
+        setSampleCount(numSamples+1);
+    }
+
     
-// const addRow = () =>{
-//     setRows
-// }
 
     return(
         <div>
@@ -222,8 +233,12 @@ const StudyForm = () => {
                 </Typography>
             </Grid>
             <Grid item>
-                {/* <Button onClick={addRow}>Add row</Button> */}
-                <DataGrid rows = {rows} columns = {columns}/>
+                <Button onClick={addNewRow}>Add row</Button>
+                <Button onClick={setInitialRows}>Create Table</Button>
+                <DataGrid 
+                    rows = {rows} 
+                    columns = {columns}
+                    />
             </Grid>
         </Grid>
         </div>
