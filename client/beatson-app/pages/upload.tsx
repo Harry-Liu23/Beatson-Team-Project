@@ -2,7 +2,7 @@ import StudyForm from '../components/Study/StudyForm'
 
 /* website.url/studyForm */
 
-export default function Login() {
+export default function UploadForm() {
   return (
     <div>
       <div>

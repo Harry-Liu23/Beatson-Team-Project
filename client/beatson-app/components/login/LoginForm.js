@@ -22,9 +22,6 @@ const LoginForm = () => {
     return (
         <div className={styles.container}>
             <form onSubmit={handleSubmit}>
-                <div className={styles.header}> 
-                    Login
-                </div>
                 <br />
                 <div className={styles.inputs}>
                     <input className={styles.input} 
