@@ -2,7 +2,7 @@ import flask
 import neo4j
 import os
 
-class study:
+class sample:
     def __init__(self,sample,description,organism,tissue,sex,cell_line,mouse_model,biometric_provider):
         self.sample = sample
         self.description = description

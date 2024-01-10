@@ -1,4 +1,4 @@
-class sample:
+class sampleIdInfo:
     def __init__(self, name, id, group, project):
         self.sample_name = name
         self.sample_ID = id
