@@ -8,27 +8,26 @@ sys.path.insert(0, project_root)
 
 import unittest
 import json
-from server.server.main import app
+from server.application.main import app
 
 class TestStudyCreation(unittest.TestCase):
     def setUp(self):
-        # self.app.testing = True
         self.app = app.test_client()
 
     def tearDown(self):
         pass
 
-    def test_create_study_node(self):
+    def test_create_sample_node(self):
         # Define a sample payload to simulate front-end sending JSON to backend
         data = {
-            "sample_data": {
+            "sample_id_info_data": {
                 "name": "Sample Name",
                 "id": "123",
                 "group": "Group A",
                 "project": "Project X"
             },
-            "study_data": {
-                "description": "Study Description",
+            "sample_data": {
+                "description": "Sample Description",
                 "organism": "Organism X",
                 "tissue": "Tissue Y",
                 "sex": "Male",
@@ -37,33 +36,33 @@ class TestStudyCreation(unittest.TestCase):
                 "biometric_provider": "Provider XYZ"
             }
         }
-        response = self.app.post('/create_study', json=data)
+        response = self.app.post('/create_sample', json=data)
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b"Study node created", response.data)
+        self.assertIn(b"Sample node created", response.data)
 
 
 
-    def test_get_study(self):
-        study_id = "123" 
-        response = self.app.get(f'/get_study/{study_id}')
+    def test_get_sample(self):
+        sample_id = "123" 
+        response = self.app.get(f'/get_sample/{sample_id}')
         self.assertEqual(response.status_code, 200) 
 
 
 
-    def test_update_study(self):
-        study_id = "123"
+    def test_update_sample(self):
+        sample_id = "123"
         update_data = {
             'description': 'Updated Description',
             'organism': 'Updated Organism'
             # Add other attributes to update if required
         }
-        response = self.app.put(f'/update_study/{study_id}', json=update_data)
+        response = self.app.put(f'/update_sample/{sample_id}', json=update_data)
         self.assertEqual(response.status_code, 200) 
 
 
-    def test_delete_study(self):
-        study_id = "123"
-        response = self.app.delete(f'/delete_study/{study_id}')
+    def test_delete_sample(self):
+        sample_id = "123"
+        response = self.app.delete(f'/delete_sample/{sample_id}')
         self.assertEqual(response.status_code, 200) 
 
     
