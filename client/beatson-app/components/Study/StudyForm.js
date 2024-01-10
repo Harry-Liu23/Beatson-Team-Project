@@ -12,6 +12,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
+import Dialog from '@mui/material/Dialog';
 
 
 const StudyForm = () => {
@@ -150,10 +151,36 @@ const StudyForm = () => {
         setState(event.target.value);
     };
 
+    // [TODO] find a nicer way of doing this, as in a way that .includes works with our object with out this function
+    const getFields = (columns) => {
+        let fields = [];
+        columns.forEach( (column) => fields.push(column.field));
+        return fields;
+    }
+
+    // takes input from dropdown menu and checks to make sure that the new field has not already exists in table before adding to table
     const addColumn = () => {
-        const add = additionalColumns[state];
-        setColumns([ ...columns, add]);
+        const columnToBeAdded = additionalColumns[state]; 
+        const columnFields = getFields(columns);
+        const newColumnInExistingColumns = columnFields.includes(columnToBeAdded.field); 
+        
+        if (!newColumnInExistingColumns){
+            setColumns([...columns, columnToBeAdded]);
+        }
+        else  {
+            //[TODO] ADD DIALOG/POP-UP TO SAY COLUMN CAN'T BE ADDED AS ALREADY IN COLUMNS
+            console.log("Already exists");
+        }
     };
+
+    
+    const addCharacteristicDialog = (columns) => {
+        console.log(columns);
+        //<Dialog onClose{addColumn}
+    }
+
+
+
 
     return(
         <div>
@@ -267,6 +294,8 @@ const StudyForm = () => {
                         </Select>
                 </FormControl>
                 <Button onClick={addColumn}>Add Sample Characteristic</Button>
+
+                <Button onClick={addCharacteristicDialog(columns)}>Add Characteristic</Button>
                 
                 <DataGrid 
                     rows = {rows} 
