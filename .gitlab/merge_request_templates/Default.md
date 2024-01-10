@@ -13,7 +13,7 @@ iv. Preventative - enhance maintainability (ie refactoring)
 What are the (high-level) changes that you've made?
 
 **Wider impact**: 
-How do these changes affect the exisiting codebase? 
+How do these changes affect the existing codebase? 
 
 **Feedback requests:**
 What specific aspects are you looking for feedback on from the reviewer?
@@ -29,8 +29,9 @@ Provide in mins/hours the amount of time a reviewer should expect to allocate to
     - No commented out code
     - All comments present are necessary
     - No spelling mistakes in code
+    - 1 newline break max between blocks of code
     - Meaningful variable and function names
-    - Python: PascalCase for classes (eg MyClass), else camelCase (eg myVariable)
+    - Python: PascalCase for classes (eg MyClass), else snake_case (eg my_variable)
     - JS/TSX: PascalCase for elements (eg MyComponent), else camelCase (eg className)
     - CSS: kebab-case (eg .class-name)
 - [] Proposed changes is around 300 lines or less
@@ -40,7 +41,7 @@ Provide any other details you deem relevant that was not covered above - especia
 
 ## Checklist for Reviewer
 - [] Purpose 
-    - Check that coode actually solves a problem
+    - Check that code actually solves a problem
     - Check that relevant dependent documentations have been updated
 - [] Quality assurance 
     - Check that tests cover typical and extreme use cases 
@@ -52,7 +53,7 @@ Provide any other details you deem relevant that was not covered above - especia
 - [] Code 
     - Check style and standards guide in checklist above
 - [] Non-functional considerations 
-    - Check for possible performance and efficency optimisation 
+    - Check for possible performance and efficiency optimisation 
     - Look out for immediate security risks
 
 **Note to Coder from Reviewer:**: 
