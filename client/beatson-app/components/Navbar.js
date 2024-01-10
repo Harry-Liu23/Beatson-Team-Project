@@ -1,18 +1,24 @@
-import React from "react"; 
 import Link from 'next/link';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Button from '@mui/material/Button';
+
 
 const Navbar = () => {   
     return (     
-        <div className='page-header'>    
-            <ul className='list'>         
-                <li>           
-                    <Link href="/">Home</Link>         
-                </li>         
-                <li>           
-                    <Link href="/login">Login</Link>         
-                </li>         
-            </ul>     
-        </div>     
+        <Box >
+            <AppBar position="static">
+                <Toolbar className="page-header">
+                    <Button color="inherit">
+                        <Link href="/">Home</Link>
+                    </Button>
+                    <Button color="inherit">
+                        <Link href="/login">Login</Link> 
+                    </Button>
+                </Toolbar>
+            </AppBar>
+        </Box> 
     ); 
 } 
 export default Navbar;
