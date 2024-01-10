@@ -227,7 +227,7 @@ const StudyForm = () => {
             </Grid>
 
             <Grid item>
-                <Button>submit</Button>
+                <Button onClick={setInitialRows}>Create Study</Button>
             </Grid>
 
 
@@ -235,7 +235,6 @@ const StudyForm = () => {
         
         </Card>
         
-
             
         <Grid container
         direction="column"
@@ -251,8 +250,7 @@ const StudyForm = () => {
                 </Typography>
             </Grid>
             <Grid item>
-                <Button onClick={addNewRow}>Add row</Button>
-                <Button onClick={setInitialRows}>Create Table</Button>
+                <Button onClick={addNewRow}>Add Sample</Button>
                 <FormControl>
                     <InputLabel id="addField">New Field</InputLabel>
                         <Select
@@ -268,7 +266,7 @@ const StudyForm = () => {
                                 <MenuItem value="anotherField">Another Field</MenuItem>
                         </Select>
                 </FormControl>
-                <Button onClick={addColumn}>Add Column</Button>
+                <Button onClick={addColumn}>Add Sample Characteristic</Button>
                 
                 <DataGrid 
                     rows = {rows} 
