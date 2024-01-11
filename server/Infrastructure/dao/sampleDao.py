@@ -95,7 +95,7 @@ class sampleDao:
     
         delete_sample_query = (
             "MATCH (s:Sample {sample_id: $sample_id}) "
-            "DELETE s"
+            "DETACH DELETE s"
         )
 
         parameters = {
