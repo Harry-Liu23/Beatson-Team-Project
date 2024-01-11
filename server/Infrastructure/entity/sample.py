@@ -3,7 +3,7 @@ import neo4j
 import os
 
 class sample:
-    def __init__(self,sample,description,organism,tissue,sex,cell_line,mouse_model,biometric_provider):
+    def __init__(self,sample,description,organism,tissue,sex,cell_line,mouse_model,biometric_provider,accession):
         self.sample = sample
         self.description = description
         self.organism = organism
@@ -12,6 +12,7 @@ class sample:
         self.cell_line = cell_line
         self.mouse_model = mouse_model
         self.biometric_provider = biometric_provider
+        self.accession = accession
 
     def get_sample(self):
         return self.sample
@@ -36,3 +37,6 @@ class sample:
 
     def get_biometric_provider(self):
         return self.biometric_provider
+    
+    def get_study_accession(self):
+        return self.accession

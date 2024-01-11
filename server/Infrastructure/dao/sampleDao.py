@@ -22,7 +22,7 @@ class sampleDao:
         create_sample_node_query = (
             "CREATE (s:Sample {description: $description, organism: $organism, tissue: $tissue, "
             "sex: $sex, cell_line: $cell_line, mouse_model: $mouse_model, biometric_provider: $biometric_provider, "
-            "sample_name: $sample_name, sample_id: $sample_id, sample_group: $sample_group, sample_project: $sample_project})"
+            "sample_name: $sample_name, sample_id: $sample_id, sample_group: $sample_group, sample_project: $sample_project, accession: $accession})"
         )
 
         parameters = {
@@ -36,16 +36,14 @@ class sampleDao:
             'sample_name': sample_name,
             'sample_id': sample_id,
             'sample_group': sample_group,
-            'sample_project': sample_project
+            'sample_project': sample_project,
+            'accession': sample.accession
         }
 
         with self.driver.session() as session:
             result = session.run(create_sample_node_query, parameters=parameters)
             single_result = result.single()
-            if single_result is not None:
-                return single_result[0]  # Returns a single ID as a result
-            else:
-                return None
+            return single_result[0] if single_result is not None else None
         
 
     def get_sample_node(self, sample_id):
@@ -60,10 +58,7 @@ class sampleDao:
         with self.driver.session() as session:
             result = session.run(get_sample_query, parameters=parameters)
             sample_node = result.single()
-            if sample_node:
-                return sample_node['s']
-            else:
-                return None
+            return sample_node['s'] if sample_node else None
             
 
     def update_sample_node(self, sample_id, updated_data):
@@ -93,10 +88,7 @@ class sampleDao:
         with self.driver.session() as session:
             result = session.run(update_sample_query, parameters=parameters)
             updated_node = result.single()
-            if updated_node:
-                return updated_node['s']
-            else:
-                return None
+            return updated_node['s'] if updated_node else None
             
 
     def delete_sample_node(self, sample_id):
@@ -112,4 +104,4 @@ class sampleDao:
 
         with self.driver.session() as session:
             session.run(delete_sample_query, parameters=parameters)
-            return True  
+            return True
