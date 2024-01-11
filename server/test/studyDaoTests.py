@@ -11,7 +11,7 @@ import json
 from server.application.main import app
 
 
-class TestStudyCreation(unittest.TestCase):
+class testStudy(unittest.TestCase):
     def setUp(self):
         self.app = app.test_client()
 
@@ -57,10 +57,7 @@ class TestStudyCreation(unittest.TestCase):
         self.assertEqual(response.status_code, 200) 
 
     
-    # def test_delete_study_node(self):
-    #     study_accession = "access"
-    #     response = self.app.delete(f'/delete_study/{study_accession}')
-    #     self.assertEqual(response.status_code, 200) 
+
 
 
 if __name__ == '__main__':
