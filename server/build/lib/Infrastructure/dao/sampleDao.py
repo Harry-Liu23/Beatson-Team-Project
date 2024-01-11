@@ -20,9 +20,9 @@ class sampleDao:
         sample_project = sample.sample.get_sample_project()
 
         create_sample_node_query = (
-            "CREATE (s:sample {description: $description, organism: $organism, tissue: $tissue, "
+            "CREATE (s:Sample {description: $description, organism: $organism, tissue: $tissue, "
             "sex: $sex, cell_line: $cell_line, mouse_model: $mouse_model, biometric_provider: $biometric_provider, "
-            "sample_name: $sample_name, sample_id: $sample_id, sample_group: $sample_group, sample_project: $sample_project})"
+            "sample_name: $sample_name, sample_id: $sample_id, sample_group: $sample_group, sample_project: $sample_project, accession: $accession})"
         )
 
         parameters = {
@@ -36,7 +36,8 @@ class sampleDao:
             'sample_name': sample_name,
             'sample_id': sample_id,
             'sample_group': sample_group,
-            'sample_project': sample_project
+            'sample_project': sample_project,
+            'accession': sample.accession
         }
 
         with self.driver.session() as session:
@@ -68,7 +69,7 @@ class sampleDao:
 
     def update_sample_node(self, sample_id, updated_data):
         update_sample_query = (
-            "MATCH (s:sample {sample_id: $sample_id}) "
+            "MATCH (s:Sample {sample_id: $sample_id}) "
             "SET s.description = $description, "
             "s.organism = $organism, "
             "s.tissue = $tissue, "
