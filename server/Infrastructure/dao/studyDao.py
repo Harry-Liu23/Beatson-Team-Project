@@ -102,18 +102,29 @@ class studyDao:
                 return None
             
 
+    def serialize_node(self, node):
+        """Serialize a Neo4j Node object to a dictionary."""
+        serialized_node = {}
+        for key in node.keys():
+            serialized_node[key] = node[key]
+        return serialized_node
+    
+    
+
     def get_all_sample(self, accession):
         get_all_query = (
-        "MATCH (study:Study {accession: $accession})-[*1]-(sample:Sample) "
-        "RETURN sample"
+            "MATCH (study:Study {accession: $accession})-[*1]-(sample:Sample) "
+            "RETURN sample"
         )
         parameters = {
             "accession": accession
         }
         with self.driver.session() as session:
             result = session.run(get_all_query, parameters=parameters)
-            sample_list = [record["sample"] for record in result]
-            return sample_list
+            records = [self.serialize_node(record["sample"]) for record in result]
+            return records
+
+
 
 
 
