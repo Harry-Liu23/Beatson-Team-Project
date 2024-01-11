@@ -60,10 +60,10 @@ class TestStudyCreation(unittest.TestCase):
         response = self.app.put(f'/update_sample/{sample_id}', json=update_data)
         self.assertEqual(response.status_code, 200) 
 
-    # def test_get_all_sample(self):
-    #     study_accession = "access"
-    #     response = self.app.get(f'/get_all_samples/{study_accession}')
-    #     self.assertEqual(response.status_code,200)
+    def test_get_all_sample(self):
+        study_accession = "access"
+        response = self.app.get(f'/get_all_samples/{study_accession}')
+        self.assertEqual(response.status_code,200)
 
 
 
