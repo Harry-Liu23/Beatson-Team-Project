@@ -13,6 +13,8 @@ import Select from '@mui/material/Select';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import Dialog from '@mui/material/Dialog';
+import { DialogTitle } from '@mui/material';
+import DialogActions from '@mui/material/DialogActions';
 
 
 const StudyForm = () => {
@@ -24,7 +26,8 @@ const StudyForm = () => {
     const [sampleNumber, setSampleNumber] = useState("");
     const [sampleCount, setSampleCount] = useState(0);
     const [rows, setRows] = useState([]);
-    const [state, setState] = useState("");
+    const [state, setState] = useState("cancerType");
+    const [openDialog, setOpenDialog] = useState(false);
     
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -35,6 +38,10 @@ const StudyForm = () => {
         console.log("Description: " + description);
         console.log("Number of Samples: " + sampleNumber);
     }
+
+    const handleChange = (event) => {
+        setState(event.target.value);
+    };
 
     // js object that allows us to use key/value pairs (similar to dictionary in python)
     const additionalColumns = {
@@ -147,10 +154,6 @@ const StudyForm = () => {
         setSampleCount(numSamples+1);
      }
 
-    const handleChange = (event) => {
-        setState(event.target.value);
-    };
-
     // [TODO] find a nicer way of doing this, as in a way that .includes works with our object with out this function
     const getFields = (columns) => {
         let fields = [];
@@ -168,18 +171,15 @@ const StudyForm = () => {
             setColumns([...columns, columnToBeAdded]);
         }
         else  {
-            //[TODO] ADD DIALOG/POP-UP TO SAY COLUMN CAN'T BE ADDED AS ALREADY IN COLUMNS
+            //[TODO] Remove from additional columns
+
             console.log("Already exists");
         }
+        setOpenDialog(false);
     };
 
-    
-    const addCharacteristicDialog = (columns) => {
-        console.log(columns);
-        //<Dialog onClose{addColumn}
-    }
-
-
+    // TODO - work below concerns the dialog button
+    // dialog renders what additionalColumns are left    
 
 
     return(
@@ -278,9 +278,12 @@ const StudyForm = () => {
             </Grid>
             <Grid item>
                 <Button onClick={addNewRow}>Add Sample</Button>
-                <FormControl>
-                    <InputLabel id="addField">New Field</InputLabel>
-                        <Select
+                
+                <Button onClick={() => setOpenDialog(true)}>Add Characteristic</Button>
+
+                <Dialog open={openDialog}>
+                    <DialogTitle>Select characteristic to add</DialogTitle>
+                    <Select
                             labelId="addField"
                             id="addField"
                             value={state}
@@ -292,11 +295,11 @@ const StudyForm = () => {
                                 <MenuItem value="control">Control</MenuItem>
                                 <MenuItem value="anotherField">Another Field</MenuItem>
                         </Select>
-                </FormControl>
-                <Button onClick={addColumn}>Add Sample Characteristic</Button>
-
-                <Button onClick={addCharacteristicDialog(columns)}>Add Characteristic</Button>
-                
+                    <DialogActions>
+                        <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+                        <Button onClick={addColumn}>Add Sample Characteristic</Button>
+                    </DialogActions>
+                </Dialog>
                 <DataGrid 
                     rows = {rows} 
                     columns = {columns}
