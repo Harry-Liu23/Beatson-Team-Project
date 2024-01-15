@@ -12,8 +12,11 @@ const Navbar = () => {
                     <Link href="/login">Login</Link>         
                 </li>
                 <li>           
-                    <Link href="/upload">Upload</Link>         
+                    <Link href="/upload-menu">Menu Upload</Link>        
                 </li>             
+                <li>
+                    <Link href="/upload-checkbox">Checkbox Upload</Link> 
+                </li>
             </ul>     
         </div>     
     ); 
