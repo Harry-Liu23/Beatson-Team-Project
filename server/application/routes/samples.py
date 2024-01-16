@@ -1,87 +1,7 @@
-import sys
-import os
-
-current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.abspath(os.path.join(current_dir, '..', '..'))
-sys.path.insert(0, project_root)
-
-
-from flask import Flask, jsonify, request
-from neo4j import GraphDatabase, basic_auth
-import server.Infrastructure.entity.sample as sampleEntity
-import Infrastructure.entity.constraint.sampleIdInfo as sampleIdInfo
-import server.Infrastructure.dao.sampleDao as sampleDao
-import server.Infrastructure.entity.study as study
-import server.Infrastructure.dao.studyDao as studyDao
-# from application.keys import DATABASE_PASSWORD 
-
-
-app=Flask(__name__)
-
-
-DATABASE_USERNAME = "neo4j"
-DATABASE_URI = "bolt://localhost:7687"
-DATABASE_PASSWORD = "12345678"
-
-driver = GraphDatabase.driver(DATABASE_URI, auth=(DATABASE_USERNAME,DATABASE_PASSWORD))
-session = driver.session()
-sample_dao = sampleDao.sampleDao(driver)
-study_dao = studyDao.studyDao(driver)
-
-
-@app.route('/')
-def main():
-    return 'welcome to my webpage!'
-
-
-@app.route('/create_study', methods=['POST'])
-def create_study():
-    data = request.json
-
-
-    # Assuming data contains necessary attributes for study
-    data_study = data.get('study', {})
-    
-
-    #Create a study object
-    study_obj = study.study(
-        accession = data_study.get('accession',''),
-        study_type = data_study.get('study_type',''),
-        publication = data_study.get('publication',''),
-        organism = data_study.get('organism',''),
-        description = data_study.get('description',''),
-        num_samples = data_study.get('num_samples','')
-    )
-    created_study_accession = study_dao.create_study_node(study_obj)
-    return f"Study Node created with accession: {created_study_accession}"
-
-
-@app.route('/get_study/<accession>', methods=['GET'])
-def get_study(accession):
-    study_node = study_dao.get_study_node(accession)
-    if study_node:
-        return f"Found study node :{study_node}"  # Return the study node as JSON response
-    else:
-        return "Study Node not found", 404
-    
-
-@app.route('/update_study/<accession>', methods=['PUT'])
-def update_study(accession):
-    data = request.json
-    updated_data = {
-        'description': data.get('description'),
-        'organism': data.get('organism'),
-        'study_type': data.get('study_type'),
-        'publication': data.get('publication'),
-        'num_samples': data.get('num_samples')
-    }
-    
-    updated_node = study_dao.update_study_node(accession, updated_data)
-    if updated_node:
-        return f"Updated study node: {updated_node}"  # Return updated study node as JSON
-    else:
-        return "Failed to update Study Node", 404
-    
+from . import app, study_dao, sample_dao
+from Infrastructure.entity.constraint import sampleIdInfo
+from Infrastructure.entity import sample as sampleEntity
+from flask import request, jsonify
 
 @app.route('/get_all_samples/<accession>', methods=['GET'])
 def get_all_samples(accession):
@@ -178,7 +98,3 @@ def delete_sample(sample_id):
         return "Failed to delete sample node."
 
 
-if __name__=="__main__":
-    app.run(port=2020,host="127.0.0.1",debug=True)
-    driver.close()
-    session.close()

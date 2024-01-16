@@ -1,3 +1,4 @@
+# TODO should be in application.models
 import flask
 import neo4j
 import os

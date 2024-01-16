@@ -1,3 +1,4 @@
+# TODO Does this file need to exist? if so why are we using it?
 from neo4j import GraphDatabase, basic_auth
 
 DATABASE_USERNAME = "neo4j"
