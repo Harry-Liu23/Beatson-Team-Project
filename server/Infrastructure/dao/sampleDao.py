@@ -5,7 +5,7 @@ import os
 import flask as flask
 from flask import app, request
 from neo4j import Driver,GraphDatabase
-import server.Infrastructure.entity.constraint.sampleIdInfo as Sample
+import Infrastructure.entity.constraint.sampleIdInfo as Sample
 
 
 class sampleDao:
