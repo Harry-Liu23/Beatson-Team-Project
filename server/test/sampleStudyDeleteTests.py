@@ -1,6 +1,6 @@
 import unittest
 import json
-from server.application import app
+from application import app
 
 class sampleStudyDeleteTests(unittest.TestCase):
     def setUp(self):
