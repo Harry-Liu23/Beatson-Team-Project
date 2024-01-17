@@ -162,7 +162,7 @@ const StudyFormCheckbox = () => {
     const getFields = () => {
         let additionalColumnValues = [];
         let fields = [];
-        additionalColumnValues.push(Object.values(additionalColumns)) // .values makes a list so pushing is dumb
+        additionalColumnValues.push(Object.values(additionalColumns))
         additionalColumnValues.forEach( (column) => fields.push(column));
         return fields[0];
     }
@@ -188,13 +188,13 @@ const StudyFormCheckbox = () => {
     // when checkbox is unchecked it should not add or remove from datagrid
 
     const [isChecked, setIsChecked] = useState(() =>
-        getFields().map((value, i) => [value.field, false]) // better way for this i think
+        getFields().map((column, i) => [column.field, false])
     );
 
-    const changeChecked = (index, value) => {
-        const newCheckedValue = !isChecked[index][1];
-        const newIsChecked = [...isChecked]; // cerate copy to ensure isChecked isn't change before the setStateCall
-        newIsChecked[index] = [additionalColumns[value].headerName, newCheckedValue];
+    const changeChecked = (index, key) => {
+        const newBooleanValue = !isChecked[index][1];
+        const newIsChecked = [...isChecked]; // copying isChecked
+        newIsChecked[index] = [additionalColumns[key].headerName, newBooleanValue];
         setIsChecked(newIsChecked);
     }
 
@@ -310,8 +310,8 @@ const StudyFormCheckbox = () => {
                     <DialogTitle>Select characteristic to add</DialogTitle>
                     <DialogContent>
                     {
-                        Object.keys(additionalColumns).map((value,index) => {
-                            return (<FormControlLabel control={<Checkbox checked={isChecked[index][1]} onClick={() => changeChecked(index, value)}/>} label={additionalColumns[value].headerName}/>);
+                        Object.keys(additionalColumns).map((key,index) => {
+                            return (<FormControlLabel control={<Checkbox checked={isChecked[index][1]} onClick={() => changeChecked(index, key)}/>} label={additionalColumns[key].headerName}/>);
                         })
                     }
                     </DialogContent>
