@@ -3,8 +3,7 @@ from neo4j import GraphDatabase
 
 import Infrastructure.dao.sampleDao as sampleDao
 import Infrastructure.dao.studyDao as studyDao
-
-
+#from application.keys import DATABASE_PASSWORD
 
 app=Flask(__name__)
 
