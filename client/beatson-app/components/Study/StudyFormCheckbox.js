@@ -191,7 +191,12 @@ const StudyFormCheckbox = () => {
         getFields().map((value, i) => [value.field, false]) // better way for this i think
     );
 
-    console.log(isChecked);
+    const changeChecked = (index, value) => {
+        const newCheckedValue = !isChecked[index][1];
+        const newIsChecked = [...isChecked]; // cerate copy to ensure isChecked isn't change before the setStateCall
+        newIsChecked[index] = [additionalColumns[value].headerName, newCheckedValue];
+        setIsChecked(newIsChecked);
+    }
 
     const submit = () => { 
         // [true or false values] map to what aditionacolumns are checked or not
@@ -306,10 +311,7 @@ const StudyFormCheckbox = () => {
                     <DialogContent>
                     {
                         Object.keys(additionalColumns).map((value,index) => {
-                            // console.log(isChecked[index][1]);
-                            // let changeCheck = isChecked.copy();
-                            // changeCheck[index] = [additionalColumns[value].headerName, not changeCheck];  
-                            return (<FormControlLabel control={<Checkbox checked={isChecked[index][1]}/>} label={additionalColumns[value].headerName}/>);
+                            return (<FormControlLabel control={<Checkbox checked={isChecked[index][1]} onClick={() => changeChecked(index, value)}/>} label={additionalColumns[value].headerName}/>);
                         })
                     }
                     </DialogContent>

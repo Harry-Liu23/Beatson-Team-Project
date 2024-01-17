@@ -1,6 +1,6 @@
 "use client";
 import { useState } from 'react';
-import styles from '../../styles/loginForm.module.css';
+import styles from '../../styles/LoginForm.module.css';
 
 /* <LoginForm /> is a component for a form 
 which has a username and password field
