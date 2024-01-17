@@ -4,9 +4,9 @@ export default async function postFormAsJSON(event, url){
   const formData = new FormData(event.target)
   const userData = Object.fromEntries(formData.entries())
 
-  /* sends POST reqest to server with user data */
+  /* sends POST request to server with user data */
 
-  const reqest = await fetch(url, {
+  const request = await fetch(url, {
           method : 'POST',
           mode : 'cors',
           body : JSON.stringify(userData),
@@ -16,9 +16,9 @@ export default async function postFormAsJSON(event, url){
           }
       })
 
-      if( reqest.ok){
+      if( request.ok){
         console.log('Request ok')
-        return reqest
+        return request
       }
 
       return null

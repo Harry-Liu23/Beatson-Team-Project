@@ -6,10 +6,8 @@ from flask import request
 @app.route('/create_study', methods=['POST'])
 def create_study():
     data = request.json
-
     # Assuming data contains necessary attributes for study
     data_study = data.get('study', {})
-    
 
     #Create a study object
     study_obj = study.study(
@@ -31,7 +29,7 @@ def get_study(accession):
         return f"Found study node :{study_node}"  # Return the study node as JSON response
     else:
         return "Study Node not found", 404
-    
+
 
 @app.route('/update_study/<accession>', methods=['PUT'])
 def update_study(accession):
@@ -43,7 +41,6 @@ def update_study(accession):
         'publication': data.get('publication'),
         'num_samples': data.get('num_samples')
     }
-    
     updated_node = study_dao.update_study_node(accession, updated_data)
     if updated_node:
         return f"Updated study node: {updated_node}"  # Return updated study node as JSON

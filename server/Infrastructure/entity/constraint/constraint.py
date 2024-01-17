@@ -1,4 +1,6 @@
 class constraint:
+    
+    
     def __init__(self,name):
         self.constraint_name = name;
     
@@ -9,4 +11,3 @@ class constraint:
 
     def get_constraint_name(self):
         return self.constraint_name;
-    

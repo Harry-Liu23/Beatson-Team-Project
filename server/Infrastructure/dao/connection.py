@@ -7,4 +7,3 @@ DATABASE_URI = "bolt://localhost:7687"
 driver = GraphDatabase.driver(DATABASE_URI, auth=(DATABASE_USERNAME,DATABASE_PASSWORD))
 
 session = driver.session()
-
