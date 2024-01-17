@@ -159,11 +159,13 @@ const StudyFormCheckbox = () => {
      }
 
     // [TODO] find a nicer way of doing this, as in a way that .includes works with our object with out this function
-    // const getFields = (columns) => {
-    //     let fields = [];
-    //     columns.forEach( (column) => fields.push(column.field));
-    //     return fields;
-    // }
+    const getFields = () => {
+        let additionalColumnValues = [];
+        let fields = [];
+        additionalColumnValues.push(Object.values(additionalColumns)) // .values makes a list so pushing is dumb
+        additionalColumnValues.forEach( (column) => fields.push(column));
+        return fields[0];
+    }
 
     // // takes input from dropdown menu and checks to make sure that the new field has not already exists in table before adding to table
     // const addColumn = () => {
@@ -186,14 +188,10 @@ const StudyFormCheckbox = () => {
     // when checkbox is unchecked it should not add or remove from datagrid
 
     const [isChecked, setIsChecked] = useState(() =>
-        getFields(additionalColumns).map((i) => false)
+        getFields().map((value, i) => [value.field, false]) // better way for this i think
     );
 
     console.log(isChecked);
-    
-    //could populate using the keys of additionalColumn?
-    const additionalColumnsList = ['Cancer Type', 'Weight', 'Control', 'Another Field']
-
 
     const submit = () => { 
         // [true or false values] map to what aditionacolumns are checked or not
@@ -306,16 +304,18 @@ const StudyFormCheckbox = () => {
                 <Dialog open={openDialog}>
                     <DialogTitle>Select characteristic to add</DialogTitle>
                     <DialogContent>
-                        <FormGroup>
-                            <FormControlLabel control={<Checkbox checked={checked} onChange={handleCheckedChange}/>} label="Cancer Type" />
-                            <FormControlLabel control={<Checkbox checked={checked} onChange={handleCheckedChange}/>} label="Weight" />
-                            <FormControlLabel control={<Checkbox checked={checked} onChange={handleCheckedChange}/>} label="Control" />
-                            <FormControlLabel control={<Checkbox checked={checked} onChange={handleCheckedChange}/>} label="Another Field" />
-                        </FormGroup>
+                    {
+                        Object.keys(additionalColumns).map((value,index) => {
+                            // console.log(isChecked[index][1]);
+                            // let changeCheck = isChecked.copy();
+                            // changeCheck[index] = [additionalColumns[value].headerName, not changeCheck];  
+                            return (<FormControlLabel control={<Checkbox checked={isChecked[index][1]}/>} label={additionalColumns[value].headerName}/>);
+                        })
+                    }
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-                        <Button onClick={addColumn}>Add Sample Characteristics</Button>
+                        <Button>Add Sample Characteristics</Button>
                     </DialogActions>
                 </Dialog>
                 <DataGrid 
