@@ -1,4 +1,4 @@
-export default async function postFormToUrlAsJson(event, url){
+export default async function postFormAsJSON(event, url){
 
   event.preventDefault();
   const formData = new FormData(event.target)

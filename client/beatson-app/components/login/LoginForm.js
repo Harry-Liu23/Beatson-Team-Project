@@ -1,7 +1,8 @@
 "use client";
 import {useState } from 'react';
 import styles from '../../styles/LoginForm.module.css';
-import postFormToUrlAsJson from '../../services/postFormToUrlAsJson'
+import postFormAsJSON from '../../services/BackendAPI'
+
 
 /* <LoginForm /> is a component for a form 
 which has a username and password field
@@ -15,7 +16,7 @@ the response.
 
 async function handleSubmit(event){
 
-    const data = await postFormToUrlAsJson(event,'http://localhost:2020/login')
+    const data = await postFormAsJSON(event,'http://localhost:2020/login')
     console.log(JSON.stringify(data.json()))
 }
 
