@@ -25,8 +25,7 @@ const StudyFormCheckbox = () => {
     const [publication, setPublication] = useState("");
     const [organism, setOrganism] = useState("");
     const [description, setDescription] = useState("");
-    const [sampleNumber, setSampleNumber] = useState("");
-    const [sampleCount, setSampleCount] = useState(0);
+    const [sampleNumber, setSampleNumber] = useState(0);
     const [rows, setRows] = useState([]);
     const [state, setState] = useState("cancerType");
     const [openDialog, setOpenDialog] = useState(false);
@@ -139,23 +138,22 @@ const StudyFormCheckbox = () => {
 
     const createNewRow = () =>{
         //below is same as sampleCount = sampleCount+1
-        setSampleCount(sampleCount+1);
-        return {id: sampleCount};
+        setSampleNumber(sampleNumber+1);
+        return {id: sampleNumber};
      }
 
 
     const addNewRow = () =>{
-        console.log("Sample Count" + sampleCount);
+        console.log("Sample Count" + sampleNumber);
         setRows((rows) => [...rows, createNewRow()]);
     }
 
-    let numSamples = 4;
     const setInitialRows = () => {
         console.log("IN INITIAL ROWS");
-        for (let i = 1; i <= numSamples; i++) {
+        for (let i = 1; i <= sampleNumber; i++) {
             setRows((rows) => [...rows, {id: i}]);
         };
-        setSampleCount(numSamples+1);
+        setSampleNumber(sampleNumber+1);
      }
 
     // [TODO] find a nicer way of doing this, as in a way that .includes works with our object with out this function
@@ -274,6 +272,7 @@ const StudyFormCheckbox = () => {
                     id="sampleNumber"
                     label="Number of Samples" 
                     variant="outlined" 
+                    onChange={() => setSampleNumber(+event.target.value)}
                 />
             </Grid>
 
