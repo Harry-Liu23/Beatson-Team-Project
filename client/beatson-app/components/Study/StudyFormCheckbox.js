@@ -309,7 +309,7 @@ const StudyFormCheckbox = () => {
                     <DialogContent>
                     {
                         Object.keys(additionalColumns).map((key,index) => {
-                            return (<FormControlLabel control={<Checkbox checked={isChecked[index][1]} onClick={() => changeChecked(index, key)}/>} label={additionalColumns[key].headerName}/>);
+                            return (<FormControlLabel key={key} control={<Checkbox checked={isChecked[index][1]} onClick={() => changeChecked(index, key)}/>} label={additionalColumns[key].headerName}/>);
                         })
                     }
                     </DialogContent>
