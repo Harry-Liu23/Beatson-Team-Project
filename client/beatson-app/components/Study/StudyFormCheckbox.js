@@ -17,6 +17,7 @@ import Dialog from '@mui/material/Dialog';
 import { DialogContent, DialogTitle } from '@mui/material';
 import DialogActions from '@mui/material/DialogActions';
 import Checkbox from '@mui/material/Checkbox';
+import { ColorLensOutlined } from '@mui/icons-material';
 
 
 const StudyFormCheckbox = () => {
@@ -137,7 +138,6 @@ const StudyFormCheckbox = () => {
     ])
 
     const createNewRow = () =>{
-        //below is same as sampleCount = sampleCount+1
         setSampleNumber(sampleNumber+1);
         return {id: sampleNumber};
      }
@@ -156,34 +156,13 @@ const StudyFormCheckbox = () => {
         setSampleNumber(sampleNumber+1);
      }
 
-    // [TODO] find a nicer way of doing this, as in a way that .includes works with our object with out this function
     const getFields = () => {
         let additionalColumnValues = [];
         let fields = [];
-        additionalColumnValues.push(Object.values(additionalColumns))
+        additionalColumnValues.push(Object.values(additionalColumns));
         additionalColumnValues.forEach( (column) => fields.push(column));
         return fields[0];
     }
-
-    // // takes input from dropdown menu and checks to make sure that the new field has not already exists in table before adding to table
-    // const addColumn = () => {
-    //     const columnToBeAdded = additionalColumns[state]; 
-    //     const columnFields = getFields(columns);
-    //     const newColumnInExistingColumns = columnFields.includes(columnToBeAdded.field); 
-        
-    //     if (!newColumnInExistingColumns){
-    //         setColumns([...columns, columnToBeAdded]);
-    //     }
-    //     else  {
-    //         //[TODO] Remove from additional columns
-
-    //         console.log("Already exists");
-    //     }
-    //     setOpenDialog(false);
-    // };
-
-    // TODO - checkbox when cheched should add column to datagrid
-    // when checkbox is unchecked it should not add or remove from datagrid
 
     const [isChecked, setIsChecked] = useState(() =>
         getFields().map((column, i) => [column.field, false])
@@ -192,16 +171,36 @@ const StudyFormCheckbox = () => {
     const changeChecked = (index, key) => {
         const newBooleanValue = !isChecked[index][1];
         const newIsChecked = [...isChecked]; // copying isChecked
-        newIsChecked[index] = [additionalColumns[key].headerName, newBooleanValue];
+        newIsChecked[index] = [additionalColumns[key].field, newBooleanValue];
         setIsChecked(newIsChecked);
     }
 
-    const submit = () => { 
-        // [true or false values] map to what aditionacolumns are checked or not
-        // using fields
-        
-        //logic here to check if the checkbox is ticked, if its ticked it gets added to columns
-        //if its not checked, we try to remove it
+    const submit = () => {
+        const fields = [];
+        columns.forEach( (column) => fields.push(column.field));
+        let removeList = [...columns];
+
+        isChecked.forEach((column) => {
+            const bool = column[1];
+            const columnKey = column[0];
+
+            if (bool) {
+                if (fields.includes(columnKey)) {
+                }
+                else {
+                    removeList.push(additionalColumns[columnKey])
+                }
+            }
+
+            else {
+                if (fields.includes(columnKey)) {
+                    const newRemovedList = removeList.filter(column => column.field !== columnKey);
+                    removeList = newRemovedList;
+                }
+            }
+        });
+        setColumns(removeList);
+        setOpenDialog(false);
     }
     
     return(
@@ -316,7 +315,7 @@ const StudyFormCheckbox = () => {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-                        <Button>Add Sample Characteristics</Button>
+                        <Button onClick={submit}>Add Sample Characteristics</Button>
                     </DialogActions>
                 </Dialog>
                 <DataGrid 
