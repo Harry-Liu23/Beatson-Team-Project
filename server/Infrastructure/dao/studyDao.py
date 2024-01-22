@@ -1,23 +1,22 @@
 import sys
 import os
 
-
 import flask as flask
 from flask import app, request
-import server.Infrastructure.entity.constraint.sampleIdInfo as Sample
-
+import Infrastructure.entity.constraint.sampleIdInfo as Sample
 
 class studyDao:
 
+
     def __init__(self, driver):
         self.driver = driver
+
 
     def create_study_node(self,study):
         create_study_node_query = (
         "CREATE (s:Study {description: $description, accession:$accession, study_type:$study_type, "
         "publication:$publication, organism:$organism, num_samples:$num_samples})"
     )
-
 
         parameters = {
             'description':study.description,
@@ -28,11 +27,10 @@ class studyDao:
             'num_samples':study.num_samples
         }
 
-
         with self.driver.session() as session:
             result = session.run(create_study_node_query, parameters=parameters)
             return result.single()
-        
+
 
     def get_study_node(self, accession):
         get_study_query = (
@@ -50,7 +48,7 @@ class studyDao:
                 return study_node['s']
             else:
                 return None
-            
+
 
     def update_study_node(self, accession, updated_data):
         update_study_query = (
@@ -81,7 +79,7 @@ class studyDao:
             else:
                 session.close()
                 return None
-            
+
 
     def create_sample_study_relationship(self, sample_id, accession):
         relation_query = (
@@ -100,7 +98,7 @@ class studyDao:
                 return single_result[0]  # Returns a single ID as a result
             else:
                 return None
-            
+
 
     def serialize_node(self, node):
         """Serialize a Neo4j Node object to a dictionary."""
@@ -108,8 +106,7 @@ class studyDao:
         for key in node.keys():
             serialized_node[key] = node[key]
         return serialized_node
-    
-    
+
 
     def get_all_sample(self, accession):
         get_all_query = (
@@ -125,11 +122,7 @@ class studyDao:
             return records
 
 
-
-
-
     def delete_study_node(self, accession):
-    
         delete_study_query = (
             "MATCH (s:Study {accession: $accession}) "
             "DETACH DELETE s"

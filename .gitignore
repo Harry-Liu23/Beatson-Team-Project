@@ -1,4 +1,5 @@
 __pycache__/
 *.pyc
 beatson_app.egg-info/
-build/
+server/build
+.idea

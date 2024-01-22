@@ -1,17 +1,17 @@
 import sys
 import os
 
-
 import flask as flask
 from flask import app, request
 from neo4j import Driver,GraphDatabase
-import server.Infrastructure.entity.constraint.sampleIdInfo as Sample
-
+import Infrastructure.entity.constraint.sampleIdInfo as Sample
 
 class sampleDao:
 
+
     def __init__(self, driver):
         self.driver = driver
+
 
     def create_sample_node(self, sample):
         sample_name = sample.sample.get_sample_name()
@@ -59,7 +59,7 @@ class sampleDao:
             result = session.run(get_sample_query, parameters=parameters)
             sample_node = result.single()
             return sample_node['s'] if sample_node else None
-            
+
 
     def update_sample_node(self, sample_id, updated_data):
         update_sample_query = (
@@ -89,10 +89,9 @@ class sampleDao:
             result = session.run(update_sample_query, parameters=parameters)
             updated_node = result.single()
             return updated_node['s'] if updated_node else None
-            
+
 
     def delete_sample_node(self, sample_id):
-    
         delete_sample_query = (
             "MATCH (s:Sample {sample_id: $sample_id}) "
             "DETACH DELETE s"

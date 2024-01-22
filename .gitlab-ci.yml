@@ -1,12 +1,37 @@
-image: blang/latex
-build:
-  tags:
-    - docker
-  script:
-    - latexmk -pdf Change_Log.tex
-  artifacts:
-    paths:
-      - "*.pdf"
+stage:
+  - build
+  - quality
+  - test
 
+build_next:
+  stage: build
+  script:
+    - echo "building next..."
+
+build_flask_neo4j:
+  stage: build
+  script:
+    - echo "building flask and neo4j..."
+
+quality_next_lint:
+  stage: quality
+  script:
+    - echo "starting static analysis of next files"
+
+quality_flask_neo4j_lint:
+  stage: quality
+  script:
+    - echo "starting static analysis of flask and neo4j"
+
+test_frontend:
+  stage: test
+  script:
+    - echo "starting tests for frontend"
+
+test_flask_neo4j:
+  stage: test
+  script:
+    - echo "starting test for flask and neo4j"
+     
 before_script:
    - echo DB_PASSWORD is $DB_PASSWORD
