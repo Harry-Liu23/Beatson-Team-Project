@@ -47,21 +47,14 @@ class experimentDao:
 
     def update_experiment_node(self, accession, updated_data):
         update_experiment_query = (
-            "MATCH (s:experiment {accession: $accession}) "
-            "SET s.description = $description, "
-            "s.organism = $organism, "
-            "s.experiment_type = $experiment_type, "
-            "s.publication = $publication, "
+            "MATCH (s:Experiment {experiment_id: $experiment_id}) "
+            "s.description = $description, "
             "s.num_experiments = $num_experiments "
             "RETURN s"
         )
 
         parameters = {
-            'accession' : accession,
             'description': updated_data.get('description', None),
-            'organism': updated_data.get('organism', None),
-            'experiment_type': updated_data.get('experiment_type',None),
-            'publication':updated_data.get('publication',None),
             'num_experiments':updated_data.get('num_experiments',None)
         }
 
@@ -76,15 +69,15 @@ class experimentDao:
                 return None
 
 
-    def create_sample_experiment_relationship(self, sample_id, accession):
+    def create_experiment_study_relationship(self, experiment_id, accession):
         relation_query = (
-            "MATCH (experiment:experiment {accession:$accession})"
-            "MATCH (sample:Sample {sample_id:$sample_id})"
-            "CREATE (experiment)-[:CONTAINS]->(sample)"
+            "MATCH (experiment:Experiment {experiment_id:$experiment_id})"
+            "MATCH (study:Study {accession:$accession})"
+            "CREATE (study)-[:CONTAINS]->(experiment)"
             )
         parameters = {
             "accession" :accession,
-            "sample_id" :sample_id
+            "experiment_id" :experiment_id
         }
         with self.driver.session() as session:
             result = session.run(relation_query, parameters=parameters)
@@ -103,28 +96,28 @@ class experimentDao:
         return serialized_node
 
 
-    def get_all_sample(self, accession):
+    def get_all_experiment(self, accession):
         get_all_query = (
-            "MATCH (experiment:experiment {accession: $accession})-[*1]-(sample:Sample) "
-            "RETURN sample"
+            "MATCH (study:Study {accession: $accession})-[*1]-(experiment:Experiment) "
+            "RETURN experiment"
         )
         parameters = {
             "accession": accession
         }
         with self.driver.session() as session:
             result = session.run(get_all_query, parameters=parameters)
-            records = [self.serialize_node(record["sample"]) for record in result]
+            records = [self.serialize_node(record["experiment"]) for record in result]
             return records
 
 
-    def delete_experiment_node(self, accession):
+    def delete_experiment_node(self, experiment_id):
         delete_experiment_query = (
-            "MATCH (s:experiment {accession: $accession}) "
+            "MATCH (s:Experiment {experiment_id: $experiment_id}) "
             "DETACH DELETE s"
         )
 
         parameters = {
-            'accession': accession
+            "experiment_id" : experiment_id
         }
 
         with self.driver.session() as session:
