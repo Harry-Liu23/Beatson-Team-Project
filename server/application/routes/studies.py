@@ -1,4 +1,4 @@
-from . import app,study_dao
+from application import app,study_dao
 from server.Infrastructure.entity.study.study import study
 from flask import request
 
