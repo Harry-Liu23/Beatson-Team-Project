@@ -1,6 +1,6 @@
 import flask as flask
 from flask import app, request
-import server.Infrastructure.entity.study.sampleIdInfo as Sample
+from server.Infrastructure.entity.study.experiment import experiment
 
 class experimentDao:
 
@@ -9,50 +9,48 @@ class experimentDao:
         self.driver = driver
 
 
-    def create_experiment_node(self,study):
-        create_study_node_query = (
-        "CREATE (s:Study {description: $description, accession:$accession, study_type:$study_type, "
-        "publication:$publication, organism:$organism, num_experiments:$num_experiments})"
-    )
-
-        parameters = {
-            'description':study.description,
-            'accession':study.accession,
-            'study_type':study.study_type,
-            'publication':study.publication,
-            'organism':study.organism,
-            'num_experiments':study.num_experiments
-        }
-
-        with self.driver.session() as session:
-            result = session.run(create_study_node_query, parameters=parameters)
-            return result.single()
-
-
-    def get_study_node(self, accession):
-        get_study_query = (
-             "MATCH (s:Study {accession: $accession}) RETURN s"
+    def create_experiment_node(self,experiment):
+        
+        create_experiment_node_query = (
+            "CREATE (s:Experiment{experiment_id: $experiment_id,"
+            "description:$description, num_samples:$num_samples})"
         )
 
         parameters = {
-            'accession': accession
+            'experiment_id':experiment.experiment_id,
+            'description':experiment.description,
+            'num_experiments':experiment.num_experiments
         }
 
         with self.driver.session() as session:
-            result = session.run(get_study_query, parameters=parameters)
-            study_node = result.single()
-            if study_node:
-                return study_node['s']
+            result = session.run(create_experiment_node_query, parameters=parameters)
+            return result.single()
+
+
+    def get_experiment_node(self, experiment_id):
+        get_experiment_query = (
+             "MATCH (s:Experiment {experiment_id: $experiment}) RETURN s"
+        )
+
+        parameters = {
+            'experiment_id': experiment_id
+        }
+
+        with self.driver.session() as session:
+            result = session.run(get_experiment_query, parameters=parameters)
+            experiment_node = result.single()
+            if experiment_node:
+                return experiment_node['s']
             else:
                 return None
 
 
-    def update_study_node(self, accession, updated_data):
-        update_study_query = (
-            "MATCH (s:Study {accession: $accession}) "
+    def update_experiment_node(self, accession, updated_data):
+        update_experiment_query = (
+            "MATCH (s:experiment {accession: $accession}) "
             "SET s.description = $description, "
             "s.organism = $organism, "
-            "s.study_type = $study_type, "
+            "s.experiment_type = $experiment_type, "
             "s.publication = $publication, "
             "s.num_experiments = $num_experiments "
             "RETURN s"
@@ -62,13 +60,13 @@ class experimentDao:
             'accession' : accession,
             'description': updated_data.get('description', None),
             'organism': updated_data.get('organism', None),
-            'study_type': updated_data.get('study_type',None),
+            'experiment_type': updated_data.get('experiment_type',None),
             'publication':updated_data.get('publication',None),
             'num_experiments':updated_data.get('num_experiments',None)
         }
 
         with self.driver.session() as session:
-            result = session.run(update_study_query, parameters=parameters)
+            result = session.run(update_experiment_query, parameters=parameters)
             updated_node = result.single()
             if updated_node:
                 session.close()
@@ -78,11 +76,11 @@ class experimentDao:
                 return None
 
 
-    def create_sample_study_relationship(self, sample_id, accession):
+    def create_sample_experiment_relationship(self, sample_id, accession):
         relation_query = (
-            "MATCH (study:Study {accession:$accession})"
+            "MATCH (experiment:experiment {accession:$accession})"
             "MATCH (sample:Sample {sample_id:$sample_id})"
-            "CREATE (study)-[:CONTAINS]->(sample)"
+            "CREATE (experiment)-[:CONTAINS]->(sample)"
             )
         parameters = {
             "accession" :accession,
@@ -107,7 +105,7 @@ class experimentDao:
 
     def get_all_sample(self, accession):
         get_all_query = (
-            "MATCH (study:Study {accession: $accession})-[*1]-(sample:Sample) "
+            "MATCH (experiment:experiment {accession: $accession})-[*1]-(sample:Sample) "
             "RETURN sample"
         )
         parameters = {
@@ -119,9 +117,9 @@ class experimentDao:
             return records
 
 
-    def delete_study_node(self, accession):
-        delete_study_query = (
-            "MATCH (s:Study {accession: $accession}) "
+    def delete_experiment_node(self, accession):
+        delete_experiment_query = (
+            "MATCH (s:experiment {accession: $accession}) "
             "DETACH DELETE s"
         )
 
@@ -130,5 +128,5 @@ class experimentDao:
         }
 
         with self.driver.session() as session:
-            session.run(delete_study_query, parameters=parameters)
+            session.run(delete_experiment_query, parameters=parameters)
             return True  
