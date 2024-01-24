@@ -51,3 +51,8 @@ def update_experiment(experiment_id):
     if exp_updt_res:
         return f"Updated data for experiment {experiment_id}",200
     return f"Unable to update data for exeperiment {experiment_id}",500
+
+@app.route('/get_all_experiments/<accession>', methods=['GET'])
+def get_all_experiments(accession):
+    all_experiments = experiment_dao.get_all_experiment(accession)
+    return jsonify({'experiments' : all_experiments[0]}), all_experiments[1]
