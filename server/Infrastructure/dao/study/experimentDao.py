@@ -13,13 +13,12 @@ class experimentDao:
         
         create_experiment_node_query = (
             "CREATE (s:Experiment{experiment_id: $experiment_id,"
-            "description:$description, num_samples:$num_samples})"
+            "description:$description})"
         )
 
         parameters = {
             'experiment_id':experiment.experiment_id,
-            'description':experiment.description,
-            'num_experiments':experiment.num_experiments
+            'description':experiment.description
         }
 
         with self.driver.session() as session:
@@ -48,15 +47,13 @@ class experimentDao:
     def update_experiment_node(self, experiemnt_id, updated_data):
         update_experiment_query = (
             "MATCH (s:Experiment {experiment_id: $experiment_id}) "
-            "s.description = $description, "
-            "s.num_experiments = $num_experiments "
+            "s.description = $description "
             "RETURN s"
         )
 
         parameters = {
             'experiment_id':experiemnt_id,
-            'description': updated_data.get('description', None),
-            'num_experiments':updated_data.get('num_experiments',None)
+            'description': updated_data.get('description', None)
         }
 
         with self.driver.session() as session:

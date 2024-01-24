@@ -5,7 +5,6 @@ class study:
         self.publication = publication
         self.organism = organism
         self.description = description
-        self.num_experiments = num_experiments
 
     def get_accession(self):
         return self.accession
@@ -21,6 +20,3 @@ class study:
 
     def get_organism(self):
         return self.organism
-
-    def get_num_samples(self):
-        return self.num_experiments

@@ -32,6 +32,10 @@ class sampleStudyDeleteTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200) 
 
 
+    def test_delete_experiment_node(self):
+        experiment_id = "101"
+        response = self.app.delete(f'/delete_experiment/{experiment_id}')
+        self.assertEqual(response.status_code, 200)
 
 
 if __name__ == '__main__':

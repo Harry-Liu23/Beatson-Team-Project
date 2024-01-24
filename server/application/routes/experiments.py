@@ -18,7 +18,6 @@ def create_experiment():
     experiment_obj = experiment.experiment(
         experiment_id= data_experiment('experiment_id',''),
         description= data_experiment.get('description',''),
-        num_samples= data_experiment.get('num_samples',''),
         accession= data_experiment.get('accession')
     )
     exp_create_res = experiment_dao.create_experiment_node(experiment_obj)
@@ -42,8 +41,7 @@ def update_experiment(experiment_id):
     data = request.json
     updated_experiment = {
         'description' : data.get('description',''),
-        'accession' : data.get('accession',''),
-        'num_samples' : data.get('num_samples','')
+        'accession' : data.get('accession','')
     }
     exp_updt_res = experiment_dao.update_experiment_node(
         experiemnt_id=experiment_id,
@@ -56,3 +54,11 @@ def update_experiment(experiment_id):
 def get_all_experiments(accession):
     all_experiments = experiment_dao.get_all_experiment(accession)
     return jsonify({'experiments' : all_experiments[0]}), all_experiments[1]
+
+@app.route('/count_samples/<experiment_id>', methods=['GET'])
+def count_samples(experiment_id):
+    try:
+        num_samples = experiment_dao.count_num_samples(experiment_id)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    return jsonify({"num_samples": num_samples})

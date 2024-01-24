@@ -23,8 +23,7 @@ class TestExperimentCreation(unittest.TestCase):
                 "experiment_id": "101",
                 "experiment_name": "experiment Name",
                 "experiment_description": "experiment_description",
-                "accession":"accession",
-                "num_samples":8
+                "accession":"accession"
             }
         }
         response = self.app.post('/create_experiment', json=data)
@@ -43,8 +42,7 @@ class TestExperimentCreation(unittest.TestCase):
     def test_update_experiment(self):
         experiment_id = "101"
         update_data = {
-            'description': 'Updated Description',
-            'num_samples': 10
+            'description': 'Updated Description'
             # Add other attributes to update if required
         }
         response = self.app.put(f'/update_experiment/{experiment_id}', json=update_data)

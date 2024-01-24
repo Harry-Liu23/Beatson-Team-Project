@@ -26,8 +26,7 @@ class testStudy(unittest.TestCase):
                 "description": "Study Description",
                 "organism": "Organism X",
                 "study_type":"sofwj",
-                "publication":"UoG",
-                "num_experiments":"10",
+                "publication":"UoG"
         
             }
         }
@@ -48,8 +47,7 @@ class testStudy(unittest.TestCase):
             "study_type" : "updated study",
             "description": "Updated Description",
             "organism": "Updated Organism",
-            "publication": "public",
-            "num_experiments": "101"
+            "publication": "public"
             # Add other attributes to update if required
         }
         response = self.app.put(f'/update_study/{study_accession}', json=update_data)

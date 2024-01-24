@@ -1,6 +1,6 @@
 import flask as flask
 from flask import app, request
-import server.Infrastructure.entity.study.experiment as Experiemt
+import server.Infrastructure.entity.study.experiment as Experiment
 
 class studyDao:
 
@@ -13,7 +13,7 @@ class studyDao:
         """Create a sinlge Study instance in the DB"""
         create_study_node_query = (
         "CREATE (s:Study {description: $description, accession:$accession, study_type:$study_type, "
-        "publication:$publication, organism:$organism, num_experiments:$num_experiments})"
+        "publication:$publication, organism:$organism})"
     )
 
         parameters = {
@@ -22,7 +22,6 @@ class studyDao:
             'study_type':study.study_type,
             'publication':study.publication,
             'organism':study.organism,
-            'num_experiments':study.num_experiments
         }
 
         with self.driver.session() as session:
@@ -57,7 +56,6 @@ class studyDao:
             "s.organism = $organism, "
             "s.study_type = $study_type, "
             "s.publication = $publication, "
-            "s.num_experiments = $num_experiments "
             "RETURN s"
         )
 
@@ -67,17 +65,14 @@ class studyDao:
             'organism': updated_data.get('organism', None),
             'study_type': updated_data.get('study_type',None),
             'publication':updated_data.get('publication',None),
-            'num_experiments':updated_data.get('num_experiments',None)
         }
 
         with self.driver.session() as session:
             result = session.run(update_study_query, parameters=parameters)
             updated_node = result.single()
             if updated_node:
-                session.close()
                 return updated_node['s']
             else:
-                session.close()
                 return None
 
 
@@ -122,6 +117,26 @@ class studyDao:
             result = session.run(get_all_query, parameters=parameters)
             records = [self.serialize_node(record["experiment"]) for record in result]
             return records
+
+
+    def count_num_experiments(self, accession):
+        """Count the number of experiments attached to a Study"""
+        count_query = (
+            "MATCH (study:Study {accession: $accession})-[:CONTAINS]->(experiment:Experiment) "
+            "RETURN COUNT(experiment) AS num_experiments"
+        )
+
+        parameters = {
+            "accession": accession
+        }
+
+        with self.driver.session() as session:
+            result = session.run(count_query, parameters=parameters)
+            count_result = result.single()
+            if count_result:
+                return count_result['num_experiments']
+            else:
+                return 0
 
 
     def delete_study_node(self, accession):
