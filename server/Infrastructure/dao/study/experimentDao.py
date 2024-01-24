@@ -45,7 +45,7 @@ class experimentDao:
                 return None
 
 
-    def update_experiment_node(self, accession, updated_data):
+    def update_experiment_node(self, experiemnt_id, updated_data):
         update_experiment_query = (
             "MATCH (s:Experiment {experiment_id: $experiment_id}) "
             "s.description = $description, "
@@ -54,6 +54,7 @@ class experimentDao:
         )
 
         parameters = {
+            'experiment_id':experiemnt_id,
             'description': updated_data.get('description', None),
             'num_experiments':updated_data.get('num_experiments',None)
         }
