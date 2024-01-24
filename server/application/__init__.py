@@ -26,7 +26,7 @@ session = driver.session()
 sample_dao = sampleDao.sampleDao(driver)
 experiment_dao = experimentDao.experimentDao(driver)
 study_dao = studyDao.studyDao(driver)
-experiment_dao = experimentDao(driver)
+
 
 # Needs to exist after app and everything else being imported to routes.__init__ is defined
 from . import routes
