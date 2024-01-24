@@ -53,7 +53,6 @@ class testStudy(unittest.TestCase):
         response = self.app.put(f'/update_study/{study_accession}', json=update_data)
         self.assertEqual(response.status_code, 200) 
 
-    
 
 
 

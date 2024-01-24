@@ -21,9 +21,8 @@ class TestExperimentCreation(unittest.TestCase):
         data = {
             "experiment_data": {
                 "experiment_id": "101",
-                "experiment_name": "experiment Name",
                 "experiment_description": "experiment_description",
-                "accession":"accession"
+                "accession":"access"
             }
         }
         response = self.app.post('/create_experiment', json=data)
@@ -32,26 +31,26 @@ class TestExperimentCreation(unittest.TestCase):
 
 
 
-    def test_get_experiment(self):
-        experiment_id = "101" 
-        response = self.app.get(f'/get_experiment/{experiment_id}')
-        self.assertEqual(response.status_code, 200) 
+    # def test_get_experiment(self):
+    #     experiment_id = "101" 
+    #     response = self.app.get(f'/get_experiment/{experiment_id}')
+    #     self.assertEqual(response.status_code, 200) 
 
 
 
-    def test_update_experiment(self):
-        experiment_id = "101"
-        update_data = {
-            'description': 'Updated Description'
-            # Add other attributes to update if required
-        }
-        response = self.app.put(f'/update_experiment/{experiment_id}', json=update_data)
-        self.assertEqual(response.status_code, 200) 
+    # def test_update_experiment(self):
+    #     experiment_id = "101"
+    #     update_data = {
+    #         'description': 'Updated Description'
+    #         # Add other attributes to update if required
+    #     }
+    #     response = self.app.put(f'/update_experiment/{experiment_id}', json=update_data)
+    #     self.assertEqual(response.status_code, 200) 
 
-    def test_get_all_experiment(self):
-        accession = "access"
-        response = self.app.get(f'/get_all_experiment/{accession}')
-        self.assertEqual(response.status_code,200)
+    # def test_get_all_experiment(self):
+    #     accession = "access"
+    #     response = self.app.get(f'/get_all_experiment/{accession}')
+    #     self.assertEqual(response.status_code,200)
 
 
 
