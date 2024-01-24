@@ -10,12 +10,9 @@ const Navbar = () => {
                 </li>         
                 <li>           
                     <Link href="/login">Login</Link>         
-                </li>
-                <li>           
-                    <Link href="/upload-menu">Menu Upload</Link>        
-                </li>             
+                </li>            
                 <li>
-                    <Link href="/upload-checkbox">Checkbox Upload</Link> 
+                    <Link href="/upload">Upload</Link> 
                 </li>
             </ul>     
         </div>     
