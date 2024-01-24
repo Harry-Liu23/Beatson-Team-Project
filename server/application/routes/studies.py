@@ -1,5 +1,5 @@
 from . import app,study_dao
-from Infrastructure.entity import study
+from server.Infrastructure.entity.study.study import study
 from flask import request
 
 
@@ -10,7 +10,7 @@ def create_study():
     data_study = data.get('study', {})
 
     #Create a study object
-    study_obj = study.study(
+    study_obj = study(
         accession = data_study.get('accession',''),
         study_type = data_study.get('study_type',''),
         publication = data_study.get('publication',''),

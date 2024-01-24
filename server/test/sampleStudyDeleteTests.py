@@ -7,7 +7,7 @@ sys.path.insert(0, project_root)
 
 import unittest
 import json
-from application import app
+from application import application as app
 
 class sampleStudyDeleteTests(unittest.TestCase):
     def setUp(self):

@@ -7,7 +7,7 @@ sys.path.insert(0, project_root)
 
 import unittest
 import json
-from application import app
+from application.application import app
 
 
 class testStudy(unittest.TestCase):

@@ -3,7 +3,7 @@ import os
 
 import flask as flask
 from flask import app, request
-import Infrastructure.entity.constraint.sampleIdInfo as Sample
+import server.Infrastructure.entity.study.sampleIdInfo as Sample
 
 class studyDao:
 
