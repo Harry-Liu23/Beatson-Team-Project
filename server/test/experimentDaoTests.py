@@ -51,8 +51,8 @@ class TestExperimentCreation(unittest.TestCase):
         self.assertEqual(response.status_code, 200) 
 
     def test_get_all_experiment(self):
-        experiment_id = "101"
-        response = self.app.get(f'/get_all_experiment/{experiment_id}')
+        accession = "access"
+        response = self.app.get(f'/get_all_experiment/{accession}')
         self.assertEqual(response.status_code,200)
 
 
