@@ -1,5 +1,5 @@
 class study:
-    def __init__(self,accession,study_type,publication,organism,description,num_experiments):
+    def __init__(self,accession,study_type,publication,organism,description):
         self.accession = accession
         self.study_type = study_type
         self.publication = publication

@@ -1,5 +1,5 @@
 class experiment:
-    def __init__(self,experiment_id, description, num_samples, accession):
+    def __init__(self,experiment_id, description, accession):
         self.experiemnt_id = experiment_id
         self.description = description
         self.accession = accession
