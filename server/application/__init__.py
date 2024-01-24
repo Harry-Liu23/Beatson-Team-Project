@@ -1,8 +1,8 @@
 from flask import Flask, Response 
 from neo4j import GraphDatabase 
+from server.Infrastructure.dao.study import sampleDao,studyDao,experimentDao
 
-import server.Infrastructure.dao.study.sampleDao as sampleDao
-import server.Infrastructure.dao.study.studyDao as studyDao
+
 #from application.keys import DATABASE_PASSWORD
 
 app=Flask(__name__)
@@ -25,6 +25,7 @@ driver = GraphDatabase.driver(DATABASE_URI, auth=(DATABASE_USERNAME,DATABASE_PAS
 session = driver.session()
 sample_dao = sampleDao.sampleDao(driver)
 study_dao = studyDao.studyDao(driver)
+experiment_dao = experimentDao(driver)
 
 # Needs to exist after app and everything else being imported to routes.__init__ is defined
 from . import routes
