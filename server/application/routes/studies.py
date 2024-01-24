@@ -1,5 +1,5 @@
 from . import app,study_dao
-from Infrastructure.entity import study
+from server.Infrastructure.entity.study import study
 from flask import request
 
 
@@ -16,7 +16,7 @@ def create_study():
         publication = data_study.get('publication',''),
         organism = data_study.get('organism',''),
         description = data_study.get('description',''),
-        num_samples = data_study.get('num_samples','')
+        num_experiments = data_study.get('num_experiments','')
     )
     created_study_accession = study_dao.create_study_node(study_obj)
     return f"Study Node created with accession: {created_study_accession}"
@@ -39,7 +39,7 @@ def update_study(accession):
         'organism': data.get('organism'),
         'study_type': data.get('study_type'),
         'publication': data.get('publication'),
-        'num_samples': data.get('num_samples')
+        'num_experiments': data.get('num_experiments')
     }
     updated_node = study_dao.update_study_node(accession, updated_data)
     if updated_node:

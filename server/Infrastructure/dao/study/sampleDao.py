@@ -4,7 +4,7 @@ import os
 import flask as flask
 from flask import app, request
 from neo4j import Driver,GraphDatabase
-import Infrastructure.entity.constraint.sampleIdInfo as Sample
+import server.Infrastructure.entity.study.sampleIdInfo as Sample
 
 class sampleDao:
 
@@ -22,7 +22,7 @@ class sampleDao:
         create_sample_node_query = (
             "CREATE (s:Sample {description: $description, organism: $organism, tissue: $tissue, "
             "sex: $sex, cell_line: $cell_line, mouse_model: $mouse_model, biometric_provider: $biometric_provider, "
-            "sample_name: $sample_name, sample_id: $sample_id, sample_group: $sample_group, sample_project: $sample_project, accession: $accession})"
+            "sample_name: $sample_name, sample_id: $sample_id, sample_group: $sample_group, sample_project: $sample_project, experiments_id: $experiments_id})"
         )
 
         parameters = {
@@ -37,7 +37,7 @@ class sampleDao:
             'sample_id': sample_id,
             'sample_group': sample_group,
             'sample_project': sample_project,
-            'accession': sample.accession
+            'experiments_id': sample.experiments_id
         }
 
         with self.driver.session() as session:

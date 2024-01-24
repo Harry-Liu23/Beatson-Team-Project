@@ -1,11 +1,7 @@
-import flask
-import neo4j
-import os
-
 class sample:
  
  
-    def __init__(self,sample,description,organism,tissue,sex,cell_line,mouse_model,biometric_provider,accession):
+    def __init__(self,sample,description,organism,tissue,sex,cell_line,mouse_model,biometric_provider,experiments_id):
         self.sample = sample
         self.description = description
         self.organism = organism
@@ -14,7 +10,7 @@ class sample:
         self.cell_line = cell_line
         self.mouse_model = mouse_model
         self.biometric_provider = biometric_provider
-        self.accession = accession
+        self.experiments_id = experiments_id
 
 
     def get_sample(self):
@@ -49,5 +45,5 @@ class sample:
         return self.biometric_provider
 
     
-    def get_study_accession(self):
-        return self.accession
+    def get_study_experiments_id(self):
+        return self.experiments_id

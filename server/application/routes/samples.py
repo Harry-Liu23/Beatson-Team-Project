@@ -1,6 +1,6 @@
 from . import app, study_dao, sample_dao
-from Infrastructure.entity.constraint import sampleIdInfo
-from Infrastructure.entity import sample as sampleEntity
+from server.Infrastructure.entity.study import sampleIdInfo
+from server.Infrastructure.entity.study import sample as sampleEntity
 from flask import request, jsonify
 
 

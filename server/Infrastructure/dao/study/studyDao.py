@@ -1,9 +1,6 @@
-import sys
-import os
-
 import flask as flask
 from flask import app, request
-import Infrastructure.entity.constraint.sampleIdInfo as Sample
+import server.Infrastructure.entity.study.sampleIdInfo as Sample
 
 class studyDao:
 
@@ -15,7 +12,7 @@ class studyDao:
     def create_study_node(self,study):
         create_study_node_query = (
         "CREATE (s:Study {description: $description, accession:$accession, study_type:$study_type, "
-        "publication:$publication, organism:$organism, num_samples:$num_samples})"
+        "publication:$publication, organism:$organism, num_experiments:$num_experiments})"
     )
 
         parameters = {
@@ -24,7 +21,7 @@ class studyDao:
             'study_type':study.study_type,
             'publication':study.publication,
             'organism':study.organism,
-            'num_samples':study.num_samples
+            'num_experiments':study.num_experiments
         }
 
         with self.driver.session() as session:
@@ -57,7 +54,7 @@ class studyDao:
             "s.organism = $organism, "
             "s.study_type = $study_type, "
             "s.publication = $publication, "
-            "s.num_samples = $num_samples "
+            "s.num_experiments = $num_experiments "
             "RETURN s"
         )
 
@@ -67,7 +64,7 @@ class studyDao:
             'organism': updated_data.get('organism', None),
             'study_type': updated_data.get('study_type',None),
             'publication':updated_data.get('publication',None),
-            'num_samples':updated_data.get('num_samples',None)
+            'num_experiments':updated_data.get('num_experiments',None)
         }
 
         with self.driver.session() as session:
