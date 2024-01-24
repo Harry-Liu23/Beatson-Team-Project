@@ -10,6 +10,7 @@ class studyDao:
 
 
     def create_study_node(self,study):
+        """Create a sinlge Study instance in the DB"""
         create_study_node_query = (
         "CREATE (s:Study {description: $description, accession:$accession, study_type:$study_type, "
         "publication:$publication, organism:$organism, num_experiments:$num_experiments})"
@@ -30,6 +31,7 @@ class studyDao:
 
 
     def get_study_node(self, accession):
+        """Returns a single study instance by `accession`"""
         get_study_query = (
              "MATCH (s:Study {accession: $accession}) RETURN s"
         )
@@ -48,6 +50,7 @@ class studyDao:
 
 
     def update_study_node(self, accession, updated_data):
+        """Alter the Study information with any updated information passed un under `updated_data`"""
         update_study_query = (
             "MATCH (s:Study {accession: $accession}) "
             "SET s.description = $description, "
@@ -78,23 +81,24 @@ class studyDao:
                 return None
 
 
-    def create_sample_study_relationship(self, sample_id, accession):
+    def create_experiment_study_relationship(self, experiment_id, accession):
+        """Attaches an Experiment to a Study"""
+
         relation_query = (
-            "MATCH (study:Study {accession:$accession})"
-            "MATCH (sample:Sample {sample_id:$sample_id})"
-            "CREATE (study)-[:CONTAINS]->(sample)"
+            "MATCH (study: Study {accession:$accession})"
+            "MATCH (experiment: Experiment {experiment_id:$experiment_id})"
+            "CREATE (study)-[:CONTAINS]->(experiment)"
             )
         parameters = {
             "accession" :accession,
-            "sample_id" :sample_id
+            "experiment_id" : experiment_id
         }
         with self.driver.session() as session:
             result = session.run(relation_query, parameters=parameters)
             single_result = result.single()
             if single_result is not None:
                 return single_result[0]  # Returns a single ID as a result
-            else:
-                return None
+            return None
 
 
     def serialize_node(self, node):
@@ -105,9 +109,10 @@ class studyDao:
         return serialized_node
 
 
-    def get_all_sample(self, accession):
+    def get_all_experiements(self, accession):
+        """Returns all Experiments attached to a Study"""
         get_all_query = (
-            "MATCH (study:Study {accession: $accession})-[*1]-(sample:Sample) "
+            "MATCH (study:Study {accession: $accession})-[*1]-(experiment: Experiment) "
             "RETURN sample"
         )
         parameters = {
@@ -115,11 +120,12 @@ class studyDao:
         }
         with self.driver.session() as session:
             result = session.run(get_all_query, parameters=parameters)
-            records = [self.serialize_node(record["sample"]) for record in result]
+            records = [self.serialize_node(record["experiment"]) for record in result]
             return records
 
 
     def delete_study_node(self, accession):
+        """Removes/Deletes a Study from the DB"""
         delete_study_query = (
             "MATCH (s:Study {accession: $accession}) "
             "DETACH DELETE s"
