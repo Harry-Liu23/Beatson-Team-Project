@@ -1,12 +1,11 @@
-import StudyFormCheckbox from '../components/Study/StudyForm';
-
+import StudyForm from "../components/Study/StudyForm";
 
 export default function UploadForm() {
-    return (
+  return (
+    <div>
       <div>
-        <div>
-          <StudyFormCheckbox />
-        </div>
+        <StudyForm />
       </div>
-      );
-  }
+    </div>
+  );
+}
