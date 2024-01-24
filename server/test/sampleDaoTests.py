@@ -36,7 +36,7 @@ class TestStudyCreation(unittest.TestCase):
                 "accession":"access"
             }
         }
-        response = self.app.post('/create_sample', json=data)
+        response = self.app.post('/create_experiment', json=data)
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Sample node created", response.data)
 

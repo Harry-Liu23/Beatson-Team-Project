@@ -3,6 +3,7 @@ from neo4j import GraphDatabase
 
 import server.Infrastructure.dao.study.sampleDao as sampleDao
 import server.Infrastructure.dao.study.studyDao as studyDao
+import server.Infrastructure.dao.study.experimentDao as experimentDao 
 #from application.keys import DATABASE_PASSWORD
 
 app=Flask(__name__)
@@ -24,6 +25,7 @@ DATABASE_PASSWORD = "12345678"
 driver = GraphDatabase.driver(DATABASE_URI, auth=(DATABASE_USERNAME,DATABASE_PASSWORD))
 session = driver.session()
 sample_dao = sampleDao.sampleDao(driver)
+experiment_dao = experimentDao.experimentDao(driver)
 study_dao = studyDao.studyDao(driver)
 
 # Needs to exist after app and everything else being imported to routes.__init__ is defined

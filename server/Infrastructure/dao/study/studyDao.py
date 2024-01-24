@@ -1,6 +1,6 @@
 import flask as flask
 from flask import app, request
-import server.Infrastructure.entity.study.sampleIdInfo as Sample
+import server.Infrastructure.entity.study.experiment as Experiemt
 
 class studyDao:
 
