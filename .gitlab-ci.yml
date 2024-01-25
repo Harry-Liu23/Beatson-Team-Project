@@ -5,8 +5,13 @@ stages:
 
 build_next:
   stage: build
+  image: node
+  before_script:
+    - cd client/beatson-app
   script:
     - echo "building next..."
+    - npm install
+    - npm run dev
 
 build_flask_neo4j:
   stage: build
