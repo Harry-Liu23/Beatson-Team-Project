@@ -11,7 +11,7 @@ build_next:
   script:
     - echo "building next..."
     - npm install
-    - npm run dev
+    - npm run build
 
 build_flask_neo4j:
   stage: build
