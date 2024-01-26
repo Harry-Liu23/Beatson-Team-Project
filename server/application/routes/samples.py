@@ -1,12 +1,12 @@
-from . import app, study_dao, sample_dao
+from . import app, study_dao, sample_dao, experiment_dao
 from server.Infrastructure.entity.study import sampleIdInfo
 from server.Infrastructure.entity.study import sample as sampleEntity
 from flask import request, jsonify
 
 
-@app.route('/get_all_samples/<accession>', methods=['GET'])
-def get_all_samples(accession):
-    samples = study_dao.get_all_sample(accession)
+@app.route('/get_all_samples/<experiment_id>', methods=['GET'])
+def get_all_samples(experiment_id):
+    samples = experiment_dao.get_all_samples(experiment_id)
     if samples:
         return jsonify(samples)  # Return samples as JSON response
     else:

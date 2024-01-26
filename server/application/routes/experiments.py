@@ -59,13 +59,6 @@ def update_experiment(experiment_id):
 
 
 
-@app.route('/get_all_samples/<accession>', methods=['GET'])
-def get_all_samples(accession):
-    all_experiments = sample_dao.get_all_samples(accession)
-    return jsonify({'experiments' : all_experiments[0]}), all_experiments[1]
-
-
-
 @app.route('/count_samples/<experiment_id>', methods=['GET'])
 def count_samples(experiment_id):
     try:

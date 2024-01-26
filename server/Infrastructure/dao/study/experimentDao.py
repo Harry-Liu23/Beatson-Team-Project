@@ -46,24 +46,7 @@ class experimentDao:
                 return None
 
 
-    def count_num_samples(self, experiment_id):
-        """Count the number of samples attached to an Experiment"""
-        count_query = (
-            "MATCH (experiment:Experiment {experiment_id: $experiment_id})-[:CONTAINS]->(sample:Sample) "
-            "RETURN COUNT(sample) AS num_samples"
-        )
-
-        parameters = {
-            "experiment_id": experiment_id
-        }
-
-        with self.driver.session() as session:
-            result = session.run(count_query, parameters=parameters)
-            count_result = result.single()
-            if count_result:
-                return count_result['num_samples']
-            else:
-                return 0
+    
 
     def update_experiment_node(self, experiment_id, updated_data):
         update_experiment_query = (
@@ -111,6 +94,38 @@ class experimentDao:
         for key in node.keys():
             serialized_node[key] = node[key]
         return serialized_node
+
+    def count_num_samples(self, experiment_id):
+        """Count the number of samples attached to an Experiment"""
+        count_query = (
+            "MATCH (experiment:Experiment {experiment_id: $experiment_id})-[*1]-(sample:Sample) "
+            "RETURN COUNT(sample) AS num_samples"
+        )
+
+        parameters = {
+            "experiment_id": experiment_id
+        }
+
+        with self.driver.session() as session:
+            result = session.run(count_query, parameters=parameters)
+            count_result = result.single()
+            if count_result:
+                return count_result['num_samples']
+            else:
+                return 0
+            
+    def get_all_samples(self, experiment_id):
+        get_all_query = (
+            "MATCH (experiment:Experiment {experiment_id: $experiment_id})-[*1]-(sample: Sample) "
+            "RETURN sample"
+        )
+        parameters = {
+            "experiment_id" : experiment_id
+        }
+        with self.driver.session() as session:
+            result = session.run(get_all_query, parameters=parameters)
+            records = [self.serialize_node(record["sample"]) for record in result]
+            return records
 
 
     def delete_experiment_node(self, experiment_id):
