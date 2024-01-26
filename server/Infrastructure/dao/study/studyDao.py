@@ -55,8 +55,8 @@ class studyDao:
             "SET s.description = $description, "
             "s.organism = $organism, "
             "s.study_type = $study_type, "
-            "s.publication = $publication, "
-            "RETURN s"
+            "s.publication = $publication "
+            "RETURN s;"
         )
 
         parameters = {

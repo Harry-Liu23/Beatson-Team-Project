@@ -12,13 +12,14 @@ class experimentDao:
     def create_experiment_node(self,experiment):
         
         create_experiment_node_query = (
-            "CREATE (s:Experiment{experiment_id: $experiment_id,"
+            "CREATE (s:Experiment {experiment_id: $experiment_id, accession: $accession,"
             "description:$description})"
         )
 
         parameters = {
             'experiment_id':experiment.experiment_id,
-            'description':experiment.description
+            'description':experiment.description,
+            'accession':experiment.accession
         }
 
         with self.driver.session() as session:
@@ -27,8 +28,9 @@ class experimentDao:
 
 
     def get_experiment_node(self, experiment_id):
+
         get_experiment_query = (
-             "MATCH (s:Experiment {experiment_id: $experiment}) RETURN s"
+            "MATCH (s:Experiment {experiment_id: $experiment_id}) RETURN s"
         )
 
         parameters = {
@@ -44,26 +46,43 @@ class experimentDao:
                 return None
 
 
-    def update_experiment_node(self, experiemnt_id, updated_data):
-        update_experiment_query = (
-            "MATCH (s:Experiment {experiment_id: $experiment_id}) "
-            "s.description = $description "
-            "RETURN s"
+    def count_num_samples(self, experiment_id):
+        """Count the number of samples attached to an Experiment"""
+        count_query = (
+            "MATCH (experiment:Experiment {experiment_id: $experiment_id})-[:CONTAINS]->(sample:Sample) "
+            "RETURN COUNT(sample) AS num_samples"
         )
 
         parameters = {
-            'experiment_id':experiemnt_id,
-            'description': updated_data.get('description', None)
+            "experiment_id": experiment_id
+        }
+
+        with self.driver.session() as session:
+            result = session.run(count_query, parameters=parameters)
+            count_result = result.single()
+            if count_result:
+                return count_result['num_samples']
+            else:
+                return 0
+
+    def update_experiment_node(self, experiment_id, updated_data):
+        update_experiment_query = (
+        "MATCH (s:Experiment {experiment_id: $experiment_id}) "
+        "SET s.description = $description "
+        "RETURN s;"
+        )
+
+        parameters = {
+            'experiment_id': experiment_id,
+            'description': updated_data.get('description', None),
         }
 
         with self.driver.session() as session:
             result = session.run(update_experiment_query, parameters=parameters)
             updated_node = result.single()
             if updated_node:
-                session.close()
                 return updated_node['s']
             else:
-                session.close()
                 return None
 
 

@@ -16,18 +16,19 @@ def delete_experiment(experiment_id):
 @app.route('/create_experiment', methods=['POST'])
 def create_experiment():
     data = request.json
+
     data_experiment = data.get('experiment', {})
     experiment_obj = experiment.experiment(
-        experiment_id= data_experiment('experiment_id',''),
+        experiment_id= data_experiment.get('experiment_id',''),
         description= data_experiment.get('description',''),
-        accession= data_experiment.get('accession')
+        accession= data_experiment.get('accession','')
     )
     exp_create_res = experiment_dao.create_experiment_node(experiment_obj)
 
     if exp_create_res is None:
         return jsonify({"error" : "Unable to instanciate experiment in DB"}),500
     rel_result = experiment_dao.create_experiment_study_relationship(
-        experiment_obj.experiemnt_id, experiment_obj.accession)
+        experiment_obj.experiment_id, experiment_obj.accession)
     if rel_result:
         return f"Created experiment id: {experiment_obj.experiemnt_id}, attached to study: {experiment_obj.accession}", 200
     
@@ -37,7 +38,7 @@ def create_experiment():
 def get_experiment(experiment_id):
     exp_get_res = experiment_dao.get_experiment_node(experiment_id)
     if exp_get_res:
-        return jsonify({'experiment' : experiment}),200
+        return f"Experiment' : {exp_get_res}"
     return f"No experiment with id {experiment_id} found",404
 
 
@@ -46,15 +47,15 @@ def get_experiment(experiment_id):
 def update_experiment(experiment_id):
     data = request.json
     updated_experiment = {
-        'description' : data.get('description',''),
-        'accession' : data.get('accession','')
+        'description': data.get('description', ''),
+        'accession': data.get('accession', '')
     }
     exp_updt_res = experiment_dao.update_experiment_node(
-        experiemnt_id=experiment_id,
+        experiment_id=experiment_id,
         updated_data=updated_experiment)
     if exp_updt_res:
-        return f"Updated data for experiment {experiment_id}",200
-    return f"Unable to update data for exeperiment {experiment_id}",500
+        return f"Updated data for experiment {experiment_id}", 200
+    return f"Unable to update data for experiment {experiment_id}", 500
 
 
 
