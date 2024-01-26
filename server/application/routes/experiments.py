@@ -30,7 +30,7 @@ def create_experiment():
     rel_result = experiment_dao.create_experiment_study_relationship(
         experiment_obj.experiment_id, experiment_obj.accession)
     if rel_result:
-        return f"Created experiment id: {experiment_obj.experiemnt_id}, attached to study: {experiment_obj.accession}", 200
+        return f"Created experiment id: {experiment_obj.experiment_id}, attached to study: {experiment_obj.accession}", 200
     
 
 

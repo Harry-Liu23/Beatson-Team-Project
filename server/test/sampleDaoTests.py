@@ -60,7 +60,7 @@ class TestStudyCreation(unittest.TestCase):
         self.assertEqual(response.status_code, 200) 
 
     def test_get_all_sample(self):
-        experiment_id = "1001"
+        experiment_id = "101"
         response = self.app.get(f'/get_all_samples/{experiment_id}')
         self.assertEqual(response.status_code,200)
 
