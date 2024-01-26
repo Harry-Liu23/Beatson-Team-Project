@@ -45,7 +45,7 @@ def update_study(accession):
     else:
         return "Failed to update Study Node", 404
     
-@app.route('/get_all_experiments/<assession>')
+@app.route('/get_all_experiments/<accession>')
 def get_all_experiments(accession):
     all_experiments = study_dao.get_all_experiements(accession)
     if all_experiments:
