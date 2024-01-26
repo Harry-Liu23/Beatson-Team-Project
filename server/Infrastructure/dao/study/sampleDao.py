@@ -5,6 +5,7 @@ import flask as flask
 from flask import app, request
 from neo4j import Driver,GraphDatabase
 import server.Infrastructure.entity.study.sampleIdInfo as Sample
+from . import serialize_node
 
 class sampleDao:
 
@@ -22,7 +23,7 @@ class sampleDao:
         create_sample_node_query = (
             "CREATE (s:Sample {description: $description, organism: $organism, tissue: $tissue, "
             "sex: $sex, cell_line: $cell_line, mouse_model: $mouse_model, biometric_provider: $biometric_provider, "
-            "sample_name: $sample_name, sample_id: $sample_id, sample_group: $sample_group, sample_project: $sample_project, experiments_id: $experiments_id})"
+            "sample_name: $sample_name, sample_id: $sample_id, sample_group: $sample_group, sample_project: $sample_project, experiment_id: $experiment_id})"
         )
 
         parameters = {
@@ -37,7 +38,7 @@ class sampleDao:
             'sample_id': sample_id,
             'sample_group': sample_group,
             'sample_project': sample_project,
-            'experiments_id': sample.experiments_id
+            'experiment_id': sample.experiment_id
         }
 
         with self.driver.session() as session:
@@ -58,7 +59,7 @@ class sampleDao:
         with self.driver.session() as session:
             result = session.run(get_sample_query, parameters=parameters)
             sample_node = result.single()
-            return sample_node['s'] if sample_node else None
+            return serialize_node(sample_node['s']) if sample_node else None
 
 
     def update_sample_node(self, sample_id, updated_data):

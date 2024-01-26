@@ -1,7 +1,7 @@
 import flask as flask
 from flask import app, request
 from server.Infrastructure.entity.study.experiment import experiment
-
+from . import serialize_node
 class experimentDao:
 
 
@@ -41,7 +41,7 @@ class experimentDao:
             result = session.run(get_experiment_query, parameters=parameters)
             experiment_node = result.single()
             if experiment_node:
-                return experiment_node['s']
+                return serialize_node(node = experiment_node['s'])
             else:
                 return None
 
@@ -69,15 +69,15 @@ class experimentDao:
                 return None
 
 
-    def create_experiment_study_relationship(self, experiment_id, accession):
+    def create_experiment_sample_relationship(self, experiment_id, sample_id):
         relation_query = (
-            "MATCH (experiment:Experiment {experiment_id:$experiment_id})"
-            "MATCH (study:Study {accession:$accession})"
-            "CREATE (study)-[:CONTAINS]->(experiment)"
-            )
+        "MATCH (experiment:Experiment {experiment_id: $experiment_id})"
+        "MATCH (sample:Sample {sample_id: $sample_id})"
+        "CREATE (experiment)-[:CONTAINS]->(sample)"
+        )
         parameters = {
-            "accession" :accession,
-            "experiment_id" :experiment_id
+            "experiment_id": experiment_id,
+            "sample_id": sample_id
         }
         with self.driver.session() as session:
             result = session.run(relation_query, parameters=parameters)
@@ -88,12 +88,6 @@ class experimentDao:
                 return None
 
 
-    def serialize_node(self, node):
-        """Serialize a Neo4j Node object to a dictionary."""
-        serialized_node = {}
-        for key in node.keys():
-            serialized_node[key] = node[key]
-        return serialized_node
 
     def count_num_samples(self, experiment_id):
         """Count the number of samples attached to an Experiment"""
@@ -124,7 +118,7 @@ class experimentDao:
         }
         with self.driver.session() as session:
             result = session.run(get_all_query, parameters=parameters)
-            records = [self.serialize_node(record["sample"]) for record in result]
+            records = [serialize_node(record["sample"]) for record in result]
             return records
 
 

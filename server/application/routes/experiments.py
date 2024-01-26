@@ -1,4 +1,4 @@
-from . import app,experiment_dao,sample_dao
+from . import app,experiment_dao,sample_dao, study_dao
 from server.Infrastructure.entity.study import experiment
 from flask import request,jsonify
 
@@ -8,8 +8,8 @@ from flask import request,jsonify
 def delete_experiment(experiment_id):
     deletion_success = experiment_dao.delete_experiment_node(experiment_id)
     if deletion_success:
-        return f"Experiment id: {experiment_id} deleted sucessfully", 200
-    return f"Unable to delete experiment id: {experiment_id}", 500
+        return jsonify({"message": f"Experiment id: {experiment_id} deleted successfully"}), 200
+    return jsonify({"error": f"Unable to delete experiment id: {experiment_id}"}), 500
 
 
 
@@ -24,13 +24,16 @@ def create_experiment():
         accession= data_experiment.get('accession','')
     )
     exp_create_res = experiment_dao.create_experiment_node(experiment_obj)
+    rel_result = study_dao.create_experiment_study_relationship(
+    experiment_obj.experiment_id, experiment_obj.accession)
+    if exp_create_res and rel_result:
+        response_data = {
+            "message": f"Created experiment id: {experiment_obj.experiment_id}, attached to study: {experiment_obj.accession}"
+        }
+        return jsonify(response_data), 200
+    else:
+        return jsonify({"Error": 500})
 
-    if exp_create_res is None:
-        return jsonify({"error" : "Unable to instanciate experiment in DB"}),500
-    rel_result = experiment_dao.create_experiment_study_relationship(
-        experiment_obj.experiment_id, experiment_obj.accession)
-    if rel_result:
-        return f"Created experiment id: {experiment_obj.experiemnt_id}, attached to study: {experiment_obj.accession}", 200
     
 
 
@@ -38,8 +41,8 @@ def create_experiment():
 def get_experiment(experiment_id):
     exp_get_res = experiment_dao.get_experiment_node(experiment_id)
     if exp_get_res:
-        return f"Experiment' : {exp_get_res}"
-    return f"No experiment with id {experiment_id} found",404
+        return jsonify({'experiment': exp_get_res}), 200
+    return jsonify({'error': f"No experiment with id {experiment_id} found"}), 404
 
 
 
@@ -54,8 +57,8 @@ def update_experiment(experiment_id):
         experiment_id=experiment_id,
         updated_data=updated_experiment)
     if exp_updt_res:
-        return f"Updated data for experiment {experiment_id}", 200
-    return f"Unable to update data for experiment {experiment_id}", 500
+        return jsonify({"message": f"Updated data for experiment {experiment_id}"}), 200
+    return jsonify({"error": f"Unable to update data for experiment {experiment_id}"}), 500
 
 
 

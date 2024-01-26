@@ -1,7 +1,7 @@
 class sample:
  
  
-    def __init__(self,sample,description,organism,tissue,sex,cell_line,mouse_model,biometric_provider,experiments_id):
+    def __init__(self,sample,description,organism,tissue,sex,cell_line,mouse_model,biometric_provider,experiment_id):
         self.sample = sample
         self.description = description
         self.organism = organism
@@ -10,7 +10,7 @@ class sample:
         self.cell_line = cell_line
         self.mouse_model = mouse_model
         self.biometric_provider = biometric_provider
-        self.experiments_id = experiments_id
+        self.experiment_id = experiment_id
 
 
     def get_sample(self):

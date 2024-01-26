@@ -28,5 +28,10 @@ experiment_dao = experimentDao.experimentDao(driver)
 study_dao = studyDao.studyDao(driver)
 
 
+# For adding data processing functions
+from server.process.nodeProcess import serialize_node
+
 # Needs to exist after app and everything else being imported to routes.__init__ is defined
 from . import routes
+
+

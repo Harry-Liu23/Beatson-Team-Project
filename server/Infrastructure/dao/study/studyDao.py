@@ -1,6 +1,7 @@
 import flask as flask
 from flask import app, request
 import server.Infrastructure.entity.study.experiment as Experiment
+from server.process.nodeProcess import serialize_node
 
 class studyDao:
 
@@ -43,7 +44,7 @@ class studyDao:
             result = session.run(get_study_query, parameters=parameters)
             study_node = result.single()
             if study_node:
-                return study_node['s']
+                return serialize_node(study_node['s'])
             else:
                 return None
 
@@ -96,15 +97,8 @@ class studyDao:
             return None
 
 
-    def serialize_node(self, node):
-        """Serialize a Neo4j Node object to a dictionary."""
-        serialized_node = {}
-        for key in node.keys():
-            serialized_node[key] = node[key]
-        return serialized_node
 
-
-    def get_all_experiements(self, accession):
+    def get_all_experiments(self, accession):
         """Returns all Experiments attached to a Study"""
         get_all_query = (
             "MATCH (study:Study {accession: $accession})-[*1]-(experiment: Experiment) "
@@ -115,7 +109,7 @@ class studyDao:
         }
         with self.driver.session() as session:
             result = session.run(get_all_query, parameters=parameters)
-            records = [self.serialize_node(record["experiment"]) for record in result]
+            records = [serialize_node(record["experiment"]) for record in result]
             return records
 
 

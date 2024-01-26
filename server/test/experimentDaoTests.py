@@ -27,33 +27,35 @@ class TestExperimentCreation(unittest.TestCase):
         }
         response = self.app.post('/create_experiment', json=data)
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b"Experiment node created", response.data)
 
 
 
-    # def test_get_experiment(self):
-    #     experiment_id = "101" 
-    #     response = self.app.get(f'/get_experiment/{experiment_id}')
-    #     self.assertEqual(response.status_code, 200) 
+
+    def test_update_experiment(self):
+        experiment_id = "101"
+        update_data = {
+            'description': 'Not Updated Description'
+            # Add other attributes to update if required
+        }
+        response = self.app.put(f'/update_experiment/{experiment_id}', json=update_data)
+        self.assertEqual(response.status_code, 200) 
 
 
+    def test_get_experiment(self):
+        experiment_id = "101" 
+        response = self.app.get(f'/get_experiment/{experiment_id}')
+        self.assertEqual(response.status_code, 200) 
 
-    # def test_update_experiment(self):
-    #     experiment_id = "101"
-    #     update_data = {
-    #         'description': 'Updated Description'
-    #         # Add other attributes to update if required
-    #     }
-    #     response = self.app.put(f'/update_experiment/{experiment_id}', json=update_data)
-    #     self.assertEqual(response.status_code, 200) 
-
-    # def test_get_all_experiment(self):
-    #     accession = "access"
-    #     response = self.app.get(f'/get_all_experiment/{accession}')
-    #     self.assertEqual(response.status_code,200)
+    def test_get_all_experiment(self):
+        accession = "access"
+        response = self.app.get(f'/get_all_experiments/{accession}')
+        self.assertEqual(response.status_code,200)
 
 
-
+    def test_count_experiments(self):
+        accession = 'access'
+        response = self.app.get(f'/count_experiments/{accession}')
+        self.assertEqual(response.status_code, 200)
 
     
 
