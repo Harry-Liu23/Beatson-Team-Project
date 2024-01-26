@@ -19,9 +19,9 @@ class TestExperimentCreation(unittest.TestCase):
     def test_create_experiment_node(self):
         # Define a sample payload to simulate front-end sending JSON to backend
         data = {
-            "experiment_data": {
+            "experiment": {
                 "experiment_id": "101",
-                "experiment_description": "experiment_description",
+                "description": "experiment_description",
                 "accession":"access"
             }
         }
