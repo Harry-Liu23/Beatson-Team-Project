@@ -1,4 +1,4 @@
-from . import app,experiment_dao
+from . import app,experiment_dao,sample_dao
 from server.Infrastructure.entity.study import experiment
 from flask import request,jsonify
 
@@ -59,9 +59,9 @@ def update_experiment(experiment_id):
 
 
 
-@app.route('/get_all_experiments/<accession>', methods=['GET'])
-def get_all_experiments(accession):
-    all_experiments = experiment_dao.get_all_experiment(accession)
+@app.route('/get_all_samples/<accession>', methods=['GET'])
+def get_all_samples(accession):
+    all_experiments = sample_dao.get_all_samples(accession)
     return jsonify({'experiments' : all_experiments[0]}), all_experiments[1]
 
 
