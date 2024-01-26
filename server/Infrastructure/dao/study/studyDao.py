@@ -108,7 +108,7 @@ class studyDao:
         """Returns all Experiments attached to a Study"""
         get_all_query = (
             "MATCH (study:Study {accession: $accession})-[*1]-(experiment: Experiment) "
-            "RETURN sample"
+            "RETURN experiment"
         )
         parameters = {
             "accession": accession

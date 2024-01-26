@@ -94,20 +94,6 @@ class experimentDao:
         return serialized_node
 
 
-    def get_all_experiment(self, accession):
-        get_all_query = (
-            "MATCH (study:Study {accession: $accession})-[*1]-(experiment:Experiment) "
-            "RETURN experiment"
-        )
-        parameters = {
-            "accession": accession
-        }
-        with self.driver.session() as session:
-            result = session.run(get_all_query, parameters=parameters)
-            records = [self.serialize_node(record["experiment"]) for record in result]
-            return records
-
-
     def delete_experiment_node(self, experiment_id):
         delete_experiment_query = (
             "MATCH (s:Experiment {experiment_id: $experiment_id}) "
