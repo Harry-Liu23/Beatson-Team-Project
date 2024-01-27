@@ -1,10 +1,10 @@
-import StudyForm from "../components/Study/StudyForm";
+import UploadForm from "../components/Study/UploadForm";
 
-export default function UploadForm() {
+export default function Form() {
   return (
     <div>
       <div>
-        <StudyForm />
+        <UploadForm />
       </div>
     </div>
   );
