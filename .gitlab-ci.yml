@@ -19,13 +19,15 @@ build_flask_neo4j:
   before_script: cd server
   script:
     - echo "building flask and neo4j..."
-    - pip install .
+    - python -m venv /flask-neo4j-env
+    - source flask-neo4j-env/bin/activate
+    - pip install requirements.txt
   artifacts:
     untracked: false
     when: on_success
     expire_in: 30 days
     paths:
-      - "build/"
+      - "/flask-neo4j-env"
 
 quality_next_lint:
   stage: quality
@@ -44,8 +46,11 @@ test_frontend:
 
 test_flask_neo4j:
   stage: test
+  before_script:
+    - cd server
   script:
     - echo "starting test for flask and neo4j"
+    - source flask-neo4j-en/bin/activate
      
 before_script:
    - echo DB_PASSWORD is $DB_PASSWORD
