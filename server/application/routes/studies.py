@@ -1,5 +1,5 @@
 from . import app,study_dao
-from server.Infrastructure.entity.study import study
+from server.infrastructure.entity.study import study
 from flask import request, jsonify
 
 
@@ -23,7 +23,6 @@ def create_study():
             "message": f"Study Node created with accession: {created_study_accession}"
         }
     return jsonify(response_data), 200
-    
 
 
 @app.route('/get_study/<accession>', methods=['GET'])
@@ -52,14 +51,12 @@ def update_study(accession):
         return jsonify(response_data), 200
     else:
         return jsonify({"error": "Failed to update Study Node"}), 404
-    
-    
+
+
 @app.route('/get_all_experiments/<accession>')
 def get_all_experiments(accession):
     all_experiments = study_dao.get_all_experiments(accession)
     return jsonify({"experiments" : all_experiments}), 200
-
-
 
 
 @app.route('/count_experiments/<accession>', methods=['GET'])
@@ -69,8 +66,6 @@ def count_experiments(accession):
         return jsonify({"num_experiments": num_experiments}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
-
 
  
 @app.route('/delete_study/<accession>', methods=['DELETE'])

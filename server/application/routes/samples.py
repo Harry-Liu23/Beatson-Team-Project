@@ -1,6 +1,6 @@
 from . import app, study_dao, sample_dao, experiment_dao
-from server.Infrastructure.entity.study import sampleIdInfo
-from server.Infrastructure.entity.study import sample as sampleEntity
+from server.infrastructure.entity.study import sampleIdInfo
+from server.infrastructure.entity.study import sample as sampleEntity
 from flask import request, jsonify
 
 
@@ -11,7 +11,6 @@ def get_all_samples(experiment_id):
         return jsonify(samples)  # Return samples as JSON response
     else:
         return jsonify({"error": "No samples found for the given experiment_id"}), 404
-
 
 
 @app.route('/create_sample', methods=['POST'])

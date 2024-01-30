@@ -1,6 +1,6 @@
 from flask import Flask, Response 
 from neo4j import GraphDatabase 
-from server.Infrastructure.dao.study import sampleDao,studyDao,experimentDao
+from server.infrastructure.dao.study import sampleDao,studyDao,experimentDao
 
 
 #from application.keys import DATABASE_PASSWORD

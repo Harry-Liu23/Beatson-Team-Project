@@ -1,6 +1,6 @@
 import flask as flask
 from flask import app, request
-import server.Infrastructure.entity.study.experiment as Experiment
+import server.infrastructure.entity.study.experiment as Experiment
 from server.process.nodeProcess import serialize_node
 
 class studyDao:
@@ -95,7 +95,6 @@ class studyDao:
             if single_result is not None:
                 return single_result[0]  # Returns a single ID as a result
             return None
-
 
 
     def get_all_experiments(self, accession):

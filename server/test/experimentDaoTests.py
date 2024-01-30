@@ -29,8 +29,6 @@ class TestExperimentCreation(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-
-
     def test_update_experiment(self):
         experiment_id = "101"
         update_data = {
@@ -56,8 +54,6 @@ class TestExperimentCreation(unittest.TestCase):
         accession = 'access'
         response = self.app.get(f'/count_experiments/{accession}')
         self.assertEqual(response.status_code, 200)
-
-    
 
     
 if __name__ == '__main__':

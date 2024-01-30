@@ -16,37 +16,35 @@ class TestStudyCreation(unittest.TestCase):
     def tearDown(self):
         pass
 
-    # def test_create_sample_node(self):
-    #     # Define a sample payload to simulate front-end sending JSON to backend
-    #     data = {
-    #         "sample_id_info_data": {
-    #             "name": "Sample Name",
-    #             "sample_id": "123",
-    #             "group": "Group A",
-    #             "project": "Project X"
-    #         },
-    #         "sample_data": {
-    #             "description": "Sample Description",
-    #             "organism": "Organism X",
-    #             "tissue": "Tissue Y",
-    #             "sex": "Male",
-    #             "cell_line": "Cell Line Z",
-    #             "mouse_model": "Model ABC",
-    #             "biometric_provider": "Provider XYZ",
-    #             "experiment_id":"101"
-    #         }
-    #     }
-    #     response = self.app.post('/create_sample', json=data)
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertIn(b"Sample node created", response.data)
-
+    def test_create_sample_node(self):
+        # Define a sample payload to simulate front-end sending JSON to backend
+        data = {
+            "sample_id_info_data": {
+                "name": "Sample Name",
+                "sample_id": "123",
+                "group": "Group A",
+                "project": "Project X"
+            },
+            "sample_data": {
+                "description": "Sample Description",
+                "organism": "Organism X",
+                "tissue": "Tissue Y",
+                "sex": "Male",
+                "cell_line": "Cell Line Z",
+                "mouse_model": "Model ABC",
+                "biometric_provider": "Provider XYZ",
+                "experiment_id":"101"
+            }
+        }
+        response = self.app.post('/create_sample', json=data)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"Sample node created", response.data)
 
 
     def test_get_sample(self):
         sample_id = "123" 
         response = self.app.get(f'/get_sample/{sample_id}')
         self.assertEqual(response.status_code, 200) 
-
 
 
     def test_update_sample(self):
@@ -68,9 +66,6 @@ class TestStudyCreation(unittest.TestCase):
         experiment_id = '101'
         response = self.app.get(f'/count_samples/{experiment_id}')
         self.assertEqual(response.status_code, 200)
-
-
-    
 
     
 if __name__ == '__main__':

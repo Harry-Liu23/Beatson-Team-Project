@@ -1,7 +1,6 @@
 from . import app,experiment_dao,sample_dao, study_dao
-from server.Infrastructure.entity.study import experiment
+from server.infrastructure.entity.study import experiment
 from flask import request,jsonify
-
 
 
 @app.route('/delete_experiment/<experiment_id>', methods=['DELETE'])
@@ -10,7 +9,6 @@ def delete_experiment(experiment_id):
     if deletion_success:
         return jsonify({"message": f"Experiment id: {experiment_id} deleted successfully"}), 200
     return jsonify({"error": f"Unable to delete experiment id: {experiment_id}"}), 500
-
 
 
 @app.route('/create_experiment', methods=['POST'])
@@ -34,8 +32,6 @@ def create_experiment():
     else:
         return jsonify({"Error": 500})
 
-    
-
 
 @app.route('/get_experiment/<experiment_id>', methods=['GET'])
 def get_experiment(experiment_id):
@@ -43,7 +39,6 @@ def get_experiment(experiment_id):
     if exp_get_res:
         return jsonify({'experiment': exp_get_res}), 200
     return jsonify({'error': f"No experiment with id {experiment_id} found"}), 404
-
 
 
 @app.route('/update_experiment/<experiment_id>', methods=['PUT'])
@@ -59,7 +54,6 @@ def update_experiment(experiment_id):
     if exp_updt_res:
         return jsonify({"message": f"Updated data for experiment {experiment_id}"}), 200
     return jsonify({"error": f"Unable to update data for experiment {experiment_id}"}), 500
-
 
 
 @app.route('/count_samples/<experiment_id>', methods=['GET'])

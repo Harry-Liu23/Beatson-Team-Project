@@ -1,6 +1,6 @@
 import flask as flask
 from flask import app, request
-from server.Infrastructure.entity.study.experiment import experiment
+from server.infrastructure.entity.study.experiment import experiment
 from . import serialize_node
 class experimentDao:
 
@@ -10,33 +10,27 @@ class experimentDao:
 
 
     def create_experiment_node(self,experiment):
-        
         create_experiment_node_query = (
             "CREATE (s:Experiment {experiment_id: $experiment_id, accession: $accession,"
             "description:$description})"
         )
-
         parameters = {
             'experiment_id':experiment.experiment_id,
             'description':experiment.description,
             'accession':experiment.accession
         }
-
         with self.driver.session() as session:
             result = session.run(create_experiment_node_query, parameters=parameters)
             return result.single()
 
 
     def get_experiment_node(self, experiment_id):
-
         get_experiment_query = (
             "MATCH (s:Experiment {experiment_id: $experiment_id}) RETURN s"
         )
-
         parameters = {
             'experiment_id': experiment_id
         }
-
         with self.driver.session() as session:
             result = session.run(get_experiment_query, parameters=parameters)
             experiment_node = result.single()
@@ -44,8 +38,6 @@ class experimentDao:
                 return serialize_node(node = experiment_node['s'])
             else:
                 return None
-
-
     
 
     def update_experiment_node(self, experiment_id, updated_data):
@@ -54,12 +46,10 @@ class experimentDao:
         "SET s.description = $description "
         "RETURN s;"
         )
-
         parameters = {
             'experiment_id': experiment_id,
             'description': updated_data.get('description', None),
         }
-
         with self.driver.session() as session:
             result = session.run(update_experiment_query, parameters=parameters)
             updated_node = result.single()
@@ -88,18 +78,15 @@ class experimentDao:
                 return None
 
 
-
     def count_num_samples(self, experiment_id):
         """Count the number of samples attached to an Experiment"""
         count_query = (
             "MATCH (experiment:Experiment {experiment_id: $experiment_id})-[*1]-(sample:Sample) "
             "RETURN COUNT(sample) AS num_samples"
         )
-
         parameters = {
             "experiment_id": experiment_id
         }
-
         with self.driver.session() as session:
             result = session.run(count_query, parameters=parameters)
             count_result = result.single()
@@ -107,7 +94,8 @@ class experimentDao:
                 return count_result['num_samples']
             else:
                 return 0
-            
+
+
     def get_all_samples(self, experiment_id):
         get_all_query = (
             "MATCH (experiment:Experiment {experiment_id: $experiment_id})-[*1]-(sample: Sample) "
@@ -127,11 +115,9 @@ class experimentDao:
             "MATCH (s:Experiment {experiment_id: $experiment_id}) "
             "DETACH DELETE s"
         )
-
         parameters = {
             "experiment_id" : experiment_id
         }
-
         with self.driver.session() as session:
             session.run(delete_experiment_query, parameters=parameters)
             return True  
