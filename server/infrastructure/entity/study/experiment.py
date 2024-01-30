@@ -4,8 +4,10 @@ class experiment:
         self.description = description
         self.accession = accession
 
+
     def get_experiment_id(self):
         return self.experiment_id;
+
 
     def get_description(self):
         return self.description
