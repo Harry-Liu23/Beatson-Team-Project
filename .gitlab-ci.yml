@@ -22,7 +22,7 @@ build_flask_neo4j:
     - python -m venv /flask-neo4j-env
     - ls
     - source /flask-neo4j-env/bin/activate
-    - pip install requirements.txt
+    - pip install "requirements.txt"
   artifacts:
     untracked: false
     when: on_success
