@@ -61,6 +61,8 @@ test_flask_app:
   before_script:
     - cd server
     - source /flask-neo4j-env/bin/activate
+  script:
+    - echo "starting test for flask app"
      
 before_script:
    - echo DB_PASSWORD is $DB_PASSWORD
