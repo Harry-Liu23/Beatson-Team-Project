@@ -15,8 +15,17 @@ build_next:
 
 build_flask_neo4j:
   stage: build
+  image: python
+  before_script: cd server
   script:
     - echo "building flask and neo4j..."
+    - pip install .
+  artifacts:
+    untracked: false
+    when: on_success
+    expire_in: 30 days
+    paths:
+      - "build/"
 
 quality_next_lint:
   stage: quality
