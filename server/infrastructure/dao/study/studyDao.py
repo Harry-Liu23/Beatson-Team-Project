@@ -6,10 +6,8 @@ from server.process.nodeProcess import serialize_node
 
 class studyDao:
 
-
     def __init__(self, driver):
         self.driver = driver
-
 
     def create_study_node(self,study):
         """Create a sinlge Study instance in the DB"""
@@ -30,7 +28,6 @@ class studyDao:
             result = session.run(create_study_node_query, parameters=parameters)
             return result.single()
 
-
     def get_study_node(self, accession):
         """Returns a single study instance by `accession`"""
         get_study_query = (
@@ -48,7 +45,6 @@ class studyDao:
                 return serialize_node(study_node['s'])
             else:
                 return None
-
 
     def update_study_node(self, accession, updated_data):
         """Alter the Study information with any updated information passed un under `updated_data`"""
@@ -77,7 +73,6 @@ class studyDao:
             else:
                 return None
 
-
     def create_experiment_study_relationship(self, experiment_id, accession):
         """Attaches an Experiment to a Study"""
 
@@ -97,7 +92,6 @@ class studyDao:
                 return single_result[0]  # Returns a single ID as a result
             return None
 
-
     def get_all_experiments(self, accession):
         """Returns all Experiments attached to a Study"""
         get_all_query = (
@@ -111,7 +105,6 @@ class studyDao:
             result = session.run(get_all_query, parameters=parameters)
             records = [serialize_node(record["experiment"]) for record in result]
             return records
-
 
     def count_num_experiments(self, accession):
         """Count the number of experiments attached to a Study"""
@@ -131,7 +124,6 @@ class studyDao:
                 return count_result['num_experiments']
             else:
                 return 0
-
 
     def delete_study_node(self, accession):
         """Removes/Deletes a Study from the DB"""

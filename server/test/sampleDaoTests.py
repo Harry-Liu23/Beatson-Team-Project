@@ -40,12 +40,10 @@ class TestStudyCreation(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Sample node created", response.data)
 
-
     def test_get_sample(self):
         sample_id = "123" 
         response = self.app.get(f'/get_sample/{sample_id}')
         self.assertEqual(response.status_code, 200) 
-
 
     def test_update_sample(self):
         sample_id = "123"
@@ -57,18 +55,15 @@ class TestStudyCreation(unittest.TestCase):
         response = self.app.put(f'/update_sample/{sample_id}', json=update_data)
         self.assertEqual(response.status_code, 200) 
 
-
     def test_get_all_sample(self):
         experiment_id = "101"
         response = self.app.get(f'/get_all_samples/{experiment_id}')
         self.assertEqual(response.status_code,200)
 
-
     def test_count_samples(self):
         experiment_id = '101'
         response = self.app.get(f'/count_samples/{experiment_id}')
         self.assertEqual(response.status_code, 200)
-
     
 if __name__ == '__main__':
     unittest.main()

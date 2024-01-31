@@ -11,12 +11,12 @@ from application import app
 
 
 class testStudy(unittest.TestCase):
+
     def setUp(self):
         self.app = app.test_client()
 
     def tearDown(self):
         pass
-
 
     def test_create_study_node(self):
         # Define a sample payload to simulate front-end sending JSON to backend
@@ -33,12 +33,10 @@ class testStudy(unittest.TestCase):
         response = self.app.post('/create_study', json=data)
         self.assertEqual(response.status_code, 200)
 
-    
     def test_get_study_node(self):
         study_accession = "access"
         response = self.app.get(f'/get_study/{study_accession}')
         self.assertEqual(response.status_code, 200) 
-
     
     def test_update_study_node(self):
         study_accession = "access"
@@ -51,9 +49,6 @@ class testStudy(unittest.TestCase):
         }
         response = self.app.put(f'/update_study/{study_accession}', json=update_data)
         self.assertEqual(response.status_code, 200) 
-
-
-
 
 if __name__ == '__main__':
     unittest.main()

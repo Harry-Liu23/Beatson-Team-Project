@@ -6,10 +6,8 @@ from . import serialize_node
 
 class experimentDao:
 
-
     def __init__(self, driver):
         self.driver = driver
-
 
     def create_experiment_node(self,experiment):
         create_experiment_node_query = (
@@ -25,7 +23,6 @@ class experimentDao:
             result = session.run(create_experiment_node_query, parameters=parameters)
             return result.single()
 
-
     def get_experiment_node(self, experiment_id):
         get_experiment_query = (
             "MATCH (s:Experiment {experiment_id: $experiment_id}) RETURN s"
@@ -40,7 +37,6 @@ class experimentDao:
                 return serialize_node(node = experiment_node['s'])
             else:
                 return None
-    
 
     def update_experiment_node(self, experiment_id, updated_data):
         update_experiment_query = (
@@ -60,7 +56,6 @@ class experimentDao:
             else:
                 return None
 
-
     def create_experiment_sample_relationship(self, experiment_id, sample_id):
         relation_query = (
         "MATCH (experiment:Experiment {experiment_id: $experiment_id})"
@@ -79,7 +74,6 @@ class experimentDao:
             else:
                 return None
 
-
     def count_num_samples(self, experiment_id):
         """Count the number of samples attached to an Experiment"""
         count_query = (
@@ -97,7 +91,6 @@ class experimentDao:
             else:
                 return 0
 
-
     def get_all_samples(self, experiment_id):
         get_all_query = (
             "MATCH (experiment:Experiment {experiment_id: $experiment_id})-[*1]-(sample: Sample) "
@@ -110,7 +103,6 @@ class experimentDao:
             result = session.run(get_all_query, parameters=parameters)
             records = [serialize_node(record["sample"]) for record in result]
             return records
-
 
     def delete_experiment_node(self, experiment_id):
         delete_experiment_query = (

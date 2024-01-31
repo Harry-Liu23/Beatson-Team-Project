@@ -16,6 +16,7 @@ def _add_cors(t: Response):
 
 app.after_request(_add_cors)
 
+
 # REMOVE THIS BEFORE DEPLOYMENT
 DATABASE_USERNAME = "neo4j"
 DATABASE_URI = "bolt://localhost:7687"

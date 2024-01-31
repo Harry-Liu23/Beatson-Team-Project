@@ -11,7 +11,6 @@ class sampleDao:
     def __init__(self, driver):
         self.driver = driver
 
-
     def create_sample_node(self, sample):
         sample_name = sample.sample.get_sample_name()
         sample_id = sample.sample.get_sample_ID()
@@ -44,7 +43,6 @@ class sampleDao:
             single_result = result.single()
             return single_result[0] if single_result is not None else None
         
-
     def get_sample_node(self, sample_id):
         get_sample_query = (
              "MATCH (s:Sample {sample_id: $sample_id}) RETURN s"
@@ -58,7 +56,6 @@ class sampleDao:
             result = session.run(get_sample_query, parameters=parameters)
             sample_node = result.single()
             return serialize_node(sample_node['s']) if sample_node else None
-
 
     def update_sample_node(self, sample_id, updated_data):
         update_sample_query = (
@@ -88,7 +85,6 @@ class sampleDao:
             result = session.run(update_sample_query, parameters=parameters)
             updated_node = result.single()
             return updated_node['s'] if updated_node else None
-
 
     def delete_sample_node(self, sample_id):
         delete_sample_query = (

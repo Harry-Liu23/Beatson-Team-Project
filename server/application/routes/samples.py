@@ -12,7 +12,6 @@ def get_all_samples(experiment_id):
     else:
         return jsonify({"error": "No samples found for the given experiment_id"}), 404
 
-
 @app.route('/create_sample', methods=['POST'])
 def create_sample():
     data = request.json
@@ -45,7 +44,6 @@ def create_sample():
         }
     return jsonify(response_data), 200
 
-
 # Calling objects that get data from databse, sample id used as primary key(or equivilent in graph database)
 @app.route('/get_sample/<sample_id>', methods=['GET'])
 def get_sample(sample_id):
@@ -55,7 +53,6 @@ def get_sample(sample_id):
         return jsonify(response_data), 200
     else:
         return jsonify({"error": f"No sample with ID {sample_id} found"}), 404
-
 
 # Calling objects that update data from database
 @app.route('/update_sample/<sample_id>', methods=['PUT'])
@@ -67,7 +64,6 @@ def update_sample(sample_id):
         return jsonify(response_data), 200
     else:
         return jsonify({"error": "Failed to update sample node"}), 404
-
 
 # Calling objects that delete data from database
 @app.route('/delete_sample/<sample_id>', methods=['DELETE'])

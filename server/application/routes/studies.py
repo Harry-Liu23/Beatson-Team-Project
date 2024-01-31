@@ -24,7 +24,6 @@ def create_study():
         }
     return jsonify(response_data), 200
 
-
 @app.route('/get_study/<accession>', methods=['GET'])
 def get_study(accession):
     study_node = study_dao.get_study_node(accession)
@@ -32,7 +31,6 @@ def get_study(accession):
         return jsonify(study_node),200  # Return the study node as JSON response
     else:
         return jsonify({"error": "Study Node not found"}), 404
-
 
 @app.route('/update_study/<accession>', methods=['PUT'])
 def update_study(accession):
@@ -52,12 +50,10 @@ def update_study(accession):
     else:
         return jsonify({"error": "Failed to update Study Node"}), 404
 
-
 @app.route('/get_all_experiments/<accession>')
 def get_all_experiments(accession):
     all_experiments = study_dao.get_all_experiments(accession)
     return jsonify({"experiments" : all_experiments}), 200
-
 
 @app.route('/count_experiments/<accession>', methods=['GET'])
 def count_experiments(accession):
@@ -66,7 +62,6 @@ def count_experiments(accession):
         return jsonify({"num_experiments": num_experiments}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
  
 @app.route('/delete_study/<accession>', methods=['DELETE'])
 def delete_study(accession):
