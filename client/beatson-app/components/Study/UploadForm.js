@@ -15,6 +15,7 @@ import {
   Checkbox,
   TextField,
 } from "@mui/material";
+import { ContentCutOutlined } from "@mui/icons-material";
 
 const StudyForm = () => {
   // unused const are for future developement. Needed for form submission.
@@ -128,7 +129,19 @@ const StudyForm = () => {
 
   const createNewRow = () => {
     setSampleNumber(sampleNumber + 1);
-    return { id: sampleNumber };
+    let row = { id: sampleNumber};
+    columns.forEach( (col) => {
+      const fieldName = col.field;
+      if(fieldName != "id"){
+        var fieldJsonString = '{"'+fieldName+'":null}'
+        //console.log(fieldJsonString)
+        const fieldObject = JSON.parse(fieldJsonString)
+        const newRow = {...row, ...fieldObject};
+        row = newRow;
+        //console.log(row)
+      }
+    });
+    return row;
   };
 
   const addNewRow = () => {
@@ -196,6 +209,34 @@ const StudyForm = () => {
     setColumns(newSampleCharacteristics);
     setOpenDialog(false);
   };
+
+  const updateCell = (params) => {
+
+    //console.log("in updateCell")
+    //console.log(params);
+    //console.log("print the column header of current cell")
+    //console.log(params.field)
+    //console.log(params.value)
+   //setRows((rows) => [...rows]);
+   //console.log(rows)
+   //console.log(rows.params.id)
+   //params.value = params.value;
+   // rows.forEach((row) => {
+   //   if( row.id == params.id){
+   //     console.log(row)
+   //   }
+   // })    
+  }
+
+  const updateCellChange = (params) => {
+    console.log("UpdateCellChange")
+    console.log(params)
+    
+  }
+
+
+console.log(columns)
+console.log(rows)
 
   return (
     <div>
@@ -301,7 +342,8 @@ const StudyForm = () => {
             </DialogActions>
           </Dialog>
 
-          <DataGrid rows={rows} columns={columns} />
+          <DataGrid editMode="cell" rows={rows} columns={columns} 
+          onCellClick={updateCell} onChange={updateCellChange}/>
         </Grid>
       </Grid>
     </div>
