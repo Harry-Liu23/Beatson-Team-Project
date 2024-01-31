@@ -16,7 +16,7 @@ import {
   TextField,
 } from "@mui/material";
 
-const ExperimentForm = ({id}) => {
+const ExperimentForm = ({ id }) => {
   //Experiment attribute vars
   const expId = id;
   const [expTitle, setExpTitle] = useState("");
@@ -47,11 +47,21 @@ const ExperimentForm = ({id}) => {
 
           {/* below grid items are the experiment attribute fields */}
           <Grid item xs={6}>
-            <TextField id="expTitle" label="Title" variant="outlined" onChange={() => setExpTitle(+event.target.value)}/>
+            <TextField
+              id="expTitle"
+              label="Title"
+              variant="outlined"
+              onChange={() => setExpTitle(+event.target.value)}
+            />
           </Grid>
 
           <Grid item>
-            <TextField id="expDesc" label="Description" variant="outlined" onChange={() => setExpDesc(event.target.value)}/>
+            <TextField
+              id="expDesc"
+              label="Description"
+              variant="outlined"
+              onChange={() => setExpDesc(event.target.value)}
+            />
           </Grid>
 
           <Grid item>
@@ -65,7 +75,7 @@ const ExperimentForm = ({id}) => {
         </Grid>
       </Card>
 
-      {renderSampleForm && <SampleForm samples={numSamples} id = {expId}/>}
+      {renderSampleForm && <SampleForm samples={numSamples} id={expId} />}
       {
         <Grid item>
           <Button onClick={() => setRenderSampleForm(true)}>

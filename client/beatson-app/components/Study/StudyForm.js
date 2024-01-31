@@ -16,7 +16,6 @@ import {
   TextField,
 } from "@mui/material";
 
-
 const StudyForm = () => {
   //Study form vars
   const [accession, setAccession] = useState("");
@@ -31,9 +30,7 @@ const StudyForm = () => {
     const experimentForms = [];
     for (let i = 1; i <= expNumber; i++) {
       const combinedID = `${accession}-${i}`;
-      experimentForms.push(
-      <ExperimentForm id={combinedID} />
-      );
+      experimentForms.push(<ExperimentForm id={combinedID} />);
     }
     return experimentForms;
   };

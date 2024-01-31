@@ -23,7 +23,9 @@ const SampleForm = ({ samples, id }) => {
 
   // Initalise empty rows
   useEffect(() => {
-    setRows(Array.from({ length: numSamples }, (_,index) => createNewRow(index+1)));
+    setRows(
+      Array.from({ length: numSamples }, (_, index) => createNewRow(index + 1))
+    );
   }, [numSamples]);
 
   //Sample form additional columns var
@@ -128,7 +130,7 @@ const SampleForm = ({ samples, id }) => {
   // SampleForm add/remove column and row logic
 
   const createNewRow = (id) => {
-    return {id}
+    return { id };
   };
 
   const addNewRow = () => {
