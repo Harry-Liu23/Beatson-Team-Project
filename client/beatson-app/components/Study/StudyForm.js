@@ -92,11 +92,10 @@ const StudyForm = () => {
         </Grid>
       </Card>
 
-      {/* {<Grid item>
-            <Button onClick={setRenderSampleForm(true)}>Create Study</Button>
-        </Grid>} */}
-
-        <SampleForm samples={3} />
+      {renderSampleForm && <SampleForm samples={sampleNumber} />}
+      {<Grid item>
+            <Button onClick={() => setRenderSampleForm(true)}>Create Study</Button>
+        </Grid>}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import {
   DialogContent,
@@ -15,10 +15,15 @@ import {
   TextField,
 } from "@mui/material";
 
-const SampleForm = (samples) => {
+const SampleForm = ({ samples }) => {
   const [rows, setRows] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [numSamples, setNumSamples] = useState(samples);
+
+  // Initalise empty rows
+  useEffect(() => {
+    setRows(Array.from({ length: numSamples }, (_,index) => createNewRow(index+1)));
+  }, [numSamples]);
 
   //Sample form additional columns var
   const additionalColumns = {
@@ -121,23 +126,13 @@ const SampleForm = (samples) => {
 
   // SampleForm add/remove column and row logic
 
-  const createNewRow = () => {
-    setNumSamples(numSamples + 1);
-    return { id: numSamples };
+  const createNewRow = (id) => {
+    return {id}
   };
 
   const addNewRow = () => {
-    setRows((rows) => [...rows, createNewRow()]);
+    setRows((rows) => [...rows, createNewRow(rows.length + 1)]);
   };
-
-  const setInitialRows = () => {
-    for (let i = 1; i <= numSamples; i++) {
-      setRows((rows) => [...rows, { id: i }]);
-    }
-    setNumSamples(numSamples + 1);
-  };
-
-  
 
   //getFields returns an object where keys are the indices of additionalColumns
   //and the corresponding values are the column/characteristic name
@@ -194,7 +189,6 @@ const SampleForm = (samples) => {
     setOpenDialog(false);
   };
 
-  setInitialRows();
   return (
     <div>
       <Grid
