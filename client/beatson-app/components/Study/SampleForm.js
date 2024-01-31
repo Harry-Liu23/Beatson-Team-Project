@@ -15,10 +15,11 @@ import {
   TextField,
 } from "@mui/material";
 
-const SampleForm = ({ samples }) => {
+const SampleForm = ({ samples, id }) => {
   const [rows, setRows] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [numSamples, setNumSamples] = useState(samples);
+  const expId = id;
 
   // Initalise empty rows
   useEffect(() => {
@@ -199,7 +200,7 @@ const SampleForm = ({ samples }) => {
       >
         <Grid item sx={{ m: 2 }}>
           <Typography variant="h4" color="blue-gray" align="center">
-            Sample Details
+            Sample Details - {expId}
           </Typography>
         </Grid>
 

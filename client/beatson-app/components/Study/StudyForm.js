@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import SampleForm from "./SampleForm";
+import ExperimentForm from "./ExperimentForm";
 import {
   DialogContent,
   DialogTitle,
@@ -16,6 +16,7 @@ import {
   TextField,
 } from "@mui/material";
 
+
 const StudyForm = () => {
   //Study form vars
   const [accession, setAccession] = useState("");
@@ -23,15 +24,19 @@ const StudyForm = () => {
   const [publication, setPublication] = useState("");
   const [organism, setOrganism] = useState("");
   const [description, setDescription] = useState("");
-  const [sampleNumber, setSampleNumber] = useState(1);
-  const [renderSampleForm, setRenderSampleForm] = useState(false);
+  const [expNumber, setExpNumber] = useState(0);
+  const [renderExpForm, setRenderExpForm] = useState(false);
 
-//   const setInitialRows = () => {
-//     for (let i = 1; i <= sampleNumber; i++) {
-//       setRows((rows) => [...rows, { id: i }]);
-//     }
-//     setSampleNumber(sampleNumber + 1);
-//   };
+  const generateExperimentForms = () => {
+    const experimentForms = [];
+    for (let i = 1; i <= expNumber; i++) {
+      const combinedID = `${accession}-${i}`;
+      experimentForms.push(
+      <ExperimentForm id={combinedID} />
+      );
+    }
+    return experimentForms;
+  };
 
   return (
     <div>
@@ -53,11 +58,21 @@ const StudyForm = () => {
 
           {/* below grid items are the study detail fields */}
           <Grid item xs={6}>
-            <TextField id="accession" label="Accession" variant="outlined" />
+            <TextField
+              id="accession"
+              label="Accession"
+              variant="outlined"
+              onChange={() => setAccession(event.target.value)}
+            />
           </Grid>
 
           <Grid item>
-            <TextField id="studyType" label="Study Type" variant="outlined" />
+            <TextField
+              id="studyType"
+              label="Study Type"
+              variant="outlined"
+              onChange={() => setStudyType(event.target.value)}
+            />
           </Grid>
 
           <Grid item>
@@ -65,11 +80,17 @@ const StudyForm = () => {
               id="publication"
               label="Publication"
               variant="outlined"
+              onChange={() => setPublication(event.target.value)}
             />
           </Grid>
 
           <Grid item>
-            <TextField id="organism" label="Organism" variant="outlined" />
+            <TextField
+              id="organism"
+              label="Organism"
+              variant="outlined"
+              onChange={() => setOrganism(event.target.value)}
+            />
           </Grid>
 
           <Grid item>
@@ -77,25 +98,36 @@ const StudyForm = () => {
               id="description"
               label="Description"
               variant="outlined"
+              onChange={() => setDescription(event.target.value)}
             />
           </Grid>
 
           <Grid item>
             <TextField
-              id="sampleNumber"
-              label="Number of Samples"
+              id="expNumber"
+              label="Number of Experiments"
               variant="outlined"
-              onChange={() => setSampleNumber(+event.target.value)}
+              onChange={() => setExpNumber(+event.target.value)}
             />
           </Grid>
-
         </Grid>
       </Card>
 
-      {renderSampleForm && <SampleForm samples={sampleNumber} />}
-      {<Grid item>
-            <Button onClick={() => setRenderSampleForm(true)}>Create Study</Button>
-        </Grid>}
+      {renderExpForm &&
+        generateExperimentForms().map((form, index) => (
+          <div key={index}>{form}</div>
+        ))}
+      {
+        <Grid item>
+          <Button
+            onClick={() => {
+              setRenderExpForm(true);
+            }}
+          >
+            Create Experiments
+          </Button>
+        </Grid>
+      }
     </div>
   );
 };
