@@ -9,10 +9,8 @@ import {
   Button,
   Grid,
   Typography,
-  Card,
   FormControlLabel,
   Checkbox,
-  TextField,
 } from "@mui/material";
 
 const SampleForm = ({ samples, id }) => {

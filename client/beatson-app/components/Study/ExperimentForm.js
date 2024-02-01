@@ -1,19 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { DataGrid } from "@mui/x-data-grid";
 import SampleForm from "./SampleForm";
 import {
-  DialogContent,
-  DialogTitle,
-  DialogActions,
-  Dialog,
   Button,
   Grid,
   Typography,
   Card,
-  FormControlLabel,
-  Checkbox,
   TextField,
+  spacing,
 } from "@mui/material";
 
 const ExperimentForm = ({ id }) => {
@@ -29,7 +23,7 @@ const ExperimentForm = ({ id }) => {
   //Render form
   return (
     <div>
-      <Card variant="outlined">
+      <Card variant="outlined" sx={{ padding:2 }} >
         <Grid
           container
           rowGap={1}
