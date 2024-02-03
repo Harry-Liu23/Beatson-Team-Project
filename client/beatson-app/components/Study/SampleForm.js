@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, use } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, useGridApiRef  } from "@mui/x-data-grid";
 import {
   DialogContent,
   DialogTitle,
@@ -129,7 +129,26 @@ const SampleForm = ({ samples, id }) => {
 
   const createNewRow = (id) => {
     return { id };
+
+// Frasers implementation below to add values to each cell in a row. 
+// NOTE: THIS CURRENTLY RESULTS IN INFINITE LOOP
+
+    // setNumSamples(numSamples + 1);
+    // let row = { id: numSamples};
+    // columns.forEach( (col) => {
+    //   const fieldName = col.field;
+    //   if(fieldName != "id"){
+    //     var fieldJsonString = '{"'+fieldName+'":null}'
+    //     //console.log(fieldJsonString)
+    //     const fieldObject = JSON.parse(fieldJsonString)
+    //     const newRow = {...row, ...fieldObject};
+    //     row = newRow;
+    //     //console.log(row)
+    //   }
+    // });
+    // return row;
   };
+
 
   const addNewRow = () => {
     setRows((rows) => [...rows, createNewRow(rows.length + 1)]);
@@ -190,6 +209,45 @@ const SampleForm = ({ samples, id }) => {
     setOpenDialog(false);
   };
 
+  const updateCell = (params) => {
+    //const apiRef = useGridApiRef();
+    //console.log(apiRef.current.id)
+    //console.log("in updateCell")
+    //console.log(params);
+    //console.log("print the column header of current cell")
+    console.log(params.field)
+    console.log(params.value)
+    console.log(params.row)
+    console.log(rows.at(0))
+
+
+
+   //setRows((rows) => [...rows]);
+   //console.log(rows)
+   //console.log(rows.params.id)
+   //params.value = params.value;
+   rows.forEach((row) => {
+     if( params.row === row){
+       console.log("match")
+       // setRows to contain all param values of that row
+       console.log(row.headerName)
+     }else(
+      console.log("not match")
+      // leave alone the user hasnt changed any of these cells.
+     )
+   })
+  }
+
+  const updateCellChange = (params) => {
+    console.log("UpdateCellChange")
+    console.log(params)
+    
+  }
+
+
+//console.log(columns)
+//console.log(rows)
+
   return (
     <div>
       <Grid
@@ -234,7 +292,8 @@ const SampleForm = ({ samples, id }) => {
             </DialogActions>
           </Dialog>
 
-          <DataGrid rows={rows} columns={columns} />
+          <DataGrid rows={rows} columns={columns} 
+          onCellClick={updateCell} onChange={updateCellChange}/>
         </Grid>
       </Grid>
     </div>

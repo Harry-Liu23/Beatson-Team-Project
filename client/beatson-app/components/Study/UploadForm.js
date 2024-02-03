@@ -46,7 +46,8 @@ const UploadForm = () => {
 
   // headerName is the name of each column,
   // editable = true allows the values in corresponding rows to be updated
-  const [columns, setColumns] = useState([
+
+  const columns = [
     {
       field: "id",
       headerName: "Sample ID",
@@ -125,7 +126,7 @@ const UploadForm = () => {
       editable: true,
       width: 70,
     },
-  ]);
+  ];
 
   const createNewRow = () => {
     setSampleNumber(sampleNumber + 1);
@@ -138,7 +139,7 @@ const UploadForm = () => {
         const fieldObject = JSON.parse(fieldJsonString)
         const newRow = {...row, ...fieldObject};
         row = newRow;
-        //console.log(row)
+        console.log(row)
       }
     });
     return row;
@@ -180,9 +181,11 @@ const UploadForm = () => {
 
   const submit = () => {
     const currentSampleCharacteristics = [];
-    columns.forEach((column) =>
-      currentSampleCharacteristics.push(column.field)
-    );
+    columns.forEach((column) => {
+      //let columnHeader = column.field; 
+      //currentSampleCharacteristics.push({columnHeader : null});
+      currentSampleCharacteristics.push(column.field);
+    });
     let newSampleCharacteristics = [...columns];
 
     // checks if all additionalCharacteristics have been checked or not
@@ -190,11 +193,15 @@ const UploadForm = () => {
     isChecked.forEach((column) => {
       const isCharacteristicChecked = column[1];
       const characteristicField = column[0];
+      //console.log(characteristicField)
 
       if (isCharacteristicChecked) {
         // characterstic is to be added as a new column
         if (!currentSampleCharacteristics.includes(characteristicField)) {
-          newSampleCharacteristics.push(additionalColumns[characteristicField]);
+          let columnHeader = additionalColumns[characteristicField];
+          console.log(columnHeader);
+          //newSampleCharacteristics.push({columnHeader : null});
+          newSampleCharacteristics.push(columnHeader);
         }
       } else {
         // characteristic is to be deleted from column
@@ -208,6 +215,9 @@ const UploadForm = () => {
     });
     setColumns(newSampleCharacteristics);
     setOpenDialog(false);
+
+    // 
+
   };
 
   const updateCell = (params) => {
@@ -235,8 +245,8 @@ const UploadForm = () => {
   }
 
 
-console.log(columns)
-console.log(rows)
+//console.log(columns)
+//console.log(rows)
 
   return (
     <div>
