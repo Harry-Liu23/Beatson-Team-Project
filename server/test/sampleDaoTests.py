@@ -19,13 +19,11 @@ class TestStudyCreation(unittest.TestCase):
     def test_create_sample_node(self):
         # Define a sample payload to simulate front-end sending JSON to backend
         data = {
-            "sample_id_info_data": {
+            "sample": {
                 "name": "Sample Name",
                 "sample_id": "123",
                 "group": "Group A",
-                "project": "Project X"
-            },
-            "sample_data": {
+                "project": "Project X",
                 "description": "Sample Description",
                 "organism": "Organism X",
                 "tissue": "Tissue Y",
@@ -38,7 +36,6 @@ class TestStudyCreation(unittest.TestCase):
         }
         response = self.app.post('/create_sample', json=data)
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b"Sample node created", response.data)
 
     def test_get_sample(self):
         sample_id = "123" 

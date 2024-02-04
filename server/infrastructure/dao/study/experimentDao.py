@@ -9,20 +9,6 @@ class experimentDao:
     def __init__(self, driver):
         self.driver = driver
 
-    def create_experiment_node(self,experiment):
-        create_experiment_node_query = (
-            "CREATE (s:Experiment {experiment_id: $experiment_id, accession: $accession,"
-            "description:$description})"
-        )
-        parameters = {
-            'experiment_id':experiment.experiment_id,
-            'description':experiment.description,
-            'accession':experiment.accession
-        }
-        with self.driver.session() as session:
-            result = session.run(create_experiment_node_query, parameters=parameters)
-            return result.single()
-
     def get_experiment_node(self, experiment_id):
         get_experiment_query = (
             "MATCH (s:Experiment {experiment_id: $experiment_id}) RETURN s"

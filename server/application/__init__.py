@@ -30,7 +30,7 @@ generic_dao = genericDao.genericDao(driver)
 
 
 # For adding data processing functions
-from server.process.nodeProcess import serialize_node, get_node_type_and_data
+from server.process.nodeProcess import serialize_node
 
 # Needs to exist after app and everything else being imported to routes.__init__ is defined
 from . import routes

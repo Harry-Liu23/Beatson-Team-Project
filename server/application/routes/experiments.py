@@ -1,6 +1,6 @@
-from . import app,experiment_dao,sample_dao, study_dao
+from . import app,experiment_dao,generic_dao, study_dao
 from server.infrastructure.entity.study import experiment
-from flask import request,jsonify
+from flask import request,jsonify,json
 
 
 @app.route('/delete_experiment/<experiment_id>', methods=['DELETE'])
@@ -13,23 +13,33 @@ def delete_experiment(experiment_id):
 @app.route('/create_experiment', methods=['POST'])
 def create_experiment():
     data = request.json
-
-    data_experiment = data.get('experiment', {})
-    experiment_obj = experiment.experiment(
-        experiment_id= data_experiment.get('experiment_id',''),
-        description= data_experiment.get('description',''),
-        accession= data_experiment.get('accession','')
-    )
-    exp_create_res = experiment_dao.create_experiment_node(experiment_obj)
-    rel_result = study_dao.create_experiment_study_relationship(
-    experiment_obj.experiment_id, experiment_obj.accession)
-    if exp_create_res and rel_result:
+    # Extract experiment data from the request
+    experiment_data = data.get('experiment', {})
+    accession = experiment_data.get('accession', '')
+    experiment_id = experiment_data.get('experiment_id', '')
+    
+    try:
+        # Convert the experiment data to a JSON string for the create_node method
+        data_experiment_json = json.dumps(experiment_data)
+        # Create an Experiment node
+        created_experiment_result = generic_dao.create_node(node_type="Experiment", data=data_experiment_json)
+        # Create a relationship between the newly created Experiment node and the specified Study node
+        rel_result = study_dao.create_experiment_study_relationship(experiment_id=experiment_id, accession=accession)
         response_data = {
-            "message": f"Created experiment id: {experiment_obj.experiment_id}, attached to study: {experiment_obj.accession}"
+            "message": f"Created experiment with ID: {experiment_id}, attached to study with accession: {accession}"
         }
         return jsonify(response_data), 200
-    else:
-        return jsonify({"Error": 500})
+    except Warning as warning:
+        print(f"UserWarning: {warning}")
+        response_data = {
+            "message": f"Error: Duplicated experiments or some other problem occured"
+        }
+        return jsonify(response_data), 200
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        # Handle the error appropriately
+        return jsonify({"error": "Failed to create experiment or link it to the study"}), 500
+
 
 @app.route('/get_experiment/<experiment_id>', methods=['GET'])
 def get_experiment(experiment_id):

@@ -1,4 +1,4 @@
-from . import app, study_dao, sample_dao, experiment_dao
+from . import app, sample_dao, experiment_dao
 from server.infrastructure.entity.study import sampleIdInfo
 from server.infrastructure.entity.study import sample as sampleEntity
 from flask import request, jsonify, json
@@ -14,53 +14,30 @@ def get_all_samples(experiment_id):
         return jsonify({"error": "No samples found for the given experiment_id"}), 404
 
 @app.route('/create_sample', methods=['POST'])
-def create_study():
-    data = request.json
-    # Assuming data contains necessary attributes for study
-    data_sample = data.get('sample', {})
-
-    # Convert the study data to JSON string
-    data_sample_json = json.dumps(data_sample)
-    # Create a study node
-    created_sample_accession = generic_dao.create_node(node_type="Sample", data = data_sample_json)
-    response_data = {
-        "message": f"Sample Node created with accession: {created_sample_accession}"
-    }
-    return jsonify(response_data), 200
-
-@app.route('/create_sample', methods=['POST'])
 def create_sample():
     data = request.json
-    # Assuming data contains necessary attributes for sample
-    sample_id_info_data = data.get('sample_id_info_data', {})
-    sample_data = data.get('sample_data', {})
-    # Create a SampleIdInfo object
-    sample_id_info_obj = sampleIdInfo.sampleIdInfo(
-        name=sample_id_info_data.get('name', ''),
-        id=sample_id_info_data.get('sample_id', ''),
-        group=sample_id_info_data.get('group', ''),
-        project=sample_id_info_data.get('project', '')
-    )
-    # Create a sample object
-    sample_obj = sampleEntity.sample(
-        sample=sample_id_info_obj,
-        description=sample_data.get('description', ''),
-        organism=sample_data.get('organism', ''),
-        tissue=sample_data.get('tissue', ''),
-        sex=sample_data.get('sex', ''),
-        cell_line=sample_data.get('cell_line', ''),
-        mouse_model=sample_data.get('mouse_model', ''),
-        biometric_provider=sample_data.get('biometric_provider', ''),
-        experiment_id = sample_data.get('experiment_id', '')
-    )
-    
-    created_node_id = sample_dao.create_sample_node(sample_obj)
-    relating_nodes = experiment_dao.create_experiment_sample_relationship(experiment_id=sample_obj.experiment_id,sample_id=sample_obj.sample.sample_ID)
-    response_data = {
-            "message": f"Sample node created with ID: {created_node_id}, belongs to study: {relating_nodes}"
-        }
-    return jsonify(response_data), 200
 
+    # Extract sample and sample_id_info data from the request
+    sample_data = data.get('sample', {})
+    experiment_id = sample_data.get('experiment_id', '')
+    sample_id = sample_data.get('sample_id', '')
+    # Check if 'experiment_id' is provided
+    if not experiment_id:
+        return jsonify({"error": "Missing experiment_id in sample_data"}), 400
+    # Convert the sample data to JSON string for create_node method
+    sample_data_json = json.dumps(sample_data)
+    created_sample_result = generic_dao.create_node(node_type="Sample", data=sample_data_json)
+
+    # Assuming create_node method returns the newly created node's id or some identifier, which is then used for linking
+    # Create a relationship between the newly created Sample node and the specified Experiment node
+    rel_result = experiment_dao.create_experiment_sample_relationship(experiment_id=experiment_id, sample_id=sample_id)
+    if created_sample_result and rel_result:
+        response_data = {
+            "message": f"Created sample with ID: {sample_id}, attached to experiment with ID: {experiment_id}"
+        }
+        return jsonify(response_data), 200
+    else:
+        return jsonify({"error": "Failed to create sample or link it to the experiment"}), 200
 
 # Calling objects that get data from databse, sample id used as primary key(or equivilent in graph database)
 @app.route('/get_sample/<sample_id>', methods=['GET'])

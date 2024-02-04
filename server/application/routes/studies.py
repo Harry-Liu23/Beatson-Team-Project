@@ -1,5 +1,4 @@
-from . import app,study_dao,generic_dao
-from server.infrastructure.entity.study import study
+from . import app,generic_dao,study_dao
 from flask import json, request, jsonify
 
 

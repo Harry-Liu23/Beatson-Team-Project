@@ -1,6 +1,4 @@
 import flask as flask
-from flask import app, request
-from neo4j import Driver,GraphDatabase
 import server.infrastructure.entity.study.sampleIdInfo as Sample
 from . import serialize_node
 
@@ -11,38 +9,6 @@ class sampleDao:
     def __init__(self, driver):
         self.driver = driver
 
-    def create_sample_node(self, sample):
-        sample_name = sample.sample.get_sample_name()
-        sample_id = sample.sample.get_sample_ID()
-        sample_group = sample.sample.get_sample_group()
-        sample_project = sample.sample.get_sample_project()
-
-        create_sample_node_query = (
-            "CREATE (s:Sample {description: $description, organism: $organism, tissue: $tissue, "
-            "sex: $sex, cell_line: $cell_line, mouse_model: $mouse_model, biometric_provider: $biometric_provider, "
-            "sample_name: $sample_name, sample_id: $sample_id, sample_group: $sample_group, sample_project: $sample_project, experiment_id: $experiment_id})"
-        )
-
-        parameters = {
-            'description': sample.description,
-            'organism': sample.organism,
-            'tissue': sample.tissue,
-            'sex': sample.sex,
-            'cell_line': sample.cell_line,
-            'mouse_model': sample.mouse_model,
-            'biometric_provider': sample.biometric_provider,
-            'sample_name': sample_name,
-            'sample_id': sample_id,
-            'sample_group': sample_group,
-            'sample_project': sample_project,
-            'experiment_id': sample.experiment_id
-        }
-
-        with self.driver.session() as session:
-            result = session.run(create_sample_node_query, parameters=parameters)
-            single_result = result.single()
-            return single_result[0] if single_result is not None else None
-        
     def get_sample_node(self, sample_id):
         get_sample_query = (
              "MATCH (s:Sample {sample_id: $sample_id}) RETURN s"
