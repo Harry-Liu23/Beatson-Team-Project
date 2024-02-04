@@ -210,6 +210,7 @@ const SampleForm = ({ samples, id }) => {
   };
 
   const updateCell = (params) => {
+    console.log("CELL UPDATE");
     //const apiRef = useGridApiRef();
     //console.log(apiRef.current.id)
     //console.log("in updateCell")
@@ -244,9 +245,29 @@ const SampleForm = ({ samples, id }) => {
     
   }
 
+  const editStop = (params) => {
+    console.log("EDIT STOP")
+    console.log(params);
+  }
 
-//console.log(columns)
-//console.log(rows)
+  const processRowUpdate = (newRow) =>{
+    var newRows = rows.slice();
+    for(var i = 0; i < rows.length; i++){
+      if(rows[i]['id'] == newRow['id']){
+        newRows[i] = newRow;
+      }
+    }
+    setRows(newRows);
+  }
+
+  const onProcessRowUpdateError = (params) => {
+    console.log("onProcessRowUpdateError");
+    console.log(params);
+  }
+
+  const logRows = () =>{
+    console.log(rows);
+  }
 
   return (
     <div>
@@ -292,8 +313,12 @@ const SampleForm = ({ samples, id }) => {
             </DialogActions>
           </Dialog>
 
-          <DataGrid rows={rows} columns={columns} 
-          onCellClick={updateCell} onChange={updateCellChange}/>
+          <DataGrid 
+          rows={rows} 
+          columns={columns}
+          processRowUpdate={(newRow, oldRow) => processRowUpdate(newRow)}
+          onProcessRowUpdateError={onProcessRowUpdateError}
+          />
         </Grid>
       </Grid>
     </div>

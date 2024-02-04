@@ -139,7 +139,6 @@ const UploadForm = () => {
         const fieldObject = JSON.parse(fieldJsonString)
         const newRow = {...row, ...fieldObject};
         row = newRow;
-        console.log(row)
       }
     });
     return row;
