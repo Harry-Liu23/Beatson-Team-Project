@@ -1,6 +1,6 @@
-from . import app,study_dao
+from . import app,study_dao,generic_dao
 from server.infrastructure.entity.study import study
-from flask import request, jsonify
+from flask import json, request, jsonify
 
 
 @app.route('/create_study', methods=['POST'])
@@ -9,19 +9,13 @@ def create_study():
     # Assuming data contains necessary attributes for study
     data_study = data.get('study', {})
 
-    # Create a study object
-    study_obj = study.study(
-        accession=data_study.get('accession', ''),
-        study_type=data_study.get('study_type', ''),
-        publication=data_study.get('publication', ''),
-        organism=data_study.get('organism', ''),
-        description=data_study.get('description', '')
-    )
-    created_study_accession = study_dao.create_study_node(study_obj)
-
+    # Convert the study data to JSON string
+    data_study_json = json.dumps(data_study)
+    # Create a study node
+    created_study_accession = generic_dao.create_node(node_type="Study", data = data_study_json)
     response_data = {
-            "message": f"Study Node created with accession: {created_study_accession}"
-        }
+        "message": f"Study Node created with accession: {created_study_accession}"
+    }
     return jsonify(response_data), 200
 
 @app.route('/get_study/<accession>', methods=['GET'])

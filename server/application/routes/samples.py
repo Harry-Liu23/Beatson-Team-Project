@@ -1,7 +1,8 @@
 from . import app, study_dao, sample_dao, experiment_dao
 from server.infrastructure.entity.study import sampleIdInfo
 from server.infrastructure.entity.study import sample as sampleEntity
-from flask import request, jsonify
+from flask import request, jsonify, json
+from . import app,generic_dao
 
 
 @app.route('/get_all_samples/<experiment_id>', methods=['GET'])
@@ -11,6 +12,21 @@ def get_all_samples(experiment_id):
         return jsonify(samples)  # Return samples as JSON response
     else:
         return jsonify({"error": "No samples found for the given experiment_id"}), 404
+
+@app.route('/create_sample', methods=['POST'])
+def create_study():
+    data = request.json
+    # Assuming data contains necessary attributes for study
+    data_sample = data.get('sample', {})
+
+    # Convert the study data to JSON string
+    data_sample_json = json.dumps(data_sample)
+    # Create a study node
+    created_sample_accession = generic_dao.create_node(node_type="Sample", data = data_sample_json)
+    response_data = {
+        "message": f"Sample Node created with accession: {created_sample_accession}"
+    }
+    return jsonify(response_data), 200
 
 @app.route('/create_sample', methods=['POST'])
 def create_sample():
@@ -37,12 +53,14 @@ def create_sample():
         biometric_provider=sample_data.get('biometric_provider', ''),
         experiment_id = sample_data.get('experiment_id', '')
     )
+    
     created_node_id = sample_dao.create_sample_node(sample_obj)
     relating_nodes = experiment_dao.create_experiment_sample_relationship(experiment_id=sample_obj.experiment_id,sample_id=sample_obj.sample.sample_ID)
     response_data = {
             "message": f"Sample node created with ID: {created_node_id}, belongs to study: {relating_nodes}"
         }
     return jsonify(response_data), 200
+
 
 # Calling objects that get data from databse, sample id used as primary key(or equivilent in graph database)
 @app.route('/get_sample/<sample_id>', methods=['GET'])
@@ -54,6 +72,7 @@ def get_sample(sample_id):
     else:
         return jsonify({"error": f"No sample with ID {sample_id} found"}), 404
 
+
 # Calling objects that update data from database
 @app.route('/update_sample/<sample_id>', methods=['PUT'])
 def update_sample(sample_id):
@@ -64,6 +83,7 @@ def update_sample(sample_id):
         return jsonify(response_data), 200
     else:
         return jsonify({"error": "Failed to update sample node"}), 404
+
 
 # Calling objects that delete data from database
 @app.route('/delete_sample/<sample_id>', methods=['DELETE'])

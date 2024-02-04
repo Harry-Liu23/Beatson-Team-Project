@@ -15,7 +15,7 @@ class sample:
 
     def get_sample(self):
         return self.sample
-
+      
 
     def get_description(self):
         return self.description
@@ -45,5 +45,5 @@ class sample:
         return self.biometric_provider
 
     
-    def get_study_experiments_id(self):
-        return self.experiments_id
+    def get_study_experiment_id(self):
+        return self.experiment_id

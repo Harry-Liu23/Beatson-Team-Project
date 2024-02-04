@@ -25,3 +25,6 @@ class study:
 
     def get_organism(self):
         return self.organism
+    
+
+    
