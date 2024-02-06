@@ -16,18 +16,27 @@ class PopulateStudies(unittest.TestCase):
 
     def tearDown(self):
         pass
+    
+    def populate(self, data_dir, files, method):
+        for f in files:
+            file_path = os.path.join(data_dir, f)
+            with open(file_path, 'r') as f:
+                data = json.load(f)
+                response = self.app.post(method, json=data)
+                self.assertEqual(response.status_code, 200)
 
     def test_populate_studies(self):
         data_dir = os.path.join(current_dir, 'data')
         data_dir_files = os.listdir(data_dir)
         # keep fiiles that are studies
         studies = [f for f  in data_dir_files if "study" in f.lower()]
-        for study in studies:
-            file_path = os.path.join(data_dir, study)
-            with open(file_path, 'r') as f:
-                data = json.load(f)
-                response = self.app.post('/create_study', json=data)
-                self.assertEqual(response.status_code, 200)
+        experiments = [f for f in studies if "experiment" in f.lower()]
+        samples = [f for f in studies if "sample" in f.lower()]
+        # populate  database
+        self.populate(data_dir, studies, '/create_study')
+        self.populate(data_dir, experiments, '/create_experiment')
+        self.populate(data_dir, samples, '/create_sample')
+        
         
 if __name__ == '__main__':
     print('Starting to populate database...')
