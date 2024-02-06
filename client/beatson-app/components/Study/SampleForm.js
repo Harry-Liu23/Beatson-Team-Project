@@ -1,6 +1,5 @@
 "use client";
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import {
   DialogContent,
@@ -10,23 +9,24 @@ import {
   Button,
   Grid,
   Typography,
-  Card,
   FormControlLabel,
   Checkbox,
-  TextField,
 } from "@mui/material";
 
-const UploadForm = () => {
-  // unused const are for future developement. Needed for form submission.
-  const [accession, setAccession] = useState("");
-  const [studyType, setStudyType] = useState("");
-  const [publication, setPublication] = useState("");
-  const [organism, setOrganism] = useState("");
-  const [description, setDescription] = useState("");
-  const [sampleNumber, setSampleNumber] = useState(1);
+const SampleForm = ({ samples, id }) => {
   const [rows, setRows] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
+  const [numSamples, setNumSamples] = useState(samples);
+  const expId = id;
 
+  // Initalise empty rows
+  useEffect(() => {
+    setRows(
+      Array.from({ length: numSamples }, (_, index) => createNewRow(index + 1))
+    );
+  }, [numSamples]);
+
+  //Sample form additional columns var
   const additionalColumns = {
     cancerType: {
       field: "cancerType",
@@ -43,8 +43,7 @@ const UploadForm = () => {
     // add more optional colmns here as per Mayank's request
   };
 
-  // headerName is the name of each column,
-  // editable = true allows the values in corresponding rows to be updated
+  //Sample form column definitions
   const [columns, setColumns] = useState([
     {
       field: "id",
@@ -126,20 +125,14 @@ const UploadForm = () => {
     },
   ]);
 
-  const createNewRow = () => {
-    setSampleNumber(sampleNumber + 1);
-    return { id: sampleNumber };
+  // SampleForm add/remove column and row logic
+
+  const createNewRow = (id) => {
+    return { id };
   };
 
   const addNewRow = () => {
-    setRows((rows) => [...rows, createNewRow()]);
-  };
-
-  const setInitialRows = () => {
-    for (let i = 1; i <= sampleNumber; i++) {
-      setRows((rows) => [...rows, { id: i }]);
-    }
-    setSampleNumber(sampleNumber + 1);
+    setRows((rows) => [...rows, createNewRow(rows.length + 1)]);
   };
 
   //getFields returns an object where keys are the indices of additionalColumns
@@ -199,66 +192,6 @@ const UploadForm = () => {
 
   return (
     <div>
-      <Card variant="outlined">
-        <Grid
-          container
-          rowGap={1}
-          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-          spacing={2}
-        >
-          <Grid item sx={{ mt: 1.5 }}>
-            <Typography variant="h4" color="blue-gray" align="center">
-              Study Details
-            </Typography>
-          </Grid>
-
-          {/* below grid items are the study detail fields */}
-          <Grid item xs={6}>
-            <TextField id="accession" label="Accession" variant="outlined" />
-          </Grid>
-
-          <Grid item>
-            <TextField id="studyType" label="Study Type" variant="outlined" />
-          </Grid>
-
-          <Grid item>
-            <TextField
-              id="publication"
-              label="Publication"
-              variant="outlined"
-            />
-          </Grid>
-
-          <Grid item>
-            <TextField id="organism" label="Organism" variant="outlined" />
-          </Grid>
-
-          <Grid item>
-            <TextField
-              id="description"
-              label="Description"
-              variant="outlined"
-            />
-          </Grid>
-
-          <Grid item>
-            <TextField
-              id="sampleNumber"
-              label="Number of Samples"
-              variant="outlined"
-              onChange={() => setSampleNumber(+event.target.value)}
-            />
-          </Grid>
-
-          <Grid item>
-            <Button onClick={setInitialRows}>Create Study</Button>
-          </Grid>
-        </Grid>
-      </Card>
-
       <Grid
         container
         direction="column"
@@ -267,7 +200,7 @@ const UploadForm = () => {
       >
         <Grid item sx={{ m: 2 }}>
           <Typography variant="h4" color="blue-gray" align="center">
-            Sample Details
+            Sample Details - {expId}
           </Typography>
         </Grid>
 
@@ -308,4 +241,4 @@ const UploadForm = () => {
   );
 };
 
-export default UploadForm;
+export default SampleForm;
