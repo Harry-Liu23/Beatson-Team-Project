@@ -16,15 +16,15 @@ server/build
 
 # dependencies
 client/beatson-app/node_modules
-/.pnp
+client/beatson-app/.pnp
 .pnp.js
 .yarn/install-state.gz
 
 # testing
-/coverage
+client/beatson-app/coverage
 
 # next.js
-/.next/
+client/beatson-app/.next/
 /out/
 
 # production
@@ -45,3 +45,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+#linter
+.eslintrc.json
