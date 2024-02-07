@@ -1,11 +1,9 @@
 {
-    "sample_id_info_data": {
+    "sample": {
         "name": "Sample 17",
         "sample_id": "SAMEA5775334",
         "group": "undefined",
-        "project": "PRJEB33512"
-    },
-    "sample_data": {
+        "project": "PRJEB33512",
         "description": "Protocols: RNA of whole tumour was isolated at endpoint and conserved in RNAlater (Sigma) at -80°C until further use for RNA isolation as described below. To ensure that similra areas of the tumours were sampled, tumours were cut in half and tissue from the tumour centre was collected. For organoid culture tumours were dissected as described above, tumours were trypsenised and epithelial cells were cultured in matrigel containing growth factors (N2 and B27) supplemented with Noggin and EGF. Organoid cultures were kept at low passages. To collect organoids, cells were washed with PBS and than snap frozen. Samples were kept at -80C until RNA was isolated. RNA was isolated using the Qiagen RNeasy Mini kit (74104, Qiagen, Manchester, UK) according to manufacturer’s protocol including optional DNA degradation step using the Qiagen RNase-Free DNase kit (79254, Qiagen, Manchester, UK). Cell pellets or tissue was lysed using the Precellys lysing kit (KT03961-1-003-2, Bertin Instruments, Montigny-le-Bretonneux, France) in a Precellys Evolution machine (Bertin Instruments, Montigny-le-Bretonneux, France). Quality of the purified RNA was tested on an Agilent 2200 Tapestation using RNA screen tape. Libraries for cluster generation and DNA sequencing were prepared following an adapted method from the Illumina TruSeq RNA LT Kit. Quality and quantity of the DNA libraries was assessed on a Agilent 2200 Tapestation (D1000 screentape) and Qubit (Thermo Fisher Scientific) respectively.",
         "organism": "Mus musculus",
         "tissue": "intestine",

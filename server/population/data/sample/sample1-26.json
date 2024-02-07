@@ -1,10 +1,8 @@
 {
-    "sample_id_info_data": {
+    "sample": {
         "sample_id": "ERX2470418-26",
         "group": "N/A",
-        "project": "PRJEB23698"
-    },
-    "sample_data": {
+        "project": "PRJEB23698",
         "description": "Protocols: KPC mice, first described by (Hingorani et al., 2005), were bred in house on a mixed background. Mice were genotyped by Transnetyx (Cordoba, TN, USA). Mice were monitored at least 3 times weekly and abdominal palpation carried out to detect pancreatic cancer. For drug treatments, adult mice of both sexes were randomly assigned to cohorts. Treatments used were: vehicle (0.1 % Tween80/0.5 % methylcellulose) p.o. twice daily, CSF-1R small molecule inhibitor (AstraZeneca, AZD7507) at 100mg/Kg p.o. twice daily; CXCR2 small molecule inhibitor (AstraZeneca, AZD5069) at 100mg/Kg p.o. twice daily, or AZD7507 and AZD5069 in combination, both at 100mg/Kg p.o. twice daily. PDAC harvested from mice into RNAl8r, then stored at -80C RNAeasy mini kit, then Turbo DNAse Illumina TruSeq Stranded mRNA Library Prep Kit",
         "organism": "Mus musculus",
         "tissue": "pancreas",
