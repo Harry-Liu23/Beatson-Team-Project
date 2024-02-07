@@ -7,7 +7,6 @@ import {
   Typography,
   Card,
   TextField,
-  spacing,
 } from "@mui/material";
 
 const ExperimentForm = ({ id }) => {
@@ -17,8 +16,6 @@ const ExperimentForm = ({ id }) => {
   const [expDesc, setExpDesc] = useState("");
   const [numSamples, setNumSamples] = useState(0);
   const [renderSampleForm, setRenderSampleForm] = useState(false);
-
-  console.log(expId);
 
   //Render form
   return (
@@ -42,7 +39,7 @@ const ExperimentForm = ({ id }) => {
           {/* below grid items are the experiment attribute fields */}
           <Grid item xs={6}>
             <TextField
-              id="expTitle"
+              id={`expTitle-${expId}`}
               label="Title"
               variant="outlined"
               onChange={() => setExpTitle(+event.target.value)}
@@ -51,7 +48,7 @@ const ExperimentForm = ({ id }) => {
 
           <Grid item>
             <TextField
-              id="expDesc"
+              id={`expDesc-${expId}`}
               label="Description"
               variant="outlined"
               onChange={() => setExpDesc(event.target.value)}
@@ -60,7 +57,7 @@ const ExperimentForm = ({ id }) => {
 
           <Grid item>
             <TextField
-              id="sampleNumber"
+              id={`sampleNumber-${expId}`}
               label="Number of Samples"
               variant="outlined"
               onChange={() => setNumSamples(+event.target.value)}
