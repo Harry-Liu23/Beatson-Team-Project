@@ -5,3 +5,11 @@ def serialize_node(node):
         # Convert Node properties to native Python types if needed
         serialized_node[key] = value
     return serialized_node
+
+def get_node_type_and_data(data):
+    if not data:
+        return None, None
+
+    # Assuming data contains a single key representing the node type
+    node_type, node_data = next(iter(data.items()))
+    return node_type, node_data
