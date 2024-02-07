@@ -30,8 +30,8 @@ class PopulateStudies(unittest.TestCase):
         data_dir_files = os.listdir(data_dir)
         # keep fiiles that are studies
         studies = [f for f  in data_dir_files if "study" in f.lower()]
-        experiments = [f for f in studies if "experiment" in f.lower()]
-        samples = [f for f in studies if "sample" in f.lower()]
+        experiments = [f for f in data_dir_files if "experiment" in f.lower()]
+        samples = [f for f in data_dir_files if "sample" in f.lower()]
         # populate  database
         self.populate(data_dir, studies, '/create_study')
         self.populate(data_dir, experiments, '/create_experiment')
