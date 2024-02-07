@@ -1,10 +1,8 @@
 {
-    "sample_id_info_data": {
+    "sample": {
         "sample_id": "ERX2262868-7",
         "group": "N/A",
-        "project": "PRJEB23698"
-    },
-    "sample_data": {
+        "project": "PRJEB23698",
         "description": "Protocols: Intestinal tissue mounted 'en face' on a dissection board and rinsed thoroughly with PBS. 3 tumours of approximately equal size were harvested by dissection from the large intestine of each mouse. Individual tumors were collected in eppendorf tubes and immediately snap frozen in liquid nitrogen prior to RNA isolation. RNA was isolated using Qiagen RNEasy TruSeq Stranded mRNA Library Prep Kit (Illumina)",
         "organism": "Mus musculus",
         "tissue": "large intestine",
