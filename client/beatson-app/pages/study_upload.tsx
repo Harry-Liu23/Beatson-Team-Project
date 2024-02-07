@@ -1,4 +1,5 @@
 import StudyForm from "../components/Study/StudyForm";
+import React from 'react';
 
 /* website.url/study_upload */
 

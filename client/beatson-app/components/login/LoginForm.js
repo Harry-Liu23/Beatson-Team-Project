@@ -2,8 +2,6 @@
 import {useState } from 'react';
 import styles from '../../styles/LoginForm.module.css';
 import postFormAsJSON from '../../services/BackendAPI'
-import React from 'react';
-
 
 /* <LoginForm /> is a component for a form 
 which has a username and password field
