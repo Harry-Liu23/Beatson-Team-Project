@@ -1,6 +1,6 @@
 from flask import Flask, Response 
 from neo4j import GraphDatabase 
-from server.infrastructure.dao.study import sampleDao,studyDao,experimentDao
+from server.infrastructure.dao.study import sampleDao,studyDao,experimentDao,genericDao
 
 
 #from application.keys import DATABASE_PASSWORD
@@ -16,7 +16,6 @@ def _add_cors(t: Response):
 
 app.after_request(_add_cors)
 
-
 # REMOVE THIS BEFORE DEPLOYMENT
 DATABASE_USERNAME = "neo4j"
 DATABASE_URI = "bolt://localhost:7687"
@@ -27,6 +26,7 @@ session = driver.session()
 sample_dao = sampleDao.sampleDao(driver)
 experiment_dao = experimentDao.experimentDao(driver)
 study_dao = studyDao.studyDao(driver)
+generic_dao = genericDao.genericDao(driver)
 
 
 # For adding data processing functions

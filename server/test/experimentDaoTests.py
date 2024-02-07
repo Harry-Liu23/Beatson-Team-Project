@@ -36,6 +36,7 @@ class TestExperimentCreation(unittest.TestCase):
             # Add other attributes to update if required
         }
         response = self.app.put(f'/update_experiment/{experiment_id}', json=update_data)
+        print(response.get_json())
         self.assertEqual(response.status_code, 200) 
 
     def test_get_experiment(self):
