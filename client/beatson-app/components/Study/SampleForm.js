@@ -127,31 +127,28 @@ const SampleForm = ({ samples, id }) => {
 
   // SampleForm add/remove column and row logic
 
-  const createNewRow = (id) => {
-    return { id };
-
-// Frasers implementation below to add values to each cell in a row. 
-// NOTE: THIS CURRENTLY RESULTS IN INFINITE LOOP
-
-    // setNumSamples(numSamples + 1);
-    // let row = { id: numSamples};
-    // columns.forEach( (col) => {
-    //   const fieldName = col.field;
-    //   if(fieldName != "id"){
-    //     var fieldJsonString = '{"'+fieldName+'":null}'
-    //     //console.log(fieldJsonString)
-    //     const fieldObject = JSON.parse(fieldJsonString)
-    //     const newRow = {...row, ...fieldObject};
-    //     row = newRow;
-    //     //console.log(row)
-    //   }
-    // });
-    // return row;
+  const createNewRow = (idValue) => {
+    const newRow = { id : idValue };
+    columns.forEach((column) => {
+      if (column.field != "id") {
+        newRow[column.field] = null;
+    }
+  })
+    return newRow;
   };
-
 
   const addNewRow = () => {
     setRows((rows) => [...rows, createNewRow(rows.length + 1)]);
+  };
+
+  const addCharaceristicToRow = (characteristic) => {
+    const rowUpdate = [...rows];
+    rowUpdate.forEach((row) => row[characteristic] = null);
+    setRows(rowUpdate);
+  }
+
+  const removeCharacteristicFromRow = (characteristic) => {
+    rows.forEach((row) => delete row[characteristic]);
   };
 
   //getFields returns an object where keys are the indices of additionalColumns
@@ -194,6 +191,7 @@ const SampleForm = ({ samples, id }) => {
         // characterstic is to be added as a new column
         if (!currentSampleCharacteristics.includes(characteristicField)) {
           newSampleCharacteristics.push(additionalColumns[characteristicField]);
+          addCharaceristicToRow(additionalColumns[characteristicField].field);
         }
       } else {
         // characteristic is to be deleted from column
@@ -201,6 +199,7 @@ const SampleForm = ({ samples, id }) => {
           const newRemovedList = newSampleCharacteristics.filter(
             (column) => column.field !== characteristicField
           );
+          removeCharacteristicFromRow(characteristicField);
           newSampleCharacteristics = newRemovedList;
         }
       }
@@ -208,47 +207,6 @@ const SampleForm = ({ samples, id }) => {
     setColumns(newSampleCharacteristics);
     setOpenDialog(false);
   };
-
-  const updateCell = (params) => {
-    console.log("CELL UPDATE");
-    //const apiRef = useGridApiRef();
-    //console.log(apiRef.current.id)
-    //console.log("in updateCell")
-    //console.log(params);
-    //console.log("print the column header of current cell")
-    console.log(params.field)
-    console.log(params.value)
-    console.log(params.row)
-    console.log(rows.at(0))
-
-
-
-   //setRows((rows) => [...rows]);
-   //console.log(rows)
-   //console.log(rows.params.id)
-   //params.value = params.value;
-   rows.forEach((row) => {
-     if( params.row === row){
-       console.log("match")
-       // setRows to contain all param values of that row
-       console.log(row.headerName)
-     }else(
-      console.log("not match")
-      // leave alone the user hasnt changed any of these cells.
-     )
-   })
-  }
-
-  const updateCellChange = (params) => {
-    console.log("UpdateCellChange")
-    console.log(params)
-    
-  }
-
-  const editStop = (params) => {
-    console.log("EDIT STOP")
-    console.log(params);
-  }
 
   const processRowUpdate = (newRow) =>{
     var newRows = rows.slice();
@@ -263,10 +221,6 @@ const SampleForm = ({ samples, id }) => {
   const onProcessRowUpdateError = (params) => {
     console.log("onProcessRowUpdateError");
     console.log(params);
-  }
-
-  const logRows = () =>{
-    console.log(rows);
   }
 
   return (
@@ -284,9 +238,14 @@ const SampleForm = ({ samples, id }) => {
         </Grid>
 
         <Grid item>
-          <Button onClick={addNewRow}>Add Sample</Button>
+          <Button onClick={addNewRow}>
+            Add Sample
+          </Button>
           <Button onClick={() => setOpenDialog(true)}>
             Add/Remove Characteristics
+          </Button>
+          <Button id={`submit-${expId}`} onClick={() => console.log("submitting sample")}>
+            Submit
           </Button>
 
           <Dialog open={openDialog}>
