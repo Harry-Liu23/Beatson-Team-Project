@@ -53,8 +53,8 @@ class genericDao:
 
             # Construct the relationship creation query
             relation_query = (
-                f"MATCH (parent:{parent_node_type} {{{parent_id_field}: ${parent_identifier}}}) "
-                f"MATCH (child:{child_node_type} {{{child_id_field}: ${child_identifier}}}) "
+                f"MATCH (parent:{parent_node_type} {{{parent_id_field}: '{parent_identifier}'}}) "
+                f"MATCH (child:{child_node_type} {{{child_id_field}: '{child_identifier}'}}) "
                 f"CREATE (parent)-[:{relationship_type}]->(child)"
             )
 
