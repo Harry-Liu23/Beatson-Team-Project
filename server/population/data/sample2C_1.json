@@ -1,8 +1,8 @@
 {
     "sample_id_info_data": {
-        "name": "Sample 26",
-        "sample_id": "SAMEA5775344",
-        "group": "Cancer Research UK Beatson Institute",
+        "name": "Sample 25",
+        "sample_id": "SAMEA5775343",
+        "group": "undefined",
         "project": "PRJEB33512"
     },
     "sample_data": {
@@ -10,9 +10,10 @@
         "organism": "Mus musculus",
         "tissue": "intestine",
         "sex": "undefined",
-        "cell_line": "undefined",
+        "cell_line": "tumour",
+        "cancer type": "intestinal cancer",
         "mouse_model": "minimum N4 C57/BL6",
         "biometric_provider": "ILLUMINA NextSeq 500",
-        "experiment_id":"ERX3457932"
+        "experiment_id":"ERX3457948"
     }
 }

@@ -14,7 +14,7 @@ class PopulateStudies(unittest.TestCase):
     def setUp(self):
         self.app = app.test_client()
 
-    def tearDown(self):
+    def tearDown(self): 
         pass
     
     def populate(self, data_dir, files, method):
