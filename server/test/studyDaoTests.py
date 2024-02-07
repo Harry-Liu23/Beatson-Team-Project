@@ -7,7 +7,7 @@ sys.path.insert(0, project_root)
 
 import unittest
 import json
-from application import app
+from application import app,generic_dao
 
 
 class testStudy(unittest.TestCase):
@@ -36,6 +36,7 @@ class testStudy(unittest.TestCase):
     def test_get_study_node(self):
         study_accession = "access"
         response = self.app.get(f'/get_study/{study_accession}')
+        print(response.get_json())
         self.assertEqual(response.status_code, 200) 
     
     def test_update_study_node(self):
@@ -48,6 +49,7 @@ class testStudy(unittest.TestCase):
             # Add other attributes to update if required
         }
         response = self.app.put(f'/update_study/{study_accession}', json=update_data)
+        # update_result = generic_dao.update_node(node_type = 'Study',identifier = "access", updated_data = update_data)
         self.assertEqual(response.status_code, 200) 
 
 if __name__ == '__main__':

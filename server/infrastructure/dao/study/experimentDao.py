@@ -1,6 +1,5 @@
 import flask as flask
 from flask import app, request
-from server.infrastructure.entity.study.experiment import experiment
 from . import serialize_node
 
 
@@ -8,57 +7,6 @@ class experimentDao:
 
     def __init__(self, driver):
         self.driver = driver
-
-    def get_experiment_node(self, experiment_id):
-        get_experiment_query = (
-            "MATCH (s:Experiment {experiment_id: $experiment_id}) RETURN s"
-        )
-        parameters = {
-            'experiment_id': experiment_id
-        }
-        with self.driver.session() as session:
-            result = session.run(get_experiment_query, parameters=parameters)
-            experiment_node = result.single()
-            if experiment_node:
-                return serialize_node(node = experiment_node['s'])
-            else:
-                return None
-
-    def update_experiment_node(self, experiment_id, updated_data):
-        update_experiment_query = (
-        "MATCH (s:Experiment {experiment_id: $experiment_id}) "
-        "SET s.description = $description "
-        "RETURN s;"
-        )
-        parameters = {
-            'experiment_id': experiment_id,
-            'description': updated_data.get('description', None),
-        }
-        with self.driver.session() as session:
-            result = session.run(update_experiment_query, parameters=parameters)
-            updated_node = result.single()
-            if updated_node:
-                return updated_node['s']
-            else:
-                return None
-
-    def create_experiment_sample_relationship(self, experiment_id, sample_id):
-        relation_query = (
-        "MATCH (experiment:Experiment {experiment_id: $experiment_id})"
-        "MATCH (sample:Sample {sample_id: $sample_id})"
-        "CREATE (experiment)-[:CONTAINS]->(sample)"
-        )
-        parameters = {
-            "experiment_id": experiment_id,
-            "sample_id": sample_id
-        }
-        with self.driver.session() as session:
-            result = session.run(relation_query, parameters=parameters)
-            single_result = result.single()
-            if single_result is not None:
-                return single_result[0]  # Returns a single ID as a result
-            else:
-                return None
 
     def count_num_samples(self, experiment_id):
         """Count the number of samples attached to an Experiment"""
@@ -89,15 +37,3 @@ class experimentDao:
             result = session.run(get_all_query, parameters=parameters)
             records = [serialize_node(record["sample"]) for record in result]
             return records
-
-    def delete_experiment_node(self, experiment_id):
-        delete_experiment_query = (
-            "MATCH (s:Experiment {experiment_id: $experiment_id}) "
-            "DETACH DELETE s"
-        )
-        parameters = {
-            "experiment_id" : experiment_id
-        }
-        with self.driver.session() as session:
-            session.run(delete_experiment_query, parameters=parameters)
-            return True  

@@ -1,6 +1,4 @@
 from . import app, sample_dao, experiment_dao
-from server.infrastructure.entity.study import sampleIdInfo
-from server.infrastructure.entity.study import sample as sampleEntity
 from flask import request, jsonify, json
 from . import app,generic_dao
 
@@ -30,7 +28,7 @@ def create_sample():
 
     # Assuming create_node method returns the newly created node's id or some identifier, which is then used for linking
     # Create a relationship between the newly created Sample node and the specified Experiment node
-    rel_result = experiment_dao.create_experiment_sample_relationship(experiment_id=experiment_id, sample_id=sample_id)
+    rel_result = generic_dao.relationship_builder(parent_node_type="Experiment",child_node_type="Sample",parent_identifier=experiment_id, child_identifier=sample_id,relationship_type="contains")
     if created_sample_result and rel_result:
         response_data = {
             "message": f"Created sample with ID: {sample_id}, attached to experiment with ID: {experiment_id}"
@@ -42,10 +40,9 @@ def create_sample():
 # Calling objects that get data from databse, sample id used as primary key(or equivilent in graph database)
 @app.route('/get_sample/<sample_id>', methods=['GET'])
 def get_sample(sample_id):
-    sample_node = sample_dao.get_sample_node(sample_id)
+    sample_node = generic_dao.get_node(identifier=sample_id,node_type="Sample")
     if sample_node:
-        response_data = {"sample": sample_node}
-        return jsonify(response_data), 200
+        return jsonify(sample_node), 200
     else:
         return jsonify({"error": f"No sample with ID {sample_id} found"}), 404
 
@@ -54,18 +51,27 @@ def get_sample(sample_id):
 @app.route('/update_sample/<sample_id>', methods=['PUT'])
 def update_sample(sample_id):
     data = request.json
-    update_sample_node = sample_dao.update_sample_node(sample_id, data)
-    if update_sample_node:
-        response_data = {"message": f"Updated sample node with ID {sample_id}"}
-        return jsonify(response_data), 200
-    else:
-        return jsonify({"error": "Failed to update sample node"}), 404
+    try:
+        # Assuming update_node returns a success indicator or result object
+        update_result = generic_dao.update_node(node_type = 'Sample',identifier = sample_id, updated_data = data)
+        if update_result:
+            # Adjust the response message as needed, based on how update_result is structured
+            response_data = {
+                "message": "Sample node updated successfully."
+            }
+            return jsonify(response_data), 200
+        else:
+            # This path might need adjustment based on how your DAO handles no-op updates or failures
+            return jsonify({"error": "Failed to update Sample Node"}), 404
+    except Exception as e:
+        # Handle any exceptions raised during the update process
+        return jsonify({"error": str(e)}), 500
 
 
 # Calling objects that delete data from database
 @app.route('/delete_sample/<sample_id>', methods=['DELETE'])
 def delete_sample(sample_id):
-    deletion_result = sample_dao.delete_sample_node(sample_id)
+    deletion_result = generic_dao.delete_node(node_type="Sample",identifier=sample_id)
     if deletion_result:
         response_data = {"message": "Sample node deleted successfully."}
         return jsonify(response_data), 200

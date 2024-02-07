@@ -40,6 +40,7 @@ class TestStudyCreation(unittest.TestCase):
     def test_get_sample(self):
         sample_id = "123" 
         response = self.app.get(f'/get_sample/{sample_id}')
+        print(response.get_json())
         self.assertEqual(response.status_code, 200) 
 
     def test_update_sample(self):
