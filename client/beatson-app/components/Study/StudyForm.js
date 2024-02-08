@@ -20,6 +20,10 @@ const StudyForm = () => {
   const [expNumber, setExpNumber] = useState(0);
   const [renderExpForm, setRenderExpForm] = useState(false);
 
+  const generateStudyJson = () => {
+    
+  }
+
   const generateExperimentForms = () => {
     const experimentForms = [];
     for (let i = 1; i <= expNumber; i++) {
@@ -27,6 +31,8 @@ const StudyForm = () => {
       experimentForms.push(<ExperimentForm id={combinedID} />);
     }
     return experimentForms;
+    // Call some function that creates json to send.
+
   };
 
   return (

@@ -24,3 +24,8 @@ export default async function postFormAsJSON(event, url){
       return null
 
 }
+
+export function sendJsonToFlask(json, url) {
+  
+}
+

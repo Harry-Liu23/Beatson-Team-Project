@@ -19,6 +19,7 @@ const SampleForm = ({ samples, id }) => {
   const [numSamples, setNumSamples] = useState(samples);
   const expId = id;
   const [sampleSubmitDialog, setSampleSubmitDialog] = useState(false);
+  let sampleSuccess = null;
 
   // Initalise empty rows
   useEffect(() => {
@@ -247,11 +248,9 @@ const SampleForm = ({ samples, id }) => {
     let cellValidateErrors = validateRows();
     if (cellValidateErrors['errors'].length != 0) {
       // open dialog with content you haven't submitted all fieldds bozo
-      console.log(cellValidateErrors)
-      return;
+      setSampleSubmitDialog(true);
     }
     else {
-      setSampleSubmitDialog(true);  
     }
     
     console.log(sampleSubmitDialog);
@@ -290,7 +289,8 @@ const SampleForm = ({ samples, id }) => {
           </Button>
 
           <Dialog open={sampleSubmitDialog}>
-            <DialogContent>Is this okay?</DialogContent>
+            <DialogTitle>Submission Failed</DialogTitle>
+            <DialogContent>You did not enter values for all samples.</DialogContent>
             <DialogActions>
               <Button onClick={() => setSampleSubmitDialog(false)}>Close</Button>
             </DialogActions>
