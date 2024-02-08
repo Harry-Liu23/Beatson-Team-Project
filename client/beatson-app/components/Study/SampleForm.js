@@ -18,6 +18,7 @@ const SampleForm = ({ samples, id }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [numSamples, setNumSamples] = useState(samples);
   const expId = id;
+  const [sampleSubmitDialog, setSampleSubmitDialog] = useState(false);
 
   // Initalise empty rows
   useEffect(() => {
@@ -143,7 +144,7 @@ const SampleForm = ({ samples, id }) => {
 
   const addCharaceristicToRow = (characteristic) => {
     const rowUpdate = [...rows];
-    rowUpdate.forEach((row) => row[characteristic] = null);
+    rowUpdate.forEach((row) => row[characteristic] = undefined);
     setRows(rowUpdate);
   }
 
@@ -209,6 +210,7 @@ const SampleForm = ({ samples, id }) => {
   };
 
   const processRowUpdate = (newRow) =>{
+    console.log(newRow)
     var newRows = rows.slice();
     for(var i = 0; i < rows.length; i++){
       if(rows[i]['id'] == newRow['id']){
@@ -221,6 +223,42 @@ const SampleForm = ({ samples, id }) => {
   const onProcessRowUpdateError = (params) => {
     console.log("onProcessRowUpdateError");
     console.log(params);
+  }
+
+  const validateRows = () => {
+    // check nullness
+    let cellValidationErrors = { errors : [] };
+    rows.forEach((row) => {
+      const keys = Object.keys(row);
+      console.log(keys);
+      keys.forEach((key) => {
+        if( row[key] == undefined){
+          const newError = '{ " ' + row['id'] + ' " : " Cell ' + key + '- Value is null " }';
+          cellValidationErrors['errors'].push(JSON.parse(newError));
+        }
+      });
+      
+    });
+
+    return cellValidationErrors
+  }
+  const submitSamples = () => {
+    // load 
+    let cellValidateErrors = validateRows();
+    if (cellValidateErrors['errors'].length != 0) {
+      // open dialog with content you haven't submitted all fieldds bozo
+      console.log(cellValidateErrors)
+      return;
+    }
+    else {
+      setSampleSubmitDialog(true);  
+    }
+    
+    console.log(sampleSubmitDialog);
+
+  }
+  const logRows = () => {
+    console.log(rows);
   }
 
   return (
@@ -244,9 +282,19 @@ const SampleForm = ({ samples, id }) => {
           <Button onClick={() => setOpenDialog(true)}>
             Add/Remove Characteristics
           </Button>
-          <Button id={`submit-${expId}`} onClick={() => console.log("submitting sample")}>
+          <Button id={`submit-${expId}`} onClick={() => submitSamples()}>
             Submit
           </Button>
+          <Button onClick={logRows}>
+            Log Rows
+          </Button>
+
+          <Dialog open={sampleSubmitDialog}>
+            <DialogContent>Is this okay?</DialogContent>
+            <DialogActions>
+              <Button onClick={() => setSampleSubmitDialog(false)}>Close</Button>
+            </DialogActions>
+          </Dialog>
 
           <Dialog open={openDialog}>
             <DialogTitle>Select characteristic to add or remove</DialogTitle>
