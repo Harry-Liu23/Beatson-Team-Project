@@ -43,7 +43,25 @@ const StudiesTable = () => {
         },
     ]);
 
-    // create a row populated by properties of a study
+    // get all existing study nodes
+    const getStudiesData = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:2020/get_all_studies");
+        if (response.status!==200) {
+          throw new Error("Unable to fetch studies: ", data.message);
+        }
+        const data = await response.json();
+        setRows(data.studies);
+      }
+      catch (error) {
+        console.error("Unable to fetch data: ", error);
+      }
+    };
+
+    // get studies when the studies table is first rendered
+    useEffect (() => {
+        getStudiesData();
+    }, []);
 
     return (
 
@@ -56,7 +74,6 @@ const StudiesTable = () => {
                 justifyContent="center"
             >
                 <DataGrid rows={rows} columns={columns} />
-                
             </Grid>
         </div>
     );
