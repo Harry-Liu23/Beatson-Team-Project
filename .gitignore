@@ -25,10 +25,10 @@ client/beatson-app/coverage
 
 # next.js
 client/beatson-app/.next/
-/out/
+client/beatson-app/out/
 
 # production
-/build
+client/beatson-app/build
 
 # misc
 .DS_Store
