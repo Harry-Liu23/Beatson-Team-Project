@@ -4,14 +4,18 @@ from flask import json, request, jsonify
 
 @app.route('/create_study', methods=['POST'])
 def create_study():
+    print("gets called")
+    print(request.form['javascript_data'])
     data = request.json
+    print(data + " this is the data")
     # Assuming data contains necessary attributes for study
     data_study = data.get('study', {})
-
+    print(data_study)
     # Convert the study data to JSON string
     data_study_json = json.dumps(data_study)
     # Create a study node
     created_study_accession = generic_dao.create_node(node_type="Study", data = data_study_json)
+    print("created study")
     response_data = {
         "message": f"Study Node created with accession: {created_study_accession}"
     }

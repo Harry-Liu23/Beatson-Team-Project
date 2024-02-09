@@ -1,9 +1,8 @@
 
-function Study(accession, studyType, publication, organism, description ) {
-
-  var studyObject = { 
+export const studyFormat = (accession, studyType, publication, organism, description ) => {
+  let studyObject = { 
     "study" : {
-      "assession" : assession,
+      "assession" : accession,
       "study_type" : studyType,
       "publication" : publication,
       "organism" : organism,
@@ -13,8 +12,8 @@ function Study(accession, studyType, publication, organism, description ) {
   return Object.toString(studyObject);
 }
 
-function Experiement(experiment_id, description, accession){
-  var experiementForm = { 
+export const experiementFormat = (experiment_id, description, accession) => {
+  let experiementForm = { 
     "experiment" : {
         "experiment_id": experiment_id,
         "description": description,
