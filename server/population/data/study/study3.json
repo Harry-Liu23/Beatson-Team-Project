@@ -1,0 +1,8 @@
+{ "study": {
+    "accession": "E-MTAB-6265",
+    "study_type": "RNA-seq of coding RNA",
+    "publication" : "Port,J., Muthalagu, N., Raja, M., Ceteci, F., Monteverde, Kruspig, B., T., Hedley, A., Kalna, G., Lilla, S., Neilson, L., Brucoli, M., Gyuraszova, K., Tait-Mulder, J., Mezna, M., Svambaryte, S., Bryson, A., Sumpton, D., McVie, A., Nixon, C., Drysdale, M., Esumi, H., Murray, G.I., Sansom, O.J., Zanivan, S. & D.J. Murphy. Colorectal tumors require NUAK1 for protection from oxidative stress  doi 10.1158/2159-8290  PMID 29500295  DOI 10.1158/2159-8290",
+    "organism": "Mus musculus",
+    "description":"The aim of the project is to determine the impact of NUAK1 depletion on the transcriptome of in situ colon tumours. Tumours were initiated in Villin-CRE-ER;APC-floxed;DI-shNUAK1 mice, followed by treatment for 1 week with dextran sodium sulphate. 68 days after tumour initiation, NUAK1 shRNAs were induced by doxycycline administration (via gavage), or left un-induced. 6 tumours were harvested from NUAK1 shRNA expressing mice and 6 from controls. RNA was isolated using Qiagen RNEasy and analyzed by Illumina paired-end RNA-SEQ"
+    }
+}

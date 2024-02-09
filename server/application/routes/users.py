@@ -1,6 +1,7 @@
 from . import app
 from flask import request,jsonify
 
+
 @app.route("/login", methods=['POST'])
 def login():
     print("Post Recived")

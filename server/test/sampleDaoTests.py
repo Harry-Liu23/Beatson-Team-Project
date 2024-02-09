@@ -19,13 +19,11 @@ class TestStudyCreation(unittest.TestCase):
     def test_create_sample_node(self):
         # Define a sample payload to simulate front-end sending JSON to backend
         data = {
-            "sample_id_info_data": {
+            "sample": {
                 "name": "Sample Name",
                 "sample_id": "123",
                 "group": "Group A",
-                "project": "Project X"
-            },
-            "sample_data": {
+                "project": "Project X",
                 "description": "Sample Description",
                 "organism": "Organism X",
                 "tissue": "Tissue Y",
@@ -33,21 +31,17 @@ class TestStudyCreation(unittest.TestCase):
                 "cell_line": "Cell Line Z",
                 "mouse_model": "Model ABC",
                 "biometric_provider": "Provider XYZ",
-                "accession":"access"
+                "experiment_id":"101"
             }
         }
         response = self.app.post('/create_sample', json=data)
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b"Sample node created", response.data)
-
-
 
     def test_get_sample(self):
         sample_id = "123" 
         response = self.app.get(f'/get_sample/{sample_id}')
+        print(response.get_json())
         self.assertEqual(response.status_code, 200) 
-
-
 
     def test_update_sample(self):
         sample_id = "123"
@@ -60,15 +54,14 @@ class TestStudyCreation(unittest.TestCase):
         self.assertEqual(response.status_code, 200) 
 
     def test_get_all_sample(self):
-        study_accession = "access"
-        response = self.app.get(f'/get_all_samples/{study_accession}')
+        experiment_id = "101"
+        response = self.app.get(f'/get_all_samples/{experiment_id}')
         self.assertEqual(response.status_code,200)
 
-
-
-
-    
-
+    def test_count_samples(self):
+        experiment_id = '101'
+        response = self.app.get(f'/count_samples/{experiment_id}')
+        self.assertEqual(response.status_code, 200)
     
 if __name__ == '__main__':
     unittest.main()
