@@ -1,0 +1,8 @@
+{ "study": {
+    "accession": "E-MTAB-6363",
+    "study_type": "RNA-seq of coding RNA, High-throughput sequencing",
+    "publication": "",
+    "organism": "Mus musculus",
+    "description": "Intestinal tumours from genetically engeenierd mouse modesl (GEMMs), of various gentopyes, were isolated at endpoint and RNA was isolated. In an additional experiment, epithelial tumour organoids were isolated at end point and grown in vitro. These organoids were harvested 72 hours after seeding and RNA was isolated."
+    }
+}
