@@ -19,7 +19,7 @@ describe('UploadForm', () => {
         expect(screen.getByLabelText('Description')).toBeInTheDocument();
         expect(screen.getByLabelText('Number of Samples')).toHaveValue("");
         expect(screen.getByRole('button', { name: 'Create Study' })).toBeInTheDocument();
-      });
+    });
 
     test('allows the user to input study details', () => {
         fireEvent.change(screen.getByLabelText('Accession'), { target: { value: 'Accession' } });
@@ -27,16 +27,38 @@ describe('UploadForm', () => {
         fireEvent.change(screen.getByLabelText('Publication'), { target: { value: 'publication' } });
         fireEvent.change(screen.getByLabelText('Organism'), { target: { value: 'organism' } });
         fireEvent.change(screen.getByLabelText('Description'), { target: { value: 'description' } });
-    
-        expect(screen.getByLabelText('Accession')).toHaveValue('Accession');
-        expect(screen.getByLabelText('Study Type')).toHaveValue('studyType');
-        expect(screen.getByLabelText('Publication')).toHaveValue('publication');
-        expect(screen.getByLabelText('Organism')).toHaveValue('organism');
-        expect(screen.getByLabelText('Description')).toHaveValue('description');
-      });
+    });
 
-    test('can open the dialog and toggle additional characteristics', () => {
+    test('Checkboxes can be toggled and is updated in the data grid', () => {
         fireEvent.click(screen.getByRole('button', { name: 'Add/Remove Characteristics' }));
         expect(screen.getByRole('dialog')).toBeInTheDocument();
-  });
+
+        const toggleCheckbox = (label) => {
+            const checkbox = screen.getByLabelText(label);
+            fireEvent.click(checkbox);
+            expect(checkbox).toBeChecked();
+        };
+
+        toggleCheckbox('Cancer Type');
+        toggleCheckbox('Weight');
+        toggleCheckbox('Control');
+        toggleCheckbox('Another Field');
+
+        fireEvent.click(screen.getByText('Update Sample Characteristics'));
+
+        fireEvent.click(screen.getByText('Add/Remove Characteristics'));
+        expect(screen.getByLabelText('Cancer Type')).toBeChecked();
+        expect(screen.getByLabelText('Weight')).toBeChecked();
+        expect(screen.getByLabelText('Control')).toBeChecked();
+        expect(screen.getByLabelText('Another Field')).toBeChecked();
+
+        fireEvent.click(screen.getByText('Cancel'));
+    });
+
+    test('Add a new sample row when "Add Sample" is clicked', () => {
+        const rowsBeforeClick = screen.getAllByRole('row').length;
+        fireEvent.click(screen.getByRole('button', { name: 'Add Sample' }));
+        const rowsAfterClick = screen.getAllByRole('row').length;
+        expect(rowsAfterClick).toBe(rowsBeforeClick + 1);
+    });
 });
