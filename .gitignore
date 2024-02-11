@@ -1,5 +1,47 @@
+## GLOBAL
+
+# local env files
+.env*.local
+
+## SERVER
+
+#runtime
 __pycache__/
 *.pyc
 beatson_app.egg-info/
 server/build
-.idea
+
+## CLIENT
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+client/beatson-app/node_modules
+client/beatson-app/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# testing
+client/beatson-app/coverage
+
+# next.js
+client/beatson-app/.next/
+client/beatson-app/out/
+
+# production
+client/beatson-app/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
