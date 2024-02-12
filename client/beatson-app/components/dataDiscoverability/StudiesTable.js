@@ -17,7 +17,7 @@ const StudiesTable = () => {
           width: 200,
         },
         {
-          field: "studyType",
+          field: "study_type",
           headerName: "Study Type",
           width: 200,
         },
@@ -46,12 +46,12 @@ const StudiesTable = () => {
     // get all existing study nodes
     const getStudiesData = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:2020/get_all_studies");
+        const response = await fetch("http://127.0.0.1:2020/get_all_study");
         if (response.status!==200) {
           throw new Error("Unable to fetch studies: ", data.message);
         }
         const data = await response.json();
-        setRows(data.studies);
+        setRows(data.study);
       }
       catch (error) {
         console.error("Unable to fetch data: ", error);
@@ -73,7 +73,7 @@ const StudiesTable = () => {
                 alignItems="center"
                 justifyContent="center"
             >
-                <DataGrid rows={rows} columns={columns} />
+                <DataGrid getRowId = {(row) => row.accession} rows={rows} columns={columns} />
             </Grid>
         </div>
     );
