@@ -9,7 +9,7 @@ export const studyFormat = (accession, studyType, publication, organism, descrip
       "description" : description
     }
   }
-  return Object.toString(studyObject);
+  return studyObject;
 }
 
 export const experiementFormat = (experiment_id, description, accession) => {
@@ -20,5 +20,5 @@ export const experiementFormat = (experiment_id, description, accession) => {
         "accession": accession
     }
   }
-  return Object.toString(experiementForm);
+  return experiementForm;
 }

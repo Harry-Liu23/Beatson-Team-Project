@@ -24,13 +24,29 @@
 //   return null
 
 // } // this function will be made redundant by below implementation
+// $.ajax({
+//   url: "/output",
+//   type: "POST",
+//   contentType: "application/json",
+//   data: JSON.stringify(postData),
+//   success: function(data){/* do something */}
+// });
+import ajax from 'axios';
+import $ from 'jquery';
 
 async function sendJsonToFlask(json, url) {
-  const request = $.post(url, {
-    javascript_data: json
-  });
-
-  if (request.ok) {
+  const request = $.ajax({
+    url: url,
+    headers: {
+      'accept': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      },
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify(json)
+  })
+    
+    if (request.ok) {
     console.log("ok")
     return request;
   }

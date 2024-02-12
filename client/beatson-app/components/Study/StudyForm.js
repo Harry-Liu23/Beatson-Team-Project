@@ -38,6 +38,7 @@ const StudyForm = () => {
     // Call some function that creates json to send.
     console.log(accession);
     const studyJson = studyFormat(accession, studyType, publication, organism, description);
+    console.log(studyJson)
     sendJsonToFlask(studyJson, 'http://127.0.0.1:2020/create_study');
     console.log("finished :)")
   }
