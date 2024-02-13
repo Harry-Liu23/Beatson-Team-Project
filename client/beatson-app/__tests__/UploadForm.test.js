@@ -29,6 +29,18 @@ describe('UploadForm', () => {
         fireEvent.change(screen.getByLabelText('Description'), { target: { value: 'description' } });
     });
 
+    test('DataGrid with their static columns', async() => {
+        const columnHeaders = [
+            'Sample ID', 'Sample Group', 'Sample Project', 'Description',
+            'Organism', 'Tissue', 'Sex', 'Cell Line', 'Biomaterial Provider',
+            'Mouse Model', 'Date', 'Biological Repeat', 'FASTQ',
+        ];
+        
+        columnHeaders.forEach(header => {
+            expect(screen.findByText(header)).resolves.toBeInTheDocument();
+        });
+    });
+
     test('Checkboxes can be toggled and is updated in the data grid', () => {
         fireEvent.click(screen.getByRole('button', { name: 'Add/Remove Characteristics' }));
         expect(screen.getByRole('dialog')).toBeInTheDocument();
