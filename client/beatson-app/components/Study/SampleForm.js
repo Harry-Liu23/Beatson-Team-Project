@@ -12,6 +12,7 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
+import sendJsonToFlask from "../../services/BackendAPI";
 
 const SampleForm = ({ samples, id }) => {
   const [rows, setRows] = useState([]);
@@ -31,14 +32,14 @@ const SampleForm = ({ samples, id }) => {
   //Sample form additional columns var
   const additionalColumns = {
     cancerType: {
-      field: "cancerType",
+      field: "cancer_type",
       headerName: "Cancer Type",
       editable: true,
     },
     weight: { field: "weight", headerName: "Weight", editable: true },
     control: { field: "control", headerName: "Control", editable: true },
     anotherField: {
-      field: "anotherField",
+      field: "another_field",
       headerName: "Another Field",
       editable: true,
     },
@@ -48,79 +49,79 @@ const SampleForm = ({ samples, id }) => {
   //Sample form column definitions
   const [columns, setColumns] = useState([
     {
-      field: "id",
+      field: "sample_id",
       headerName: "Sample ID",
       width: 100,
     },
     {
-      field: "sampleGroup",
+      field: "group",
       headerName: "Sample Group",
       editable: true,
       width: 150,
     },
     {
-      field: "sampleProject",
+      field: "project",
       headerName: "Sample Project",
       editable: true,
       width: 120,
     },
     {
-      field: "sampleDescription",
+      field: "description",
       headerName: "Description",
       editable: true,
       width: 100,
     },
     {
-      field: "sampleOrganism",
+      field: "organism",
       headerName: "Organism",
       editable: true,
       width: 80,
     },
     {
-      field: "sampleTissue",
+      field: "tissue",
       headerName: "Tissue",
       editable: true,
       width: 90,
     },
     {
-      field: "sampleSex",
+      field: "sex",
       headerName: "Sex",
       editable: true,
       width: 75,
     },
     {
-      field: "sampleCellLine",
+      field: "cell_line",
       headerName: "Cell Line",
       editable: true,
       width: 100,
     },
     {
-      field: "sampleBiomaterialProvider",
+      field: "biometric_provider",
       headerName: "Biomaterial Provider",
       editable: true,
       width: 150,
     },
     {
-      field: "sampleMouseModel",
+      field: "mouse_model",
       headerName: "Mouse Model",
       editable: true,
       width: 100,
     },
     {
-      field: "sampleDatePrep",
+      field: "date",
       headerName: "Date",
       editable: true,
       width: 60,
       type: "date",
     },
     {
-      field: "sampleRepeat",
+      field: "biological_repeat",
       headerName: "Biological Repeat",
       editable: true,
       width: 150,
     },
     {
-      field: "sampleFastQ",
+      field: "fastq",
       headerName: "FASTQ",
       editable: true,
       width: 70,
@@ -130,9 +131,9 @@ const SampleForm = ({ samples, id }) => {
   // SampleForm add/remove column and row logic
 
   const createNewRow = (idValue) => {
-    const newRow = { id : idValue };
+    const newRow = { sample_id : idValue };
     columns.forEach((column) => {
-      if (column.field != "id") {
+      if (column.field != "sample_id") {
         newRow[column.field] = null;
     }
   })
@@ -214,7 +215,7 @@ const SampleForm = ({ samples, id }) => {
     console.log(newRow)
     var newRows = rows.slice();
     for(var i = 0; i < rows.length; i++){
-      if(rows[i]['id'] == newRow['id']){
+      if(rows[i]['sample_id'] == newRow['sample_id']){
         newRows[i] = newRow;
       }
     }
@@ -231,31 +232,41 @@ const SampleForm = ({ samples, id }) => {
     let cellValidationErrors = { errors : [] };
     rows.forEach((row) => {
       const keys = Object.keys(row);
-      console.log(keys);
       keys.forEach((key) => {
         if( row[key] == undefined){
           const newError = '{ " ' + row['id'] + ' " : " Cell ' + key + '- Value is null " }';
           cellValidationErrors['errors'].push(JSON.parse(newError));
         }
       });
-      
     });
-
     return cellValidationErrors
   }
+
   const submitSamples = () => {
     // load 
     let cellValidateErrors = validateRows();
     if (cellValidateErrors['errors'].length != 0) {
-      // open dialog with content you haven't submitted all fieldds bozo
       setSampleSubmitDialog(true);
     }
     else {
-    }
-    
-    console.log(sampleSubmitDialog);
+      // send all samples to flask.
 
+      // create rows as json
+      rows.forEach((sample) => {
+        let sampleJson = {};
+        let sampleCopy = Object.assign({}, sample);
+        sampleCopy["experiment_id"] = id;
+        let sample_id = sampleCopy["sample_id"];
+        sampleCopy["sample_id"] = `${id}-${sample_id}`  
+        sampleJson["sample"] = sampleCopy;
+        sendJsonToFlask(sampleJson, 'http://127.0.0.1:2020/create_sample')
+      })
+
+
+    }
+    console.log(sampleSubmitDialog);
   }
+
   const logRows = () => {
     console.log(rows);
   }
@@ -270,7 +281,7 @@ const SampleForm = ({ samples, id }) => {
       >
         <Grid item sx={{ m: 2 }}>
           <Typography variant="h4" color="blue-gray" align="center">
-            Sample Details - {expId}
+            Sample Details {expId}
           </Typography>
         </Grid>
 
@@ -323,6 +334,7 @@ const SampleForm = ({ samples, id }) => {
           <DataGrid 
           rows={rows} 
           columns={columns}
+          getRowId = {(row) => row.sample_id}
           processRowUpdate={(newRow, oldRow) => processRowUpdate(newRow)}
           onProcessRowUpdateError={onProcessRowUpdateError}
           />

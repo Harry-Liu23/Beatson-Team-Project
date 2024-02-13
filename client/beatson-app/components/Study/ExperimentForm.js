@@ -52,7 +52,7 @@ const ExperimentForm = ({ id }) => {
               id={`expTitle-${expId}`}
               label="Title"
               variant="outlined"
-              onChange={() => setExpTitle(+event.target.value)}
+              onChange={() => setExpTitle(event.target.value)}
             />
           </Grid>
 
@@ -76,7 +76,7 @@ const ExperimentForm = ({ id }) => {
         </Grid>
       </Card>
        
-      {renderSampleForm && <SampleForm samples={numSamples} id={expId} />}
+      {renderSampleForm && <SampleForm samples={numSamples} id={expTitle} />}
       {
         <Grid item>
           <Button onClick={() => submitExperiment()}>
