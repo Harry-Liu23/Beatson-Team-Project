@@ -8,14 +8,24 @@ import {
   Card,
   TextField,
 } from "@mui/material";
+import { experimentFormat } from "../../services/JsonFormatting";
+import sendJsonToFlask from "../../services/BackendAPI";
 
 const ExperimentForm = ({ id }) => {
   //Experiment attribute vars
   const expId = id;
+  const accession = expId.substring(0, expId.lastIndexOf('-'));
   const [expTitle, setExpTitle] = useState("");
   const [expDesc, setExpDesc] = useState("");
   const [numSamples, setNumSamples] = useState(0);
   const [renderSampleForm, setRenderSampleForm] = useState(false);
+
+  const submitExperiment = () => {
+      setRenderSampleForm(true);
+      const experimentJson = experimentFormat(expTitle, expDesc, accession)
+      console.log(experimentJson)
+      sendJsonToFlask(experimentJson, 'http://127.0.0.1:2020/create_experiment');
+  }
 
   //Render form
   return (
@@ -65,11 +75,11 @@ const ExperimentForm = ({ id }) => {
           </Grid>
         </Grid>
       </Card>
-
+       
       {renderSampleForm && <SampleForm samples={numSamples} id={expId} />}
       {
         <Grid item>
-          <Button onClick={() => setRenderSampleForm(true)}>
+          <Button onClick={() => submitExperiment()}>
             Create Sample Form
           </Button>
         </Grid>

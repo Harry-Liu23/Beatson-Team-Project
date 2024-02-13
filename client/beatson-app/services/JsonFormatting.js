@@ -2,7 +2,7 @@
 export const studyFormat = (accession, studyType, publication, organism, description ) => {
   let studyObject = { 
     "study" : {
-      "assession" : accession,
+      "accession" : accession,
       "study_type" : studyType,
       "publication" : publication,
       "organism" : organism,
@@ -12,13 +12,13 @@ export const studyFormat = (accession, studyType, publication, organism, descrip
   return studyObject;
 }
 
-export const experiementFormat = (experiment_id, description, accession) => {
-  let experiementForm = { 
+export const experimentFormat = (experiment_id, description, accession) => {
+  let experimentForm = { 
     "experiment" : {
         "experiment_id": experiment_id,
         "description": description,
         "accession": accession
     }
   }
-  return experiementForm;
+  return experimentForm;
 }
