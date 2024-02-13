@@ -6,11 +6,11 @@ from flask import json, request, jsonify
 def create_study():
     data = request.json
     # Assuming data contains necessary attributes for study
-    data_study = data.get('study', {})
-
+    data_study = data.get('study')
     # Convert the study data to JSON string
     data_study_json = json.dumps(data_study)
     # Create a study node
+    print(data_study_json)
     created_study_accession = generic_dao.create_node(node_type="Study", data = data_study_json)
     response_data = {
         "message": f"Study Node created with accession: {created_study_accession}"

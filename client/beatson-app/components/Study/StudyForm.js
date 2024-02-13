@@ -9,6 +9,8 @@ import {
   TextField,
   spacing,
 } from "@mui/material";
+import { studyFormat } from "../../services/JsonFormatting";
+import sendJsonToFlask from "../../services/BackendAPI";
 
 const StudyForm = () => {
   //Study form vars
@@ -26,8 +28,20 @@ const StudyForm = () => {
       const combinedID = `${accession}-${i}`;
       experimentForms.push(<ExperimentForm id={combinedID} />);
     }
-    return experimentForms;
+    return experimentForms
   };
+
+  const createExperimentButton = () => {
+    setRenderExpForm(true);
+    console.log("starting json sending...")
+    // return experimentForms;
+    // Call some function that creates json to send.
+    console.log(accession);
+    const studyJson = studyFormat(accession, studyType, publication, organism, description);
+    console.log(studyJson)
+    sendJsonToFlask(studyJson, 'http://127.0.0.1:2020/create_study');
+    console.log("finished :)")
+  }
 
   return (
     <div>
@@ -112,7 +126,7 @@ const StudyForm = () => {
         <Grid item>
           <Button
             onClick={() => {
-              setRenderExpForm(true);
+              createExperimentButton();
             }}
           >
             Create Experiments

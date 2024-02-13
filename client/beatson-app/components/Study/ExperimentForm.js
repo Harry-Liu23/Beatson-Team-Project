@@ -7,18 +7,25 @@ import {
   Typography,
   Card,
   TextField,
-  spacing,
 } from "@mui/material";
+import { experimentFormat } from "../../services/JsonFormatting";
+import sendJsonToFlask from "../../services/BackendAPI";
 
 const ExperimentForm = ({ id }) => {
   //Experiment attribute vars
   const expId = id;
+  const accession = expId.substring(0, expId.lastIndexOf('-'));
   const [expTitle, setExpTitle] = useState("");
   const [expDesc, setExpDesc] = useState("");
   const [numSamples, setNumSamples] = useState(0);
   const [renderSampleForm, setRenderSampleForm] = useState(false);
 
-  console.log(expId);
+  const submitExperiment = () => {
+      setRenderSampleForm(true);
+      const experimentJson = experimentFormat(expTitle, expDesc, accession)
+      console.log(experimentJson)
+      sendJsonToFlask(experimentJson, 'http://127.0.0.1:2020/create_experiment');
+  }
 
   //Render form
   return (
@@ -42,16 +49,16 @@ const ExperimentForm = ({ id }) => {
           {/* below grid items are the experiment attribute fields */}
           <Grid item xs={6}>
             <TextField
-              id="expTitle"
+              id={`expTitle-${expId}`}
               label="Title"
               variant="outlined"
-              onChange={() => setExpTitle(+event.target.value)}
+              onChange={() => setExpTitle(event.target.value)}
             />
           </Grid>
 
           <Grid item>
             <TextField
-              id="expDesc"
+              id={`expDesc-${expId}`}
               label="Description"
               variant="outlined"
               onChange={() => setExpDesc(event.target.value)}
@@ -60,7 +67,7 @@ const ExperimentForm = ({ id }) => {
 
           <Grid item>
             <TextField
-              id="sampleNumber"
+              id={`sampleNumber-${expId}`}
               label="Number of Samples"
               variant="outlined"
               onChange={() => setNumSamples(+event.target.value)}
@@ -68,11 +75,11 @@ const ExperimentForm = ({ id }) => {
           </Grid>
         </Grid>
       </Card>
-
-      {renderSampleForm && <SampleForm samples={numSamples} id={expId} />}
+       
+      {renderSampleForm && <SampleForm samples={numSamples} id={expTitle} />}
       {
         <Grid item>
-          <Button onClick={() => setRenderSampleForm(true)}>
+          <Button onClick={() => submitExperiment()}>
             Create Sample Form
           </Button>
         </Grid>

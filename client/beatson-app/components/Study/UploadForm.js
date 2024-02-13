@@ -15,6 +15,7 @@ import {
   Checkbox,
   TextField,
 } from "@mui/material";
+import { ContentCutOutlined } from "@mui/icons-material";
 
 const UploadForm = () => {
   // unused const are for future developement. Needed for form submission.
@@ -45,7 +46,8 @@ const UploadForm = () => {
 
   // headerName is the name of each column,
   // editable = true allows the values in corresponding rows to be updated
-  const [columns, setColumns] = useState([
+
+  const columns = [
     {
       field: "id",
       headerName: "Sample ID",
@@ -124,11 +126,22 @@ const UploadForm = () => {
       editable: true,
       width: 70,
     },
-  ]);
+  ];
 
   const createNewRow = () => {
     setSampleNumber(sampleNumber + 1);
-    return { id: sampleNumber };
+    let row = { id: sampleNumber};
+    columns.forEach( (col) => {
+      const fieldName = col.field;
+      if(fieldName != "id"){
+        var fieldJsonString = '{"'+fieldName+'":null}'
+        //console.log(fieldJsonString)
+        const fieldObject = JSON.parse(fieldJsonString)
+        const newRow = {...row, ...fieldObject};
+        row = newRow;
+      }
+    });
+    return row;
   };
 
   const addNewRow = () => {
@@ -167,9 +180,11 @@ const UploadForm = () => {
 
   const submit = () => {
     const currentSampleCharacteristics = [];
-    columns.forEach((column) =>
-      currentSampleCharacteristics.push(column.field)
-    );
+    columns.forEach((column) => {
+      //let columnHeader = column.field; 
+      //currentSampleCharacteristics.push({columnHeader : null});
+      currentSampleCharacteristics.push(column.field);
+    });
     let newSampleCharacteristics = [...columns];
 
     // checks if all additionalCharacteristics have been checked or not
@@ -177,11 +192,15 @@ const UploadForm = () => {
     isChecked.forEach((column) => {
       const isCharacteristicChecked = column[1];
       const characteristicField = column[0];
+      //console.log(characteristicField)
 
       if (isCharacteristicChecked) {
         // characterstic is to be added as a new column
         if (!currentSampleCharacteristics.includes(characteristicField)) {
-          newSampleCharacteristics.push(additionalColumns[characteristicField]);
+          let columnHeader = additionalColumns[characteristicField];
+          console.log(columnHeader);
+          //newSampleCharacteristics.push({columnHeader : null});
+          newSampleCharacteristics.push(columnHeader);
         }
       } else {
         // characteristic is to be deleted from column
@@ -195,7 +214,38 @@ const UploadForm = () => {
     });
     setColumns(newSampleCharacteristics);
     setOpenDialog(false);
+
+    // 
+
   };
+
+  const updateCell = (params) => {
+
+    //console.log("in updateCell")
+    //console.log(params);
+    //console.log("print the column header of current cell")
+    //console.log(params.field)
+    //console.log(params.value)
+   //setRows((rows) => [...rows]);
+   //console.log(rows)
+   //console.log(rows.params.id)
+   //params.value = params.value;
+   // rows.forEach((row) => {
+   //   if( row.id == params.id){
+   //     console.log(row)
+   //   }
+   // })    
+  }
+
+  const updateCellChange = (params) => {
+    console.log("UpdateCellChange")
+    console.log(params)
+    
+  }
+
+
+//console.log(columns)
+//console.log(rows)
 
   return (
     <div>
@@ -301,7 +351,8 @@ const UploadForm = () => {
             </DialogActions>
           </Dialog>
 
-          <DataGrid rows={rows} columns={columns} />
+          <DataGrid editMode="cell" rows={rows} columns={columns} 
+          onCellClick={updateCell} onChange={updateCellChange}/>
         </Grid>
       </Grid>
     </div>
