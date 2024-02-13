@@ -153,4 +153,16 @@ class genericDao:
             print(f"Invalid node type: {node_type}")
             return False
 
-        
+    def general_search_in_field(self, node_type, node_field, search_string):
+        query = (
+            f"MATCH (n:{node_type}) "
+            f"WHERE toLower(n.{node_field}) CONTAINS toLower('{search_string}') "
+            "RETURN n"
+        )
+
+        with self.driver.session() as session:
+            result = session.run(query)
+            records = [record["n"] for record in result]
+            return records
+    
+    
