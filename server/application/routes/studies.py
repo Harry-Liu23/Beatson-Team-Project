@@ -24,6 +24,16 @@ def get_study(accession):
         return jsonify(study_node),200  # Return the study node as JSON response
     else:
         return jsonify({"error": "Study Node not found"}), 404
+    
+@app.route('/get_all_study', methods=['GET'])
+def get_all_study():
+    all_study_nodes = study_dao.get_all_study_nodes()
+    return jsonify({"study":all_study_nodes}),200
+
+@app.route('/get_all_node_by_type/<node_type>',methods=['GET'])
+def get_all_node_by_type(node_type):
+    all_nodes_by_type = generic_dao.get_all_node_by_type(node_type)
+    return jsonify({"{node_type}":all_nodes_by_type}),200
 
 @app.route('/update_study/<accession>', methods=['PUT'])
 def update_study(accession):

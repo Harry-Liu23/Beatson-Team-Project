@@ -7,6 +7,14 @@ class studyDao:
     def __init__(self, driver):
         self.driver = driver
 
+    def get_all_study_nodes(self):
+        query = f"MATCH (n:Study) RETURN n"
+
+        with self.driver.session() as session:
+            result = session.run(query)
+            records = [serialize_node(record["n"]) for record in result]
+            return records
+
     def get_all_experiments(self, accession):
         """Returns all Experiments attached to a Study"""
         get_all_query = (
