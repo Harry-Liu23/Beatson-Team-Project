@@ -6,6 +6,9 @@ stages:
 build_next:
   stage: build
   image: node
+  cache:
+    paths:
+      - /client/beatson-app/node_modules
   before_script:
     - cd client/beatson-app
   script:
@@ -13,22 +16,22 @@ build_next:
     - npm install
     - npm run build
 
-build_flask_neo4j:
-  stage: build
-  image: python
-  before_script: cd server
-  script:
-    - echo "building flask and neo4j..."
-    - python -m venv /flask-neo4j-env
-    - ls
-    - source /flask-neo4j-env/bin/activate
-    - pip install -r "requirements.txt"
-  artifacts:
-    untracked: false
-    when: on_success
-    expire_in: 30 days
-    paths:
-      - "/flask-neo4j-env"
+# build_flask_neo4j:
+#   stage: build
+#   image: python
+#   before_script: cd server
+#   script:
+#     - echo "building flask and neo4j..."
+#     - python -m venv /flask-neo4j-env
+#     - ls
+#     - source /flask-neo4j-env/bin/activate
+#     - pip install -r "requirements.txt"
+#   artifacts:
+#     untracked: false
+#     when: on_success
+#     expire_in: 30 days
+#     paths:
+#       - "/flask-neo4j-env"
 
 quality_next_lint:
   stage: quality
@@ -42,16 +45,24 @@ quality_flask_neo4j_lint:
 
 test_frontend:
   stage: test
+  image: node
+  cache:
+    paths:
+      - /client/beatson-app/node_modules
+  before_script:
+    - cd /client/beatson-app
   script:
     - echo "starting tests for frontend"
+    - npm test
 
 test_flask_neo4j:
+  image: neo4j:15.6
   stage: test
   before_script:
     - cd server
   script:
     - echo "starting test for flask and neo4j"
-    
+
 test_flask_app:
   stage: test
   script:
