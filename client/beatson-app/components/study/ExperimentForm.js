@@ -22,9 +22,8 @@ const ExperimentForm = ({ id }) => {
 
   const submitExperiment = () => {
       setRenderSampleForm(true);
-      const experimentJson = experimentFormat(expTitle, expDesc, accession)
-      console.log(experimentJson)
-      sendJsonToFlask(experimentJson, 'http://127.0.0.1:2020/create_experiment');
+      const experimentFormJson = experimentFormat(expTitle, expDesc, accession)
+      sendJsonToFlask(experimentFormJson, 'http://127.0.0.1:2020/create_experiment');
   }
 
   //Render form
@@ -89,3 +88,4 @@ const ExperimentForm = ({ id }) => {
 };
 
 export default ExperimentForm;
+``

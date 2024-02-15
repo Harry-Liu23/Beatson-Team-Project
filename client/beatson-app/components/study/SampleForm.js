@@ -20,7 +20,6 @@ const SampleForm = ({ samples, id }) => {
   const [numSamples, setNumSamples] = useState(samples);
   const expId = id;
   const [sampleSubmitDialog, setSampleSubmitDialog] = useState(false);
-  let sampleSuccess = null;
 
   // Initalise empty rows
   useEffect(() => {
@@ -129,7 +128,6 @@ const SampleForm = ({ samples, id }) => {
   ]);
 
   // SampleForm add/remove column and row logic
-
   const createNewRow = (idValue) => {
     const newRow = { sample_id : idValue };
     columns.forEach((column) => {
@@ -223,12 +221,12 @@ const SampleForm = ({ samples, id }) => {
   }
 
   const onProcessRowUpdateError = (params) => {
-    console.log("onProcessRowUpdateError");
-    console.log(params);
+    // neccessary for processRowUpdate to work
   }
 
+  // checks all samples in the form are complete and not undefined which is the default value.
+  // it adds these to cellValidationErrors object which contains list of neccessary data.
   const validateRows = () => {
-    // check nullness
     let cellValidationErrors = { errors : [] };
     rows.forEach((row) => {
       const keys = Object.keys(row);
@@ -243,32 +241,22 @@ const SampleForm = ({ samples, id }) => {
   }
 
   const submitSamples = () => {
-    // load 
     let cellValidateErrors = validateRows();
+    // checks all samples have values
     if (cellValidateErrors['errors'].length != 0) {
       setSampleSubmitDialog(true);
     }
     else {
-      // send all samples to flask.
-
-      // create rows as json
       rows.forEach((sample) => {
-        let sampleJson = {};
+        let sampleFormJson = {};
         let sampleCopy = Object.assign({}, sample);
         sampleCopy["experiment_id"] = id;
         let sample_id = sampleCopy["sample_id"];
         sampleCopy["sample_id"] = `${id}-${sample_id}`  
-        sampleJson["sample"] = sampleCopy;
-        sendJsonToFlask(sampleJson, 'http://127.0.0.1:2020/create_sample')
+        sampleFormJson["sample"] = sampleCopy;
+        sendJsonToFlask(sampleFormJson, 'http://127.0.0.1:2020/create_sample')
       })
-
-
     }
-    console.log(sampleSubmitDialog);
-  }
-
-  const logRows = () => {
-    console.log(rows);
   }
 
   return (
@@ -294,9 +282,6 @@ const SampleForm = ({ samples, id }) => {
           </Button>
           <Button id={`submit-${expId}`} onClick={() => submitSamples()}>
             Submit
-          </Button>
-          <Button onClick={logRows}>
-            Log Rows
           </Button>
 
           <Dialog open={sampleSubmitDialog}>
