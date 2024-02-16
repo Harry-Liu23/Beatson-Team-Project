@@ -50,13 +50,14 @@ test_frontend:
     paths:
       - /client/beatson-app/node_modules
   before_script:
-    - cd /client/beatson-app
+    - cd client/beatson-app
   script:
     - echo "starting tests for frontend"
+    - npm install
     - npm test
 
 test_flask_neo4j:
-  image: neo4j:15.6
+  image: neo4j:latest
   stage: test
   before_script:
     - cd server
