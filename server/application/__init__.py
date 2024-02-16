@@ -19,7 +19,7 @@ app.after_request(_add_cors)
 # REMOVE THIS BEFORE DEPLOYMENT
 DATABASE_USERNAME = "neo4j"
 DATABASE_URI = "bolt://neo4j:7687"
-DATABASE_PASSWORD = "12345678"
+DATABASE_PASSWORD = "neo4j"
 
 driver = GraphDatabase.driver(DATABASE_URI, auth=(DATABASE_USERNAME,DATABASE_PASSWORD))
 session = driver.session()
