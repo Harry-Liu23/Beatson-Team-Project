@@ -59,11 +59,12 @@ test_frontend:
     - npm test
 
 test_flask_neo4j:
-  image: neo4j:latest
+  image: ruby:latest
+  services: [neo4j:latest]
   stage: test
   before_script:
     - cd server
-    - python3 -m test.studyDaoTests
+    - python3 -m venv .venv
     - source venv/bin/activate
     - pip install -r requirements.txt
     - pip install .
