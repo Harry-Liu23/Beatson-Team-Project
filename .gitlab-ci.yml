@@ -59,7 +59,7 @@ test_frontend:
     - npm test
 
 test_flask_neo4j:
-  image: ruby:latest
+  image: python:latest
   services: [neo4j:latest]
   stage: test
   before_script:
