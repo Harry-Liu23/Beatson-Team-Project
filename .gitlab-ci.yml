@@ -64,17 +64,8 @@ test_flask_neo4j:
   services:
     - name: neo4j:latest
       alias: neo4j
-      entrypoint:
-        - "/bin/bash"
-        - "-c"
-        - |
-          echo "NEO4J_AUTH=neo4j/12345678" >> /var/lib/neo4j/conf/neo4j.conf
-          /docker-entrypoint.sh neo4j
 
   before_script:
-    - apt-get update -qy
-    - apt-get install -y telnet
-    # - telnet neo4j 7687
     - cd server
     - python -m venv .venv
     - source .venv/bin/activate
