@@ -6,6 +6,16 @@ def search_in_field(node_type, node_field, search_string):
     response = generic_dao.general_search_in_field(node_field=node_field,node_type=node_type,search_string=search_string)
     return jsonify(response), 200
 
+@app.route('/search_all_fields/<node_type>/<search_string>', methods='GET')
+def search_all_fields(node_type,search_string):
+    response = generic_dao.general_search_all_fields(node_type=node_type,search_string=search_string)
+    return jsonify(response),200
+
+@app.route('/search_all_nodes/<search_string>',methods='GET')
+def search_all_nodes(search_string):
+    response = generic_dao.general_search_all_nodes(search_string=search_string)
+    return jsonify(response), 200
+
 @app.route('/create_node/<node_type>',methods = 'POST')
 def create_node(node_type):
     # Ensure the request is JSON
