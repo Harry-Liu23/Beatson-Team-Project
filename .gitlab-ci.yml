@@ -34,11 +34,13 @@ build_next:
 #       - "/flask-neo4j-env"
 
 quality_next_lint:
+  image: ruby:latest
   stage: quality
   script:
     - echo "starting static analysis of next files"
 
 quality_flask_neo4j_lint:
+  image: ruby:latest
   stage: quality
   script:
     - echo "starting static analysis of python files"
@@ -57,17 +59,20 @@ test_frontend:
     - npm test
 
 test_flask_neo4j:
-  image: neo4j:latest
+  image: python:latest
+  services: [neo4j:latest]
   stage: test
   before_script:
     - cd server
+    - python -m venv .venv
+    - source .venv/bin/activate
+    - pip install -r requirements.txt
+    - pip install .
   script:
     - echo "starting test for flask and neo4j"
+    - python -m test.studyDaoTests
+    - python -m test.experimentDaoTests
+    - python -m test.sampleDaoTests
 
-test_flask_app:
-  stage: test
-  script:
-    - echo "starting test for flask app"
-     
 before_script:
    - echo DB_PASSWORD is $DB_PASSWORD
