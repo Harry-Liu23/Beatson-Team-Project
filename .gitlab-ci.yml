@@ -59,10 +59,22 @@ test_frontend:
     - npm test
 
 test_flask_neo4j:
-  image: python:latest
-  services: [neo4j:latest]
   stage: test
+  image: python:latest
+  services:
+    - name: neo4j:latest
+      alias: neo4j
+      entrypoint:
+        - "/bin/bash"
+        - "-c"
+        - |
+          echo "NEO4J_AUTH=neo4j/12345678" >> /var/lib/neo4j/conf/neo4j.conf
+          /docker-entrypoint.sh neo4j
+
   before_script:
+    - apt-get update -qy
+    - apt-get install -y telnet
+    # - telnet neo4j 7687
     - cd server
     - python -m venv .venv
     - source .venv/bin/activate
@@ -75,4 +87,4 @@ test_flask_neo4j:
     - python -m test.sampleDaoTests
 
 before_script:
-   - echo DB_PASSWORD is $DB_PASSWORD
+    - echo DB_PASSWORD is $DB_PASSWORD
