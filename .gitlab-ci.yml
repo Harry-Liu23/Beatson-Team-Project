@@ -63,7 +63,7 @@ test_flask_neo4j:
   stage: test
   before_script:
     - cd server
-    - virtualenv venv
+    - python -m venv .venv
     - source venv/bin/activate
     - pip install -r requirements.txt
     - pip install .
