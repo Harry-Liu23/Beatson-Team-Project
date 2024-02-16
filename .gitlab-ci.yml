@@ -53,6 +53,7 @@ test_frontend:
     - cd client/beatson-app
   script:
     - echo "starting tests for frontend"
+    - npm install
     - npm test
 
 test_flask_neo4j:
