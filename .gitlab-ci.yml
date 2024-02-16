@@ -61,13 +61,15 @@ test_flask_neo4j:
   stage: test
   before_script:
     - cd server
+    - virtualenv venv
+    - source venv/bin/activate
+    - pip install -r requirements.txt
+    - pip install .
   script:
     - echo "starting test for flask and neo4j"
+    - python -m test.studyDaoTests
+    - python -m test.experimentDaoTests
+    - python -m test.sampleDaoTests
 
-test_flask_app:
-  stage: test
-  script:
-    - echo "starting test for flask app"
-     
 before_script:
    - echo DB_PASSWORD is $DB_PASSWORD
