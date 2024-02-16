@@ -63,7 +63,7 @@ test_flask_neo4j:
   stage: test
   before_script:
     - cd server
-    - python3 -m venv .venv
+    - python3 -m test.studyDaoTests
     - source venv/bin/activate
     - pip install -r requirements.txt
     - pip install .
