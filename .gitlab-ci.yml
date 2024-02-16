@@ -34,11 +34,13 @@ build_next:
 #       - "/flask-neo4j-env"
 
 quality_next_lint:
+  image: ruby:latest
   stage: quality
   script:
     - echo "starting static analysis of next files"
 
 quality_flask_neo4j_lint:
+  image: ruby:latest
   stage: quality
   script:
     - echo "starting static analysis of python files"
