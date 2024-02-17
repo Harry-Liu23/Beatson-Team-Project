@@ -18,7 +18,7 @@ app.after_request(_add_cors)
 
 # REMOVE THIS BEFORE DEPLOYMENT
 DATABASE_USERNAME = "neo4j"
-DATABASE_URI = "bolt://neo4j:7687"
+DATABASE_URI = os.getenv("NEO4J_URL", "bolt://localhost:7687")
 DATABASE_PASSWORD = "12345678"
 
 driver = GraphDatabase.driver(DATABASE_URI, auth=(DATABASE_USERNAME,DATABASE_PASSWORD))
@@ -26,6 +26,7 @@ session = driver.session()
 sample_dao = sampleDao.sampleDao(driver)
 experiment_dao = experimentDao.experimentDao(driver)
 study_dao = studyDao.studyDao(driver)
+print(DATABASE_URI)
 generic_dao = genericDao.genericDao(driver)
 
 
