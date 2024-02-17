@@ -64,6 +64,7 @@ test_flask_neo4j:
   services:
     - name: neo4j:latest
       alias: neo4j
+      command: ["--auth", "neo4j/1234567"]
 
   before_script:
     - cd server
