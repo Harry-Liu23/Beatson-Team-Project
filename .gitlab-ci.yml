@@ -64,7 +64,7 @@ test_flask_neo4j:
   services:
     - name: neo4j:latest
       alias: neo4j
-      command: ["--auth", "neo4j/1234567"]
+      command: ["--auth", "neo4j/12345678"]
   variables:
     NEO4J_URL: "bolt://neo4j:7687"
 
