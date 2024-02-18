@@ -64,7 +64,7 @@ test_flask_neo4j:
   services:
     - name: neo4j:latest
       alias: neo4j
-      environment:
+      variables:
         NEO4J_AUTH: "neo4j/12345678"
   variables:
     NEO4J_CONTAINER_NAME: "neo4j"
