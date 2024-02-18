@@ -64,15 +64,13 @@ test_flask_neo4j:
   services:
     - name: neo4j:latest
       alias: neo4j
-      command: ["--auth", "neo4j/12345678"]
+      environment:
+        NEO4J_AUTH: "neo4j/12345678"
   variables:
     NEO4J_CONTAINER_NAME: "neo4j"
-    NEO4J_URL: "bolt://${NEO4J_IP_ADDRESS}:7687"
+    NEO4J_URL: "bolt://neo4j:7687"
 
   before_script:
-    - NEO4J_IP_ADDRESS=$(docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $NEO4J_CONTAINER_NAME) || { echo "Error getting Neo4j container IP address"; exit 1; }
-    - echo "Neo4j IP Address - $NEO4J_IP_ADDRESS"
-    - sed -i "s|NEO4J_IP_ADDRESS_PLACEHOLDER|$NEO4J_IP_ADDRESS|" .gitlab-ci.yml
     - cd server
     - python -m venv .venv
     - source .venv/bin/activate
