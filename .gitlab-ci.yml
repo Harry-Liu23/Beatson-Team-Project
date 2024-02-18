@@ -66,11 +66,14 @@ test_flask_neo4j:
       alias: neo4j
       variables:
         NEO4J_AUTH: "neo4j/12345678"
+        NEO4J_dbms_security_procedures_unrestricted: "algo.*"
+        NEO4J_dbms_security_procedures_whitelist: "algo.*"
   variables:
     NEO4J_CONTAINER_NAME: "neo4j"
     NEO4J_URL: "bolt://neo4j:7687"
 
   before_script:
+    - sleep 10
     - cd server
     - python -m venv .venv
     - source .venv/bin/activate
