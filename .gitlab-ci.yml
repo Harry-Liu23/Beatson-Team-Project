@@ -69,8 +69,6 @@ test_flask_neo4j:
     NEO4J_URL: "bolt://neo4j:7687"
 
   before_script:
-    - sleep 10  # Wait for Neo4j to start
-    - cypher-shell -u neo4j -p "12345678" -a bolt://neo4j:7687
     - cd server
     - python -m venv .venv
     - source .venv/bin/activate
