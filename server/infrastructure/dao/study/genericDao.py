@@ -153,4 +153,11 @@ class genericDao:
             print(f"Invalid node type: {node_type}")
             return False
 
+    def get_all_node_by_type(self, node_type):
+        query  = f"MATCH (n:{node_type}) RETURN n"
+
+        with self.driver.session() as session:
+            result = session.run(query)
+            records = [serialize_node(record["n"]) for record in result]
+            return records
         
