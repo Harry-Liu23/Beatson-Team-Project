@@ -12,9 +12,6 @@ const Navbar = () => {
           <Link href="/login">Login</Link>
         </li>
         <li>
-          <Link href="/upload">Upload</Link>
-        </li>
-        <li>
           <Link href="/study_upload">Study Upload</Link>
         </li>
       </ul>
