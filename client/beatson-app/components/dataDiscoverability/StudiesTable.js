@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Grid } from "@mui/material";
+import { 
+  Grid,
+  Card,
+ } from "@mui/material";
 
 const StudiesTable = () => {
-  // retrieve all studies from Neo4J via Flask
+  // rows for studies table where each row corresponds to a study
   const [rows, setRows] = useState([]);
 
   // define columns for studies table
@@ -40,7 +43,7 @@ const StudiesTable = () => {
     },
   ]);
 
-  // get all existing study nodes
+  // retrieve all studies from Neo4J via Flask
   const getStudiesData = async () => {
     try {
       const response = await fetch("http://127.0.0.1:2020/get_all_study");
@@ -62,18 +65,22 @@ const StudiesTable = () => {
   return (
     // display each study as a row on mui DataGrid
     <div>
-      <Grid
-        container
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <DataGrid
-          getRowId={(row) => row.accession}
-          rows={rows}
-          columns={columns}
-        />
-      </Grid>
+      <Card variant="outlined" sx={{ padding:6 }} > 
+        <Grid
+          container
+          rowGap={1}
+          direction="column"
+          alignItems="center"
+          justifyContent="center"
+          spacing={2}
+        >
+          <DataGrid
+            getRowId={(row) => row.accession}
+            rows={rows}
+            columns={columns}
+          />
+        </Grid>
+        </Card>
     </div>
   );
 };
