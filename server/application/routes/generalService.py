@@ -1,22 +1,22 @@
 from . import app,generic_dao
 from flask import json, request, jsonify
 
-@app.route('/search_in_field/<node_type>/<node_field>/<search_string>', methods='GET')
+@app.route('/search_in_field/<node_type>/<node_field>/<search_string>', methods=['GET'])
 def search_in_field(node_type, node_field, search_string):
     response = generic_dao.general_search_in_field(node_field=node_field,node_type=node_type,search_string=search_string)
     return jsonify(response), 200
 
-@app.route('/search_all_fields/<node_type>/<search_string>', methods='GET')
+@app.route('/search_all_fields/<node_type>/<search_string>', methods=['GET'])
 def search_all_fields(node_type,search_string):
     response = generic_dao.general_search_all_fields(node_type=node_type,search_string=search_string)
     return jsonify(response),200
 
-@app.route('/search_all_nodes/<search_string>',methods='GET')
+@app.route('/search_all_nodes/<search_string>',methods=['GET'])
 def search_all_nodes(search_string):
     response = generic_dao.general_search_all_nodes(search_string=search_string)
     return jsonify(response), 200
 
-@app.route('/create_node/<node_type>',methods = 'POST')
+@app.route('/create_node/<node_type>',methods = ['POST'])
 def create_node(node_type):
     # Ensure the request is JSON
     if not request.is_json:
@@ -40,7 +40,7 @@ def create_node(node_type):
         # print(e)
         return jsonify({"error": "An error occurred while creating the node."}), 500
     
-@app.route('/create_relation/,parent_node_type>/<child_node_type>/<parent_identifier>/<child_identifier>/<relationship_type>', methods = 'POST')
+@app.route('/create_relation/,parent_node_type>/<child_node_type>/<parent_identifier>/<child_identifier>/<relationship_type>', methods = ['POST'])
 def create_relation(parent_node_type, child_node_type, parent_identifier, child_identifier, relationship_type):
     if not request.is_json:
         return jsonify({"error": "Request must be JSON"}), 400
