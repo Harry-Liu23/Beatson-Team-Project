@@ -18,7 +18,7 @@ class testSearches(unittest.TestCase):
         pass
 
     def test_search_in_field(self):
-        search_string = "large intestine"
+        search_string = "Tissue Y"
         node_type = "Sample"
         search_field = "tissue"
         response = self.app.get(f'/search_in_field/{node_type}/{search_field}/{search_string}')
@@ -26,14 +26,14 @@ class testSearches(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_search_all_fields(self):
-        search_string = "large intestine"
+        search_string = "Tissue Y"
         node_type = "Sample"
         response = self.app.get(f'/search_all_fields/{node_type}/{search_string}')
         print(response.get_json())
         self.assertEqual(response.status_code, 200)
 
     def test_search_all_nodes(self):
-        search_string = "large intestine"
+        search_string = "Tissue Y"
         response = self.app.get(f'/search_all_nodes/{search_string}')
         print(response.get_json())
         self.assertEqual(response.status_code, 200)
