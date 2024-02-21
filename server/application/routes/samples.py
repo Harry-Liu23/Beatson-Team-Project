@@ -18,7 +18,9 @@ def create_sample():
     # Extract sample and sample_id_info data from the request
     sample_data = data.get('sample', {})
     experiment_id = sample_data.get('experiment_id', '')
-    sample_id = sample_data.get('sample_id', '')
+    sample_id = str(sample_data.get('sample_id', ''))
+    ## error was being caused here because sample id was an int
+    ## now casting to avoid issue at all costs.
     # Check if 'experiment_id' is provided
     if not experiment_id:
         return jsonify({"error": "Missing experiment_id in sample_data"}), 400

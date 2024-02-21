@@ -1,12 +1,61 @@
-image: blang/latex
-build:
-  tags:
-    - docker
-  script:
-    - latexmk -pdf Change_Log.tex
-  artifacts:
-    paths:
-      - "*.pdf"
+stages:
+  - build
+  - quality
+  - test
 
+build_next:
+  stage: build
+  image: node
+  before_script:
+    - cd client/beatson-app
+  script:
+    - echo "building next..."
+    - npm install
+    - npm run build
+
+build_flask_neo4j:
+  stage: build
+  image: python
+  before_script: cd server
+  script:
+    - echo "building flask and neo4j..."
+    - python -m venv /flask-neo4j-env
+    - ls
+    - source /flask-neo4j-env/bin/activate
+    - pip install -r "requirements.txt"
+  artifacts:
+    untracked: false
+    when: on_success
+    expire_in: 30 days
+    paths:
+      - "/flask-neo4j-env"
+
+quality_next_lint:
+  stage: quality
+  script:
+    - echo "starting static analysis of next files"
+
+quality_flask_neo4j_lint:
+  stage: quality
+  script:
+    - echo "starting static analysis of python files"
+
+test_frontend:
+  stage: test
+  script:
+    - echo "starting tests for frontend"
+
+test_flask_neo4j:
+  stage: test
+  before_script:
+    - cd server
+  script:
+    - echo "starting test for flask and neo4j"
+    
+test_flask_app:
+  stage: test
+  script:
+    - echo "starting test for flask app"
+     
 before_script:
    - echo DB_PASSWORD is $DB_PASSWORD

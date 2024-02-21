@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, use } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, useGridApiRef  } from "@mui/x-data-grid";
 import {
   DialogContent,
   DialogTitle,
@@ -12,12 +12,14 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
+import sendJsonToFlask from "../../services/BackendAPI";
 
 const SampleForm = ({ samples, id }) => {
   const [rows, setRows] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [numSamples, setNumSamples] = useState(samples);
   const expId = id;
+  const [sampleSubmitDialog, setSampleSubmitDialog] = useState(false);
 
   // Initalise empty rows
   useEffect(() => {
@@ -29,14 +31,14 @@ const SampleForm = ({ samples, id }) => {
   //Sample form additional columns var
   const additionalColumns = {
     cancerType: {
-      field: "cancerType",
+      field: "cancer_type",
       headerName: "Cancer Type",
       editable: true,
     },
     weight: { field: "weight", headerName: "Weight", editable: true },
     control: { field: "control", headerName: "Control", editable: true },
     anotherField: {
-      field: "anotherField",
+      field: "another_field",
       headerName: "Another Field",
       editable: true,
     },
@@ -46,79 +48,79 @@ const SampleForm = ({ samples, id }) => {
   //Sample form column definitions
   const [columns, setColumns] = useState([
     {
-      field: "id",
+      field: "sample_id",
       headerName: "Sample ID",
       width: 100,
     },
     {
-      field: "sampleGroup",
+      field: "group",
       headerName: "Sample Group",
       editable: true,
       width: 150,
     },
     {
-      field: "sampleProject",
+      field: "project",
       headerName: "Sample Project",
       editable: true,
       width: 120,
     },
     {
-      field: "sampleDescription",
+      field: "description",
       headerName: "Description",
       editable: true,
       width: 100,
     },
     {
-      field: "sampleOrganism",
+      field: "organism",
       headerName: "Organism",
       editable: true,
       width: 80,
     },
     {
-      field: "sampleTissue",
+      field: "tissue",
       headerName: "Tissue",
       editable: true,
       width: 90,
     },
     {
-      field: "sampleSex",
+      field: "sex",
       headerName: "Sex",
       editable: true,
       width: 75,
     },
     {
-      field: "sampleCellLine",
+      field: "cell_line",
       headerName: "Cell Line",
       editable: true,
       width: 100,
     },
     {
-      field: "sampleBiomaterialProvider",
+      field: "biometric_provider",
       headerName: "Biomaterial Provider",
       editable: true,
       width: 150,
     },
     {
-      field: "sampleMouseModel",
+      field: "mouse_model",
       headerName: "Mouse Model",
       editable: true,
       width: 100,
     },
     {
-      field: "sampleDatePrep",
+      field: "date",
       headerName: "Date",
       editable: true,
       width: 60,
       type: "date",
     },
     {
-      field: "sampleRepeat",
+      field: "biological_repeat",
       headerName: "Biological Repeat",
       editable: true,
       width: 150,
     },
     {
-      field: "sampleFastQ",
+      field: "fastq",
       headerName: "FASTQ",
       editable: true,
       width: 70,
@@ -126,13 +128,28 @@ const SampleForm = ({ samples, id }) => {
   ]);
 
   // SampleForm add/remove column and row logic
-
-  const createNewRow = (id) => {
-    return { id };
+  const createNewRow = (idValue) => {
+    const newRow = { sample_id : idValue };
+    columns.forEach((column) => {
+      if (column.field != "sample_id") {
+        newRow[column.field] = null;
+    }
+  })
+    return newRow;
   };
 
   const addNewRow = () => {
     setRows((rows) => [...rows, createNewRow(rows.length + 1)]);
+  };
+
+  const addCharaceristicToRow = (characteristic) => {
+    const rowUpdate = [...rows];
+    rowUpdate.forEach((row) => row[characteristic] = undefined);
+    setRows(rowUpdate);
+  }
+
+  const removeCharacteristicFromRow = (characteristic) => {
+    rows.forEach((row) => delete row[characteristic]);
   };
 
   //getFields returns an object where keys are the indices of additionalColumns
@@ -175,6 +192,7 @@ const SampleForm = ({ samples, id }) => {
         // characterstic is to be added as a new column
         if (!currentSampleCharacteristics.includes(characteristicField)) {
           newSampleCharacteristics.push(additionalColumns[characteristicField]);
+          addCharaceristicToRow(additionalColumns[characteristicField].field);
         }
       } else {
         // characteristic is to be deleted from column
@@ -182,6 +200,7 @@ const SampleForm = ({ samples, id }) => {
           const newRemovedList = newSampleCharacteristics.filter(
             (column) => column.field !== characteristicField
           );
+          removeCharacteristicFromRow(characteristicField);
           newSampleCharacteristics = newRemovedList;
         }
       }
@@ -189,6 +208,56 @@ const SampleForm = ({ samples, id }) => {
     setColumns(newSampleCharacteristics);
     setOpenDialog(false);
   };
+
+  const processRowUpdate = (newRow) =>{
+    console.log(newRow)
+    var newRows = rows.slice();
+    for(var i = 0; i < rows.length; i++){
+      if(rows[i]['sample_id'] == newRow['sample_id']){
+        newRows[i] = newRow;
+      }
+    }
+    setRows(newRows);
+  }
+
+  const onProcessRowUpdateError = (params) => {
+    // neccessary for processRowUpdate to work
+  }
+
+  // checks all samples in the form are complete and not undefined which is the default value.
+  // it adds these to cellValidationErrors object which contains list of neccessary data.
+  const validateRows = () => {
+    let cellValidationErrors = { errors : [] };
+    rows.forEach((row) => {
+      const keys = Object.keys(row);
+      keys.forEach((key) => {
+        if( row[key] == undefined){
+          const newError = '{ " ' + row['id'] + ' " : " Cell ' + key + '- Value is null " }';
+          cellValidationErrors['errors'].push(JSON.parse(newError));
+        }
+      });
+    });
+    return cellValidationErrors
+  }
+
+  const submitSamples = () => {
+    let cellValidateErrors = validateRows();
+    // checks all samples have values
+    if (cellValidateErrors['errors'].length != 0) {
+      setSampleSubmitDialog(true);
+    }
+    else {
+      rows.forEach((sample) => {
+        let sampleFormJson = {};
+        let sampleCopy = Object.assign({}, sample);
+        sampleCopy["experiment_id"] = id;
+        let sample_id = sampleCopy["sample_id"];
+        sampleCopy["sample_id"] = `${id}-${sample_id}`  
+        sampleFormJson["sample"] = sampleCopy;
+        sendJsonToFlask(sampleFormJson, 'http://127.0.0.1:2020/create_sample')
+      })
+    }
+  }
 
   return (
     <div>
@@ -200,15 +269,28 @@ const SampleForm = ({ samples, id }) => {
       >
         <Grid item sx={{ m: 2 }}>
           <Typography variant="h4" color="blue-gray" align="center">
-            Sample Details - {expId}
+            Sample Details {expId}
           </Typography>
         </Grid>
 
         <Grid item>
-          <Button onClick={addNewRow}>Add Sample</Button>
+          <Button onClick={addNewRow}>
+            Add Sample
+          </Button>
           <Button onClick={() => setOpenDialog(true)}>
             Add/Remove Characteristics
           </Button>
+          <Button id={`submit-${expId}`} onClick={() => submitSamples()}>
+            Submit
+          </Button>
+
+          <Dialog open={sampleSubmitDialog}>
+            <DialogTitle>Submission Failed</DialogTitle>
+            <DialogContent>You did not enter values for all samples.</DialogContent>
+            <DialogActions>
+              <Button onClick={() => setSampleSubmitDialog(false)}>Close</Button>
+            </DialogActions>
+          </Dialog>
 
           <Dialog open={openDialog}>
             <DialogTitle>Select characteristic to add or remove</DialogTitle>
@@ -234,7 +316,13 @@ const SampleForm = ({ samples, id }) => {
             </DialogActions>
           </Dialog>
 
-          <DataGrid rows={rows} columns={columns} />
+          <DataGrid 
+          rows={rows} 
+          columns={columns}
+          getRowId = {(row) => row.sample_id}
+          processRowUpdate={(newRow, oldRow) => processRowUpdate(newRow)}
+          onProcessRowUpdateError={onProcessRowUpdateError}
+          />
         </Grid>
       </Grid>
     </div>
