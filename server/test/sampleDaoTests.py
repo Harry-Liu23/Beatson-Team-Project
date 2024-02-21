@@ -9,7 +9,7 @@ import unittest
 import json
 from application import app
 
-class TestStudyCreation(unittest.TestCase):
+class testStudyCreation(unittest.TestCase):
     def setUp(self):
         self.app = app.test_client()
 
