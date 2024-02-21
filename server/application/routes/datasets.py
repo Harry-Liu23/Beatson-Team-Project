@@ -4,10 +4,10 @@ from flask import request, jsonify, json
 @app.route('/create_dataset', methods=['POST'])
 def create_datasets():
     dataset_data = request.json
-    dataset = dataset_data.get('dataset', {})
-    accession = dataset_data.get('sample_id', '')
-    dataset_id = dataset_data.get('dataset_id', '')
-    data_dataset_experiment = json.dump(dataset_data)
+    dataset = dataset_data.get('dataset')
+    data_dataset_experiment = json.dumps(dataset)
+    dataset_id = dataset["dataset_id"]
+    accession = dataset["sample_id"]
     try:
         temp_dataset_node = generic_dao.get_node(data_dataset_experiment.__getattribute__("dataset_id"))
         if temp_dataset_node is not None:
@@ -16,7 +16,7 @@ def create_datasets():
     except Exception as e:
         pass
     created_dataset_result = generic_dao.create_node(node_type='Dataset', data=data_dataset_experiment)
-    rel_result = generic_dao.relationship_builder(parent_node_type='Sample', child_node_type='Dataset', parent_identifier=accession, child_identifier= dataset_id)
+    rel_result = generic_dao.relationship_builder(relationship_type= "contains", parent_node_type='Sample', child_node_type='Dataset', parent_identifier=accession, child_identifier= dataset_id)
     response_data = {
         "message" : f"Dataset node {dataset_id} for sample {accession}"
     }
@@ -50,10 +50,10 @@ def delete_dataset(dataset_id):
         return jsonify({"message": f"Dataset id: {dataset_id} deleted successfully"}), 200
     return jsonify({"error": f"Unable to delete Dataset id: {dataset_id}"}), 500
 
-@app.route("/get_sample/<dataset_id>", methods=['GET'])
+@app.route("/get_dateset_sample/<dataset_id>", methods=['GET'])
 def get_sample_dataset(dataset_id):
     sample_json = genericDao.get_node("dataset",dataset_id)
-    sample_json_dumped = json.dump(sample_json)
+    sample_json_dumped = json.dumps(sample_json)
     parent_sample_id = sample_json_dumped.__getitem__("sample_id")
     get_sample_res = generic_dao.get_node(node_type="Sample", identifier=parent_sample_id)
     if get_sample_dataset:
