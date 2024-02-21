@@ -4,6 +4,6 @@ setup(
     name='beatson_app',
     version='1.0.0',
     packages = find_packages(),    
-    py_modules=['Infrastructure','application','test'],
+    py_modules=['infrastructure','application','test'],
     include_package_data=True,
 )
