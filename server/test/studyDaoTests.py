@@ -52,5 +52,16 @@ class testStudy(unittest.TestCase):
         # update_result = generic_dao.update_node(node_type = 'Study',identifier = "access", updated_data = update_data)
         self.assertEqual(response.status_code, 200) 
 
+    def test_get_all_study(self):
+        response = self.app.get(f'/get_all_study')
+        self.assertEqual(response.status_code,200)
+
+    def test_get_all_nodes(self):
+        experiment = "Experiment"
+        study = "Study"
+        sample = "Sample"
+        response = self.app.get(f'/get_all_node_by_type/{sample}')
+        self.assertEqual(response.status_code,200)
+
 if __name__ == '__main__':
     unittest.main()

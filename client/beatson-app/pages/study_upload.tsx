@@ -1,4 +1,4 @@
-import StudyForm from "../components/Study/StudyForm";
+import StudyForm from "../components/study/StudyForm";
 
 /* website.url/study_upload */
 
