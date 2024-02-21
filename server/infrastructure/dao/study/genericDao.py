@@ -1,6 +1,6 @@
 import flask as flask
 from flask import json
-from server.process.nodeProcess import serialize_node
+from server.process.nodeProcess import serialize_node, group_by_key
 
 
 class genericDao:
@@ -199,11 +199,11 @@ class genericDao:
         query = (
         f"MATCH (n)"
         f"WHERE any(key in keys(n) WHERE toLower(n[key]) CONTAINS toLower('{search_string}'))"
-        "RETURN n"
-
+        "RETURN n, labels(n) as labels"
         )
 
         with self.driver.session() as session:
             result = session.run(query)
-            records = [serialize_node(record["n"]) for record in result]
+            records = [serialize_node(record) for record in result]
+            records = group_by_key(records)
             return records
