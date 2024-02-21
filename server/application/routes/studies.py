@@ -10,7 +10,7 @@ def create_study():
     # Convert the study data to JSON string
     data_study_json = json.dumps(data_study)
     try:
-        temp_study_node = generic_dao.get_node(data_study_json.__getitem__("accession"))
+        temp_study_node = generic_dao.get_node(node_type="Study",identifier=data_study.__getitem__("accession"))
         if temp_study_node is not None:
             response_data = {"error": "Study already exist!"}
             return jsonify(response_data),500;
