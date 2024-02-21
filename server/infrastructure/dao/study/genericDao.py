@@ -1,6 +1,6 @@
 import flask as flask
 from flask import json
-from server.process.nodeProcess import serialize_node, group_by_key
+from server.process.nodeProcess import serialize_node, group_by_key,serialize_node_with_label
 
 
 class genericDao:
@@ -204,6 +204,6 @@ class genericDao:
 
         with self.driver.session() as session:
             result = session.run(query)
-            records = [serialize_node(record) for record in result]
+            records = [serialize_node_with_label(record) for record in result]
             records = group_by_key(records)
             return records
