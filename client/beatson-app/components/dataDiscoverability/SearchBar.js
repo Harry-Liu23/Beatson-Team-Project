@@ -8,9 +8,11 @@ import {
     spacing,
     Box,
   } from "@mui/material";
-  import SearchIcon from '@mui/icons-material/Search';
+import SearchIcon from '@mui/icons-material/Search';
 import StudiesTable from "./StudiesTable";
 import SamplesTable from "./SamplesTable";
+
+//@app.route('/search_all_nodes/<search_string>',methods=['GET'])
 
 //@app.route('/search_all_nodes/<search_string>',methods=['GET'])
 
