@@ -9,7 +9,7 @@ import unittest
 import json
 from application import app
 
-class sampleStudyDeleteTests(unittest.TestCase):
+class allDeleteTests(unittest.TestCase):
 
     def setUp(self):
         self.app = app.test_client()
