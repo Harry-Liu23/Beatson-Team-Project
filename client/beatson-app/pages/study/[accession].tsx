@@ -1,11 +1,26 @@
+import { useRouter } from 'next/router';
 import DisplayStudy from '../../components/Study/DisplayStudy';
-import { getStudyDetails, getStudyAccessionList } from '../../lib/studies';
-// instead of lib/studies we just use wherever those get methods are? routes...?
 
-export default function Post() {
+export default function Study() {
+  const router = useRouter();
+  const {study} = router.query;
+
+  // studyData is always null, because study is a JSON object
+  // console.log(studyData);
+  if (!study) {
+    return <div>Loading Study...</div>; 
+  }
+  console.log(study);
+  const studyData = typeof study === 'string' ? JSON.parse(study) : null;
+  console.log(typeof studyData);
+  console.log(studyData.accession);
+
   return (
-    <DisplayStudy>
-
-    </DisplayStudy>
+    <div>
+      {/* {studyData && <DisplayStudy study={studyData} />}
+      {study}
+      {studyData} */}
+      <DisplayStudy studyData={studyData} />
+    </div>
   )
 }

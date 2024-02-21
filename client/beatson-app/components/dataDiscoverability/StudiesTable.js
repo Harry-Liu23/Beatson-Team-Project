@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
+import Router from 'next/router';
 import { 
   Grid,
   Card,
@@ -78,6 +79,12 @@ const StudiesTable = () => {
             getRowId={(row) => row.accession}
             rows={rows}
             columns={columns}
+            onRowClick={(row) => {
+              Router.push({
+                pathname: '/study/${row.accession}',
+                query: { study: JSON.stringify(row.row) },
+            });
+            }}
           />
         </Grid>
         </Card>
