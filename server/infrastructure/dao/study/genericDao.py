@@ -128,6 +128,23 @@ class genericDao:
         else:
             print(f"Invalid node type: {node_type}")
             return False
+        
+    def get_all_node_by_type(self, node_type):
+        query  = f"MATCH (n:{node_type}) RETURN n"
+
+        with self.driver.session() as session:
+            result = session.run(query)
+            records = [serialize_node(record["n"]) for record in result]
+            return records
+
+        
+    def get_all_node_by_type(self, node_type):
+        query  = f"MATCH (n:{node_type}) RETURN n"
+
+        with self.driver.session() as session:
+            result = session.run(query)
+            records = [serialize_node(record["n"]) for record in result]
+            return records
 
     def delete_node(self, node_type, identifier):
         # Mapping of node types to their identifier field and Cypher MATCH clause for deletion
@@ -153,11 +170,40 @@ class genericDao:
             print(f"Invalid node type: {node_type}")
             return False
 
-    def get_all_node_by_type(self, node_type):
-        query  = f"MATCH (n:{node_type}) RETURN n"
+        
+    def general_search_in_field(self, node_type, node_field, search_string):
+        query = (
+            f"MATCH (n:{node_type}) "
+            f"WHERE toLower(n.{node_field}) CONTAINS toLower('{search_string}') "
+            f"RETURN n"
+        )
 
         with self.driver.session() as session:
             result = session.run(query)
             records = [serialize_node(record["n"]) for record in result]
             return records
         
+    def general_search_all_fields(self, node_type, search_string):
+        query = (
+        f"MATCH (n:{node_type}) "
+        f"WHERE ANY(key in keys(n) WHERE toLower(n[key]) CONTAINS toLower('{search_string}')) "
+        "RETURN n"
+        )
+
+        with self.driver.session() as session:
+            result = session.run(query)
+            records = [serialize_node(record["n"]) for record in result]
+            return records
+
+    def general_search_all_nodes(self, search_string):
+        query = (
+        f"MATCH (n)"
+        f"WHERE any(key in keys(n) WHERE toLower(n[key]) CONTAINS toLower('{search_string}'))"
+        "RETURN n"
+
+        )
+
+        with self.driver.session() as session:
+            result = session.run(query)
+            records = [serialize_node(record["n"]) for record in result]
+            return records
