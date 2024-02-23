@@ -87,7 +87,7 @@ class genericDao:
         elif node_type == 'Sample':
             update_query = "MATCH (s:Sample {sample_id: $sample_id}) "
             parameters = {'sample_id': identifier}
-        elif node_Type == 'Dataset':
+        elif node_type == 'Dataset':
             update_query = "MATCH (s:Dataset {dataset_id: $dataset_id}) "
             parameters = {'dataset_id': identifier}
 

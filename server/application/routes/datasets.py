@@ -26,8 +26,11 @@ def create_datasets():
 def update_datasets(dataset_id):
     dataset_data = request.json
     try:
-        update_result = generic_dao.update_node(node_type='Dataset', identifier=dataset_id, updated_data=dataset_data)
-        if update_datasets:
+        update_result = generic_dao.update_node(
+            node_type='Dataset', 
+            identifier=dataset_id, 
+            updated_data=dataset_data)
+        if update_result:
             response_data = {
                 "message" : "Dataset node updated successfully"
             }
@@ -49,14 +52,4 @@ def delete_dataset(dataset_id):
     if deletion_success:
         return jsonify({"message": f"Dataset id: {dataset_id} deleted successfully"}), 200
     return jsonify({"error": f"Unable to delete Dataset id: {dataset_id}"}), 500
-
-@app.route("/get_dateset_sample/<dataset_id>", methods=['GET'])
-def get_sample_dataset(dataset_id):
-    sample_json = genericDao.get_node("dataset",dataset_id)
-    sample_json_dumped = json.dumps(sample_json)
-    parent_sample_id = sample_json_dumped.__getitem__("sample_id")
-    get_sample_res = generic_dao.get_node(node_type="Sample", identifier=parent_sample_id)
-    if get_sample_dataset:
-        return jsonify(get_sample_dataset), 200
-    return jsonify( {"message": f"Could not find sample attached to dataset {dataset_id}"}), 500
 
