@@ -7,7 +7,7 @@ export default function DiscoverStudies() {
   return (
     <div>
       <SearchBar />
-      <StudiesTable />
+      {/* <StudiesTable /> */}
     </div>
   );
 }
