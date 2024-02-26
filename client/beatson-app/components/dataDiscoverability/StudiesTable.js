@@ -5,9 +5,11 @@ import {
   Card,
  } from "@mui/material";
 
-const StudiesTable = () => {
+const StudiesTable = (prop) => {
   // rows for studies table where each row corresponds to a study
   const [rows, setRows] = useState([]);
+  const [newChange, setNewChange] = useState(prop.change);
+
 
   // define columns for studies table
   const [columns, setColumns] = useState([
@@ -43,24 +45,27 @@ const StudiesTable = () => {
     },
   ]);
 
-  // retrieve all studies from Neo4J via Flask
-  const getStudiesData = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:2020/get_all_study");
-      if (response.status !== 200) {
-        throw new Error("Unable to fetch studies: ", data.message);
-      }
-      const data = await response.json();
-      setRows(data.study);
-    } catch (error) {
-      console.error("Unable to fetch data: ", error);
-    }
-  };
+  // if change to search has changed then call get studies data
 
-  // get studies when the studies table is first rendered
+  // retrieve all studies from Neo4J via Flask
+  const getStudiesData = () => {
+    setRows(prop.studies);
+  }
+
+  // //get studies when the studies table is first rendered
   useEffect(() => {
     getStudiesData();
   }, []);
+
+  if (newChange !== prop.change) {
+    try {
+      setRows(prop.studies);
+      setNewChange(!newChange);
+    }
+    catch (error) {
+      console.log("No studies found " + error);
+    }
+  }
 
   return (
     // display each study as a row on mui DataGrid
