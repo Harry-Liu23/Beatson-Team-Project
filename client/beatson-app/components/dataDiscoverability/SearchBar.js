@@ -6,18 +6,24 @@ import {
     Card,
     TextField,
     spacing,
+    Box,
   } from "@mui/material";
+  import SearchIcon from '@mui/icons-material/Search';
+import StudiesTable from "./StudiesTable"
 
 //@app.route('/search_all_nodes/<search_string>',methods=['GET'])
 
 const SearchBar = () => {
     const [searchQuery, setSearchQuery] = useState("");
+    const [renderTable, setRenderTable] = useState(true);
+    const [studySend, setStudySend] = useState([]);
+    const [change, setChange] = useState(false);
 
     const handleInputChange = (event) => {
         setSearchQuery(event.target.value);
     }
 
-    const handleSearchSubmit = async (event) => {
+    const handleSearchSubmit = async () => {
         event.preventDefault();
         if (searchQuery == "") {
             // do nothing there was no text field entered.
@@ -30,9 +36,13 @@ const SearchBar = () => {
                   throw new Error("Unable to fetch studies containing that text: ", data.message);
                 }
                 const data = await response.json();
-                console.log(data);
-                //setRows(data.study);
-                //console.log(rows);
+                console.log(data["Study"]);
+                if (data["Study"] !== undefined) {
+                    setStudySend(data["Study"]);
+                } else {
+                    setStudySend([]);
+                }
+                setChange(!change);
             }
             catch (error) {
                 console.error("Unable to fetch data: ", error);
@@ -41,15 +51,25 @@ const SearchBar = () => {
     }
 
     return (
-        <form onSubmit={handleSearchSubmit}>
-            <input 
-            type="text" 
-            placeholder="Search"
-            value={searchQuery}
-            onChange={handleInputChange}
-            />
-            <button type = "submit" onClick={handleSearchSubmit}>Search</button>
-        </form>
+        <div>
+        <Box sx={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', padding: '1em'}}>
+            <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+            <TextField
+                id="input-with-sx" 
+                label="Search" 
+                variant="standard" 
+                onChange={handleInputChange} 
+                onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    handleSearchSubmit()
+                }
+            }}/>
+            <Button type = "submit" onClick={handleSearchSubmit}>Search</Button>
+        </Box>
+
+        {renderTable && (<StudiesTable studies = {studySend} change = {change}/>)}
+        </div>
     );
 }
 
