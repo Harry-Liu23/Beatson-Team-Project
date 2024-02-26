@@ -5,8 +5,7 @@ const DisplayStudy = ({studyData}) => {
     const [experiments, setExperiments] = useState([]);
     const [sampleData, setSampleData] = useState([])
     const accession = studyData.accession;
-    // let experiments = null;
-    // const [samples, setSamples] = ({});
+    const [experimentWithSamples, setExperimentsWithSamples] = useState({});
 
     //Gets list of all experiments
     const getExperimentData = async () => {
@@ -23,14 +22,8 @@ const DisplayStudy = ({studyData}) => {
         } catch (error) {
           console.error("Unable to fetch experiment data: ", error);
         };
-      printExperiments(experiments);
     };
 
-    const printExperiments = (experiments) => {
-      experiments.forEach(element => {
-        console.log(element)
-      });
-    }
     //Gets sample data for one experiment
     const getSampleData = async (experiment_id) => {
         try {
@@ -39,7 +32,7 @@ const DisplayStudy = ({studyData}) => {
               throw new Error("Unable to fetch studies: ", data.message);
             }
             const samples = await response.json();
-            // console.log(sampleData)
+            console.log("sampleData", samples);
             setSampleData([...sampleData, samples]);
           } catch (error) {
             console.error("Unable to fetch sample data: ", error);
@@ -54,16 +47,35 @@ const DisplayStudy = ({studyData}) => {
     }
 
     // Get experiments and samples data when DisplayStudy is first rendered
+    // useEffect(() => {
+    //     let tempExperimentAndSamples = {}
+    //     getExperimentData();
+    //     experiments.forEach(experiment => {
+    //       getSampleData(experiment.experiment_id)
+    //       tempExperimentAndSamples[experiment.experiment_id] = sampleData;
+    //       setExperimentsWithSamples([...experimentWithSamples, tempExperimentAndSamples ])
+    //       tempExperimentAndSamples = {};
+    //     });
+    //     // getAllSampleData();
+    //     console.log("experiments and samples", experimentWithSamples);
+    // }, []);
+
     useEffect(() => {
-        getExperimentData();
-        let experimentWithSamples = {};
-        experiments.forEach(experiment => {
-          getSampleData(experiment.experiment_id)
+      getExperimentData();
+      let experimentWithSamples = {};
+      if(experiments){
+        console.log("if experiments", experiments)
+      experiments.forEach(experiment => {
+        console.log("experiment in exper", experiment);
+        getSampleData(experiment.experiment_id)
+        if(sampleData){
           experimentWithSamples[experiment.experiment_id] = sampleData;
-        });
-        // getAllSampleData();
-        console.log("experiments and samples", experimentWithSamples);
-    }, []);
+        };
+      });
+    };
+      // getAllSampleData();
+      console.log("experiments and samples", experimentWithSamples);
+  }, []);
 
 
     const [columns, setColumns] = useState([
@@ -86,14 +98,19 @@ const DisplayStudy = ({studyData}) => {
 
     return (
         <div>
-            {studyData.accession}
-            <DataGrid
-              getRowId={(row) => row.experiment_id}
-              rows={experiments}
-              columns={columns}
+          {studyData.accession}
+
+          {/* {experimentWithSamples && (
+            <div>
+              {experimentWithSamples.length}
+
+            </div>
+          )} */}
+          <DataGrid
+            getRowId={(row) => row.experiment_id}
+            rows={experiments}
+            columns={columns}
             />
-            {experiments.objects}
-            {/* {experimentWithSamples} */}
         </div>
 
 
