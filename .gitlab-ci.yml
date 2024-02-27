@@ -43,14 +43,18 @@ quality_next_lint:
     - cd client/beatson-app
     - npm install
   script:
-    - npm lint
+    - npm run lint
   # only:
   #   - merge_requests
   #   - master
 
 quality_flask_neo4j_lint:
   image: python:latest
-  stage: quality
+  stage: quality  
+  before_script:
+    - cd server
+    - python -m venv .venv
+    - source .venv/bin/activate
   script:
     - pip install -r requirements.txt
     - pylint --output-format=parseable server
