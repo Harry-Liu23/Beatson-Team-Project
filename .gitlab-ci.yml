@@ -5,7 +5,7 @@ stages:
 
 build_next:
   stage: build
-  image: node
+  image: node:latest
   cache:
     paths:
       - /client/beatson-app/node_modules
@@ -34,16 +34,29 @@ build_next:
 #       - "/flask-neo4j-env"
 
 quality_next_lint:
-  image: ruby:latest
   stage: quality
+  image: node:latest
+  cache:
+    paths:
+      - /client/beatson-app/node_modules
+  before_script:
+    - cd client/beatson-app
+    - npm install
   script:
-    - echo "starting static analysis of next files"
+    - npm lint
+  # only:
+  #   - merge_requests
+  #   - master
 
 quality_flask_neo4j_lint:
-  image: ruby:latest
+  image: python:latest
   stage: quality
   script:
-    - echo "starting static analysis of python files"
+    - pip install -r requirements.txt
+    - pylint --output-format=parseable server
+  # only:
+  #   - merge_requests
+  #   - master
 
 test_frontend:
   stage: test
