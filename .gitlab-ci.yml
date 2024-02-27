@@ -57,6 +57,7 @@ quality_flask_neo4j_lint:
     - source .venv/bin/activate
   script:
     - pip install -r requirements.txt
+    - pip install .
     - pylint --output-format=parseable server
   # only:
   #   - merge_requests
