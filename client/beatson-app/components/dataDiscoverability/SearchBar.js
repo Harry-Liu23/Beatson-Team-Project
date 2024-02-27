@@ -9,7 +9,8 @@ import {
     Box,
   } from "@mui/material";
   import SearchIcon from '@mui/icons-material/Search';
-import StudiesTable from "./StudiesTable"
+import StudiesTable from "./StudiesTable";
+import SamplesTable from "./SamplesTable";
 
 //@app.route('/search_all_nodes/<search_string>',methods=['GET'])
 
@@ -17,6 +18,7 @@ const SearchBar = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [renderTable, setRenderTable] = useState(true);
     const [studySend, setStudySend] = useState([]);
+    const [sampleSend, setSampleSend] = useState([]);
     const [change, setChange] = useState(false);
 
     const handleInputChange = (event) => {
@@ -37,11 +39,22 @@ const SearchBar = () => {
                 }
                 const data = await response.json();
                 console.log(data["Study"]);
+                console.log(data["Sample"]);
+                
+                //Data to populate study table
                 if (data["Study"] !== undefined) {
                     setStudySend(data["Study"]);
                 } else {
                     setStudySend([]);
                 }
+
+                //Data to populate sample table
+                if (data["Sample"] !== undefined) {
+                    setSampleSend(data["Sample"]);
+                } else {
+                    setSampleSend([]);
+                }
+
                 setChange(!change);
             }
             catch (error) {
@@ -69,6 +82,7 @@ const SearchBar = () => {
         </Box>
 
         {renderTable && (<StudiesTable studies = {studySend} change = {change}/>)}
+        {renderTable && (<SamplesTable samples = {sampleSend} change = {change} />)}
         </div>
     );
 }

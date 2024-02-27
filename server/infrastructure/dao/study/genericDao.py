@@ -207,3 +207,10 @@ class genericDao:
             records = [serialize_node_with_label(record) for record in result]
             records = group_by_key(records)
             return records
+
+    def get_study_from_experiment(self, experiment_id):
+        query = f"MATCH (s:Study)-[:contains]->(e:Experiment {experiment_id:{experiment_id}}) RETURN s;"
+
+        with self.driver.session() as session:
+            result = session.run(query)
+            return result
