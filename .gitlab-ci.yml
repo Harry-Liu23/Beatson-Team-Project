@@ -34,7 +34,7 @@ build_next:
 #       - "/flask-neo4j-env"
 
 quality_next_lint:
-  stage: linting
+  stage: quality
   image: node:latest
   cache:
     paths:
