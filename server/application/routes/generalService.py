@@ -76,5 +76,5 @@ def create_relation(parent_node_type, child_node_type, parent_identifier, child_
 
 @app.route('/get_study_from_experiment/<experiment_id>', methods=['GET'])
 def get_samples_study(experiment_id):
-    response = generic_dao.get_study_from_experiment(experiment_id=experiment_id)
+    response = generic_dao.get_study_from_experiment(identifier=experiment_id)
     return jsonify(response), 200

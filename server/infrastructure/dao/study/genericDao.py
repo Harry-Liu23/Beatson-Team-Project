@@ -214,9 +214,10 @@ class genericDao:
             records = group_by_key(records)
             return records
 
-    def get_study_from_experiment(self, experiment_id):
-        query = f"MATCH (s:Study)-[:contains]->(e:Experiment {experiment_id:{experiment_id}}) RETURN s;"
-
+    def get_study_from_experiment(self, identifier):
+        print(identifier)
+        query = "MATCH (s:Study)-[:contains]->(e:Experiment {experiment_id: $identifier}) RETURN s;"
+        print(query)
         with self.driver.session() as session:
             result = session.run(query)
             return result
