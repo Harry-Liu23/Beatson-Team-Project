@@ -30,14 +30,14 @@ const SampleForm = ({ samples, id }) => {
 
   //Sample form additional columns var
   const additionalColumns = {
-    cancerType: {
+    cancer_type: {
       field: "cancer_type",
       headerName: "Cancer Type",
       editable: true,
     },
     weight: { field: "weight", headerName: "Weight", editable: true },
     control: { field: "control", headerName: "Control", editable: true },
-    anotherField: {
+    another_field: {
       field: "another_field",
       headerName: "Another Field",
       editable: true,
