@@ -7,8 +7,8 @@ def suite():
     suite.addTest(loader.loadTestsFromTestCase(studyDaoTests.testStudy))
     suite.addTest(loader.loadTestsFromTestCase(experimentDaoTests.testExperimentCreation))
     suite.addTest(loader.loadTestsFromTestCase(sampleDaoTests.testStudyCreation))
-    suite.addTest(loader.loadTestsFromTestCase(searchesTests.testSearches))
     suite.addTest(loader.loadTestsFromTestCase(datasetDaoTests.testDatasetCreation))
+    suite.addTest(loader.loadTestsFromTestCase(searchesTests.testSearches))
     suite.addTest(loader.loadTestsFromTestCase(allDeleteTests.allDeleteTests))
     return suite
 

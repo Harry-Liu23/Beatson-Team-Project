@@ -35,5 +35,11 @@ class testSearches(unittest.TestCase):
         response = self.app.get(f'/search_all_nodes/{search_string}')
         self.assertEqual(response.status_code, 200)
 
+    def test_get_parent_node(self):
+        child_node_type = "Dataset"
+        child_identifier_value = "101223"
+        response = self.app.get(f'/get_parent_node/{child_node_type}/{child_identifier_value}')
+        self.assertEqual(response.status_code, 200)
+
 if __name__ == '__main__':
     unittest.main()

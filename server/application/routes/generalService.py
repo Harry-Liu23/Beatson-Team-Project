@@ -37,7 +37,6 @@ def create_node(node_type):
             return jsonify({"error": "Failed to create node."}), 500
     except Exception as e:
         # Log the exception, if logging is set up
-        # print(e)
         return jsonify({"error": "An error occurred while creating the node."}), 500
     
 @app.route('/create_relation/,parent_node_type>/<child_node_type>/<parent_identifier>/<child_identifier>/<relationship_type>', methods = ['POST'])
@@ -71,5 +70,25 @@ def create_relation(parent_node_type, child_node_type, parent_identifier, child_
             return jsonify({"error": "Failed to create relationship."}), 500
     except Exception as e:
         # Log the exception if logging is setup
-        # print(e)
         return jsonify({"error": "An error occurred while creating the relationship."}), 500
+    
+@app.route('/get_parent_node/<child_node_type>/<child_identifier_value>',methods=['GET'])
+def get_parent_node(child_node_type, child_identifier_value):
+    parent_node_type = "";
+    parent_identifier_key = "";
+    match child_node_type:
+        case "Sample":
+            parent_node_type = "Experiment"
+            parent_identifier_key = "experiment_id"
+        case "Dataset":
+            parent_node_type = "Sample"
+            parent_identifier_key = "sample_id"
+        case "Experiment":
+            parent_node_type = "Study"
+            parent_identifier_key = "accession"
+    res_get_dataset = generic_dao.get_node(node_type=child_node_type, identifier=child_identifier_value)
+    result_id = json.loads(res_get_dataset)["s"][parent_identifier_key]
+    result = generic_dao.get_node(node_type=parent_node_type,identifier=result_id)
+    if result:    
+        return jsonify(result), 200
+    return jsonify(result), 500
