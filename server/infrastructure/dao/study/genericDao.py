@@ -43,7 +43,8 @@ class genericDao:
         node_mappings = {
             'Study': {'id_field': 'accession'},
             'Experiment': {'id_field': 'experiment_id'},
-            'Sample': {'id_field': 'sample_id'}
+            'Sample': {'id_field': 'sample_id'},
+            'Dataset': {'id_field': 'dataset_id'}
         }
 
         # Check if the provided node types are valid
@@ -86,6 +87,9 @@ class genericDao:
         elif node_type == 'Sample':
             update_query = "MATCH (s:Sample {sample_id: $sample_id}) "
             parameters = {'sample_id': identifier}
+        elif node_type == 'Dataset':
+            update_query = "MATCH (s:Dataset {dataset_id: $dataset_id}) "
+            parameters = {'dataset_id': identifier}
 
         for key, value in updated_data.items():
             # For each item in updated_data, add a line to set the property
@@ -109,7 +113,8 @@ class genericDao:
         node_mappings = {
             'Study': {'id_field': 'accession', 'match_clause': 'MATCH (s:Study {accession:$identifier}) RETURN s'},
             'Experiment': {'id_field': 'experiment_id', 'match_clause': 'MATCH (s:Experiment {experiment_id:$identifier}) RETURN s'},
-            'Sample': {'id_field': 'sample_id', 'match_clause': 'MATCH (s:Sample {sample_id:$identifier}) RETURN s'}
+            'Sample': {'id_field': 'sample_id', 'match_clause': 'MATCH (s:Sample {sample_id:$identifier}) RETURN s'},
+            'Dataset': {'id_field': 'dataset_id', 'match_clause': 'MATCH (s:Dataset {dataset_id:$identifier}) RETURN s'}
         }
         if node_type in node_mappings:
             get_query = node_mappings[node_type]['match_clause']
@@ -128,13 +133,31 @@ class genericDao:
         else:
             print(f"Invalid node type: {node_type}")
             return False
+        
+    def get_all_node_by_type(self, node_type):
+        query  = f"MATCH (n:{node_type}) RETURN n"
+
+        with self.driver.session() as session:
+            result = session.run(query)
+            records = [serialize_node(record["n"]) for record in result]
+            return records
+
+        
+    def get_all_node_by_type(self, node_type):
+        query  = f"MATCH (n:{node_type}) RETURN n"
+
+        with self.driver.session() as session:
+            result = session.run(query)
+            records = [serialize_node(record["n"]) for record in result]
+            return records
 
     def delete_node(self, node_type, identifier):
         # Mapping of node types to their identifier field and Cypher MATCH clause for deletion
         node_mappings = {
             'Study': {'id_field': 'accession', 'match_clause': 'MATCH (s:Study {accession: $identifier}) DETACH DELETE s'},
             'Experiment': {'id_field': 'experiment_id', 'match_clause': 'MATCH (s:Experiment {experiment_id: $identifier}) DETACH DELETE s'},
-            'Sample': {'id_field': 'sample_id', 'match_clause': 'MATCH (s:Sample {sample_id: $identifier}) DETACH DELETE s'}
+            'Sample': {'id_field': 'sample_id', 'match_clause': 'MATCH (s:Sample {sample_id: $identifier}) DETACH DELETE s'},
+            'Dataset': {'id_field': 'dataset_id', 'match_clause' : 'MATCH (s:Dataset {dataset_id:$identifier}) DETACH DELETE s'}
         }
 
         # Check if the node_type is valid and get the mapping
@@ -153,11 +176,40 @@ class genericDao:
             print(f"Invalid node type: {node_type}")
             return False
 
-    def get_all_node_by_type(self, node_type):
-        query  = f"MATCH (n:{node_type}) RETURN n"
+        
+    def general_search_in_field(self, node_type, node_field, search_string):
+        query = (
+            f"MATCH (n:{node_type}) "
+            f"WHERE toLower(n.{node_field}) CONTAINS toLower('{search_string}') "
+            f"RETURN n"
+        )
 
         with self.driver.session() as session:
             result = session.run(query)
             records = [serialize_node(record["n"]) for record in result]
             return records
         
+    def general_search_all_fields(self, node_type, search_string):
+        query = (
+        f"MATCH (n:{node_type}) "
+        f"WHERE ANY(key in keys(n) WHERE toLower(n[key]) CONTAINS toLower('{search_string}')) "
+        "RETURN n"
+        )
+
+        with self.driver.session() as session:
+            result = session.run(query)
+            records = [serialize_node(record["n"]) for record in result]
+            return records
+
+    def general_search_all_nodes(self, search_string):
+        query = (
+        f"MATCH (n)"
+        f"WHERE any(key in keys(n) WHERE toLower(n[key]) CONTAINS toLower('{search_string}'))"
+        "RETURN n"
+
+        )
+
+        with self.driver.session() as session:
+            result = session.run(query)
+            records = [serialize_node(record["n"]) for record in result]
+            return records

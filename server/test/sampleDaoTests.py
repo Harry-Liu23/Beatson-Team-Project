@@ -9,7 +9,7 @@ import unittest
 import json
 from application import app
 
-class TestStudyCreation(unittest.TestCase):
+class testStudyCreation(unittest.TestCase):
     def setUp(self):
         self.app = app.test_client()
 
@@ -40,7 +40,6 @@ class TestStudyCreation(unittest.TestCase):
     def test_get_sample(self):
         sample_id = "123" 
         response = self.app.get(f'/get_sample/{sample_id}')
-        print(response.get_json())
         self.assertEqual(response.status_code, 200) 
 
     def test_update_sample(self):
