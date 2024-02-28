@@ -1,6 +1,6 @@
 {
   "sample": {
-    "sample_id": "SRX5678903",
+    "sample_id": "SRX567890x",
     "group": "Treatment Group B",
     "project": "PRJ3456791",
     "description": "Treatment sample B for Histone H3K4me3 ChIP-seq analysis in C. elegans.",

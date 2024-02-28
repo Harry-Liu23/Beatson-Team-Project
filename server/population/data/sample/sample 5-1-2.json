@@ -1,6 +1,6 @@
 {
   "sample": {
-    "sample_id": "SRX5678902",
+    "sample_id": "SRX567890Y",
     "group": "Treatment Group A",
     "project": "PRJ3456790",
     "description": "Treatment sample A for Histone H3K4me3 ChIP-seq analysis in C. elegans.",
@@ -10,6 +10,6 @@
     "cell_line": "undefined",
     "mouse_model": "undefined",
     "biometric_provider": "ILLUMINA HiSeq 2500",
-    "experiment_id": "ERX9876541"
+    "experiment_id": "ERX9876543"
   }
 }
