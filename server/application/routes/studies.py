@@ -6,11 +6,18 @@ from flask import json, request, jsonify
 def create_study():
     data = request.json
     # Assuming data contains necessary attributes for study
-    data_study = data.get('study', {})
-
+    data_study = data.get('study')
     # Convert the study data to JSON string
     data_study_json = json.dumps(data_study)
+    try:
+        temp_study_node = generic_dao.get_node(data_study_json.__getitem__("accession"))
+        if temp_study_node is not None:
+            response_data = {"error": "Study already exist!"}
+            return jsonify(response_data),500;
+    except Exception as e:
+        pass
     # Create a study node
+    print(data_study_json)
     created_study_accession = generic_dao.create_node(node_type="Study", data = data_study_json)
     response_data = {
         "message": f"Study Node created with accession: {created_study_accession}"
@@ -24,6 +31,16 @@ def get_study(accession):
         return jsonify(study_node),200  # Return the study node as JSON response
     else:
         return jsonify({"error": "Study Node not found"}), 404
+    
+@app.route('/get_all_study', methods=['GET'])
+def get_all_study():
+    all_study_nodes = study_dao.get_all_study_nodes()
+    return jsonify({"study":all_study_nodes}),200
+
+@app.route('/get_all_node_by_type/<node_type>',methods=['GET'])
+def get_all_node_by_type(node_type):
+    all_nodes_by_type = generic_dao.get_all_node_by_type(node_type)
+    return jsonify({"{node_type}":all_nodes_by_type}),200
 
 @app.route('/update_study/<accession>', methods=['PUT'])
 def update_study(accession):

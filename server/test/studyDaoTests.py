@@ -63,5 +63,16 @@ class testStudy(unittest.TestCase):
         response = self.app.put(f'/update_study/{study_accession}', json=update_data)
         self.assertEqual(response.status_code, 200) 
 
+    def test_get_all_study(self):
+        response = self.app.get(f'/get_all_study')
+        self.assertEqual(response.status_code,200)
+
+    def test_get_all_nodes(self):
+        experiment = "Experiment"
+        study = "Study"
+        sample = "Sample"
+        response = self.app.get(f'/get_all_node_by_type/{sample}')
+        self.assertEqual(response.status_code,200)
+
 if __name__ == '__main__':
     unittest.main()
