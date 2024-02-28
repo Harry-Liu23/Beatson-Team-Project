@@ -1,1 +1,1 @@
-from server.process.nodeProcess import serialize_node
+from process.nodeProcess import serialize_node

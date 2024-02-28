@@ -92,3 +92,16 @@ def get_parent_node(child_node_type, child_identifier_value):
     if result:    
         return json.loads(result), 200
     return json.loads(result), 500
+
+@app.route('/get_all_node_by_type/<node_type>',methods=['GET'])
+def get_all_node_by_type(node_type):
+    """
+    Get all nodes with given type
+
+    Returns:
+        JSON response indicating the success or failure of the operation.
+    """
+    all_nodes_by_type = generic_dao.get_all_node_by_type(
+        node_type
+    )
+    return jsonify({"{node_type}":all_nodes_by_type}),200

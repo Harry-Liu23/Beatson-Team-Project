@@ -1,6 +1,6 @@
 from flask import Flask, Response 
 from neo4j import GraphDatabase 
-from server.infrastructure.dao.study import sampleDao,studyDao,experimentDao,genericDao
+from infrastructure.dao.study import sampleDao,studyDao,experimentDao,genericDao
 
 
 #from application.keys import DATABASE_PASSWORD
@@ -30,7 +30,7 @@ generic_dao = genericDao.genericDao(driver)
 
 
 # For adding data processing functions
-from server.process.nodeProcess import serialize_node
+from process.nodeProcess import serialize_node
 
 # Needs to exist after app and everything else being imported to routes.__init__ is defined
 from . import routes

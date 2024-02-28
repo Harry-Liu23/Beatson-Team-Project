@@ -4,12 +4,12 @@ from . import studyDaoTests, experimentDaoTests, sampleDaoTests, searchesTests,a
 def suite():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
-    suite.addTest(loader.loadTestsFromTestCase(studyDaoTests.testStudy))
-    suite.addTest(loader.loadTestsFromTestCase(experimentDaoTests.testExperimentCreation))
-    suite.addTest(loader.loadTestsFromTestCase(sampleDaoTests.testStudyCreation))
-    suite.addTest(loader.loadTestsFromTestCase(datasetDaoTests.testDatasetCreation))
-    suite.addTest(loader.loadTestsFromTestCase(searchesTests.testSearches))
-    suite.addTest(loader.loadTestsFromTestCase(allDeleteTests.allDeleteTests))
+    suite.addTest(loader.loadTestsFromTestCase(studyDaoTests.test_study))
+    suite.addTest(loader.loadTestsFromTestCase(experimentDaoTests.test_experiment))
+    suite.addTest(loader.loadTestsFromTestCase(sampleDaoTests.test_sample))
+    suite.addTest(loader.loadTestsFromTestCase(datasetDaoTests.test_dataset))
+    suite.addTest(loader.loadTestsFromTestCase(searchesTests.test_all_searches))
+    suite.addTest(loader.loadTestsFromTestCase(allDeleteTests.tests_all_delete))
     return suite
 
 if __name__ == "__main__":
