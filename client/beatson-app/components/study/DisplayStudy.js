@@ -10,34 +10,37 @@ const DisplayStudy = ({studyData}) => {
     //Gets list of all experiments
     const getExperimentData = async () => {
       console.log("in getExperimentData function");
-        try {
-          const response = await fetch(`http://127.0.0.1:2020/get_all_experiments/${accession}`);
-          if (response.status !== 200) {
-            throw new Error("Unable to fetch studies: ", data.message);
-          }
-          const experimentData = await response.json();
-          setExperiments(experimentData.experiments);
-          // console.log(experimentData.experiments);
-          // setExperiments(experiments.push(experimentData));
-        } catch (error) {
-          console.error("Unable to fetch experiment data: ", error);
-        };
+      try {
+        const response = await fetch(`http://127.0.0.1:2020/get_all_experiments/${accession}`);
+        if (response.status !== 200) {
+          throw new Error("Unable to fetch studies: ", data.message);
+        }
+        const experimentData = await response.json();
+        setExperiments(experimentData.experiments);
+      } catch (error) {
+        console.error("Unable to fetch experiment data: ", error);
+      };
     };
 
     //Gets sample data for one experiment
-    const getSampleData = async (experiment_id) => {
+    const getSampleData = async () => {
+      let experimentWithSamples = {};
+      for (const experiment of experiments) {
         try {
-            const response = await fetch(`http://127.0.0.1:2020//get_all_samples/${experiment_id}`);
+            const response = await fetch(`http://127.0.0.1:2020//get_all_samples/${experiment.experiment_id}`);
             if (response.status !== 200) {
-              throw new Error("Unable to fetch studies: ", data.message);
+              throw new Error("Unable to fetch sample data for the experiment: ", response.message);
             }
             const samples = await response.json();
-            console.log("sampleData", samples);
-            setSampleData([...sampleData, samples]);
+            experimentWithSamples[experiment.experiment_id] = samples;
+            console.log("sampleData", samples)
           } catch (error) {
             console.error("Unable to fetch sample data: ", error);
         }
-    }
+      }
+      setExperimentsWithSamples(experimentWithSamples);
+      console.log("ExeprimentsWithSamples now set", experimentWithSamples);
+    };
 
     //Gets all sample data for all experiments.
     const getAllSampleData = () => {
@@ -46,37 +49,17 @@ const DisplayStudy = ({studyData}) => {
         console.log(numberOfExperiments);
     }
 
-    // Get experiments and samples data when DisplayStudy is first rendered
-    // useEffect(() => {
-    //     let tempExperimentAndSamples = {}
-    //     getExperimentData();
-    //     experiments.forEach(experiment => {
-    //       getSampleData(experiment.experiment_id)
-    //       tempExperimentAndSamples[experiment.experiment_id] = sampleData;
-    //       setExperimentsWithSamples([...experimentWithSamples, tempExperimentAndSamples ])
-    //       tempExperimentAndSamples = {};
-    //     });
-    //     // getAllSampleData();
-    //     console.log("experiments and samples", experimentWithSamples);
-    // }, []);
-
+    // ensure experiment data is retrieved first before getting sample data
     useEffect(() => {
       getExperimentData();
-      let experimentWithSamples = {};
-      if(experiments){
-        console.log("if experiments", experiments)
-      experiments.forEach(experiment => {
-        console.log("experiment in exper", experiment);
-        getSampleData(experiment.experiment_id)
-        if(sampleData){
-          experimentWithSamples[experiment.experiment_id] = sampleData;
-        };
-      });
-    };
-      // getAllSampleData();
-      console.log("experiments and samples", experimentWithSamples);
-  }, []);
+    },[]);
 
+    // get sample data for each experiment after experiments are retrieved
+    useEffect(() => {
+      if (experiments.length > 0) {
+        getSampleData();
+      }
+    }, [experiments]);
 
     const [columns, setColumns] = useState([
       {
@@ -98,14 +81,6 @@ const DisplayStudy = ({studyData}) => {
 
     return (
         <div>
-          {studyData.accession}
-
-          {/* {experimentWithSamples && (
-            <div>
-              {experimentWithSamples.length}
-
-            </div>
-          )} */}
           <DataGrid
             getRowId={(row) => row.experiment_id}
             rows={experiments}
