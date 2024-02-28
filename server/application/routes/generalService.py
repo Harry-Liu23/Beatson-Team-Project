@@ -39,7 +39,7 @@ def create_node(node_type):
         # Log the exception, if logging is set up
         return jsonify({"error": "An error occurred while creating the node."}), 500
     
-@app.route('/create_relation/,parent_node_type>/<child_node_type>/<parent_identifier>/<child_identifier>/<relationship_type>', methods = ['POST'])
+@app.route('/create_relation/<parent_node_type>/<child_node_type>/<parent_identifier>/<child_identifier>/<relationship_type>', methods = ['POST'])
 def create_relation(parent_node_type, child_node_type, parent_identifier, child_identifier, relationship_type):
     if not request.is_json:
         return jsonify({"error": "Request must be JSON"}), 400
