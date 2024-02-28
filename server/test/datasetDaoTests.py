@@ -32,7 +32,6 @@ class testDatasetCreation(unittest.TestCase):
   def test_get_dataset(self):
     dataset_id = "101223"
     response = self.app.get(f'/get_dataset/{dataset_id}')
-    print(response.get_json())
     self.assertEqual(response.status_code, 200)
 
   def test_update(self):
@@ -43,6 +42,12 @@ class testDatasetCreation(unittest.TestCase):
     }
     response = self.app.put(f"/update_dataset/{dataset_id}", json=update_data)
     self.assertEqual(response.status_code, 200)
+
+  def test_get_sample(self):
+      dataset_id = "101223"
+      response = self.app.get(f'/get_sample_from_dataset/{dataset_id}')
+      print(response.json)
+      self.assertEqual(response.status_code,200)
    
 if __name__ == '__main__':
   unittest.main()
