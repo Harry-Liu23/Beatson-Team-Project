@@ -72,24 +72,23 @@ import {
         const newSamples = prop.samples;
         const returnSamples = [];
 
-        newSamples.forEach(async (sample) => {
+        await Promise.all(newSamples.map(async (sample) => {
             let addSample = sample;
-            console.log(addSample);
-            let study_id = "";
+            let data = "";
             try {
-                const response = await fetch("http://127.0.0.1:2020/get_study_from_experiment/" + sample.experiment_id);
+                const response = await fetch("http://127.0.0.1:2020/get_parent_node/Experiment/" + sample.experiment_id);
                 if (response.status !== 200) {
                   throw new Error("Unable to fetch studies containing that text: ", data.message);
                 }
-                study_id = await response.json();
+                data = await response.json();
             }
             catch (error) {
                 console.log("error" + error);
             }
 
-            addSample["related_study"] = study_id;
+            addSample["related_study"] = data["s"]["accession"];
             returnSamples.push(addSample);
-        });
+        }));
         return returnSamples;
     }
   
@@ -100,10 +99,10 @@ import {
   
     if (newChange !== prop.change) {
       try {
-        // setRows(prop.samples);
-        console.log(addRelatedStudy());
-        setRows(addRelatedStudy());
+        addRelatedStudy().then(samples => {;
+        setRows(samples);
         setNewChange(!newChange);
+      })
       }
       catch (error) {
         console.log("No studies found " + error);

@@ -50,6 +50,31 @@ const StudiesTable = (prop) => {
   // retrieve all studies from Neo4J via Flask
   const getStudiesData = () => {
     setRows(prop.studies);
+
+  }
+
+  const addNumExperiments = async () => {
+    const newStudies = prop.studies;
+    const returnStudies = [];
+
+        await Promise.all(newStudies.map(async (study) => {
+            let addStudy = study;
+            let data = "";
+            try {
+                const response = await fetch("http://127.0.0.1:2020/count_experiments/" + study.accession);
+                if (response.status !== 200) {
+                  throw new Error("Unable to fetch study containing that text: ", data.message);
+                }
+                data = await response.json();
+            }
+            catch (error) {
+                console.log("error" + error);
+            }
+
+            addStudy["expNumber"] = data["num_experiments"];
+            returnStudies.push(addStudy);
+        }));
+        return returnStudies;
   }
 
   // //get studies when the studies table is first rendered
@@ -59,8 +84,10 @@ const StudiesTable = (prop) => {
 
   if (newChange !== prop.change) {
     try {
-      setRows(prop.studies);
+      addNumExperiments().then(studies => {
+      setRows(studies);
       setNewChange(!newChange);
+    });
     }
     catch (error) {
       console.log("No studies found " + error);
