@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import DisplayStudy from '../../components/Study/DisplayStudy';
+import DisplayStudy from '../../components/dataDiscoverability/DisplayStudy';
 
 export default function Study() {
   const router = useRouter();
