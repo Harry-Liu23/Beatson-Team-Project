@@ -17,7 +17,6 @@ def create_study():
     except Exception as e:
         pass
     # Create a study node
-    print(data_study_json)
     created_study_accession = generic_dao.create_node(node_type="Study", data = data_study_json)
     response_data = {
         "message": f"Study Node created with accession: {created_study_accession}"
