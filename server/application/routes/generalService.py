@@ -90,5 +90,5 @@ def get_parent_node(child_node_type, child_identifier_value):
     result_id = json.loads(res_get_dataset)["s"][parent_identifier_key]
     result = generic_dao.get_node(node_type=parent_node_type,identifier=result_id)
     if result:    
-        return jsonify(result), 200
-    return jsonify(result), 500
+        return json.loads(result), 200
+    return json.loads(result), 500
