@@ -5,20 +5,15 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.abspath(os.path.join(current_dir, '..', '..'))
 sys.path.insert(0, project_root)
 
-from unittest import mock
 import unittest
 import json
-from application import app
-import application.routes as routes
-from server.infrastructure.dao.study import genericDao
+from application import app,generic_dao
 
 
 class testStudy(unittest.TestCase):
 
     def setUp(self):
-        self.mock_neo4j_service = mock.MagicMock(spec=genericDao)
-        self.app = app
-        self.app.config['NEO4J_SERVICE'] = self.mock_neo4j_service
+        self.app = app.test_client()
 
     def tearDown(self):
         pass
@@ -35,14 +30,8 @@ class testStudy(unittest.TestCase):
         
             }
         }
-        self.mock_neo4j_service.create_study = data
-
-        with app.test_client() as client:
-            response = client.post('/create_study', json=data)
-            print(response)
-
-        self.assertEqual(response, 200)
-        self.mock_neo4j_service.create_node.assert_called_once_with(data)
+        response = self.app.post('/create_study', json=data)
+        self.assertEqual(response.status_code, 200)
 
 
     def test_get_study_node(self):
