@@ -33,7 +33,6 @@ class testStudy(unittest.TestCase):
         response = self.app.post('/create_study', json=data)
         self.assertEqual(response.status_code, 200)
 
-
     def test_get_study_node(self):
         study_accession = "access"
         response = self.app.get(f'/get_study/{study_accession}')
