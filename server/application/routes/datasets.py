@@ -53,3 +53,11 @@ def delete_dataset(dataset_id):
         return jsonify({"message": f"Dataset id: {dataset_id} deleted successfully"}), 200
     return jsonify({"error": f"Unable to delete Dataset id: {dataset_id}"}), 500
 
+@app.route("/get_sample_from_dataset/<dataset_id>", methods = ['GET'])
+def get_sample_from_dataset(dataset_id):
+    res_get_dataset = generic_dao.get_node(node_type='Dataset', identifier=dataset_id)
+    sample_id = json.loads(res_get_dataset)["s"]["sample_id"]
+    result = generic_dao.get_node(node_type="Sample",identifier=sample_id)
+    if result:    
+        return jsonify(result), 200
+    return jsonify(result), 500

@@ -48,7 +48,6 @@ class testStudy(unittest.TestCase):
     def test_get_study_node(self):
         study_accession = "access"
         response = self.app.get(f'/get_study/{study_accession}')
-        print(response.get_json())
         self.assertEqual(response.status_code, 200) 
     
     def test_update_study_node(self):
