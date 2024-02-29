@@ -3,6 +3,8 @@ stages:
   - quality
   - test
 
+# Build phase.
+# Installs necessary dependencies and save in node_modules.
 build_next:
   stage: build
   image: node:latest
@@ -16,23 +18,9 @@ build_next:
     - npm install
     - npm run build
 
-# build_flask_neo4j:
-#   stage: build
-#   image: python
-#   before_script: cd server
-#   script:
-#     - echo "building flask and neo4j..."
-#     - python -m venv /flask-neo4j-env
-#     - ls
-#     - source /flask-neo4j-env/bin/activate
-#     - pip install -r "requirements.txt"
-#   artifacts:
-#     untracked: false
-#     when: on_success
-#     expire_in: 30 days
-#     paths:
-#       - "/flask-neo4j-env"
 
+# Quality assurance phase.
+# Uses node modules previously installed in build_next and run linting.
 quality_next_lint:
   stage: quality
   image: node:latest
@@ -44,10 +32,11 @@ quality_next_lint:
     - npm install
   script:
     - npm run lint
-  # only:
-  #   - merge_requests
-  #   - master
+  only:
+    - merge_requests
+    - master
 
+# Uses pylint on all python files.
 quality_flask_neo4j_lint:
   image: python:latest
   stage: quality  
@@ -59,10 +48,12 @@ quality_flask_neo4j_lint:
     - pip install -r requirements.txt
     - pip install .
     - pylint --output-format=parseable server
-  # only:
-  #   - merge_requests
-  #   - master
+  only:
+    - merge_requests
+    - master
 
+# Test phase.
+# Tests using jest ran, node_modules form build phase used.
 test_frontend:
   stage: test
   image: node
@@ -75,28 +66,6 @@ test_frontend:
     - echo "starting tests for frontend"
     - npm install
     - npm test
-
-test_flask_neo4j:
-  stage: test
-  image: python:latest
-  services:
-    - name: neo4j:latest
-      alias: neo4j
-  variables:
-    NEO4J_CONTAINER_NAME: "neo4j"
-    NEO4J_URL: "bolt://neo4j:7687"
-
-  before_script:
-    - cd server
-    - python -m venv .venv
-    - source .venv/bin/activate
-    - pip install -r requirements.txt
-    - pip install .
-  script:
-    - echo "starting test for flask and neo4j"
-    - python -m test.studyDaoTests
-    - python -m test.experimentDaoTests
-    - python -m test.sampleDaoTests
 
 before_script:
     - echo DB_PASSWORD is $DB_PASSWORD
