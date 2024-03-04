@@ -1,6 +1,20 @@
-import { Card, Grid, Typography } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { Card, 
+          Grid,
+          Typography,
+        } from "@mui/material";
+import { DataGrid, 
+          GridToolbarContainer, 
+          GridToolbarExport, 
+        } from '@mui/x-data-grid';
 import { useEffect, useState } from "react";
+
+function ExportButtonDisplay() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarExport />
+    </GridToolbarContainer>
+  );
+}
 
 const DisplayExperimentAndSamples = (props) => {
   const experiment = props.experimentData;
@@ -66,6 +80,9 @@ const DisplayExperimentAndSamples = (props) => {
             },
           }}
           pageSizeOptions={[10, 20, 25]}
+          slots={{
+            toolbar: ExportButtonDisplay,
+          }}
         />
       </Card>
     </div>
