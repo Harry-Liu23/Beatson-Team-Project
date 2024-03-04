@@ -35,23 +35,24 @@ const DisplayExperimentAndSamples = (props) => {
 
   return (
     <div>
-      <Card variant="outlined" sx={{ padding: 2 }}>
+      <Card variant="outlined" sx={{ padding: 4, paddingBottom:6, paddingTop:2, marginLeft:15, marginRight:15, marginBottom:8, border:"groove" }}>
         <Grid
           container
           rowGap={1}
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           direction="column"
-          alignItems="center"
+          alignItems="left"
           justifyContent="center"
           spacing={2}
         >
-          <Grid item sx={{ mt: 1.5 }}>
-            <Typography variant="h4" color="blue-gray" align="center">
+          <Grid item sx={{ mt: 1.5 }} >
+            <Typography variant="h5" color="blue-gray" align="left">
               Experiment ID: {experiment.experiment_id}
             </Typography>
           </Grid>
-          <Grid item xs={6}>
-            Experiment Details: {experiment.description}
+          <Grid item xs={6} paddingBottom={5}> 
+            <b>Experiment Details:</b>
+            <br></br> {experiment.description}
           </Grid>
         </Grid>
 
@@ -59,6 +60,12 @@ const DisplayExperimentAndSamples = (props) => {
           getRowId={(row) => row.sample_id}
           rows={samples}
           columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: { pageSize: 10 },
+            },
+          }}
+          pageSizeOptions={[10, 20, 25]}
         />
       </Card>
     </div>

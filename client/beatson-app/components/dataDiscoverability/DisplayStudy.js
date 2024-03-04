@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, Grid, Typography } from "@mui/material";
+import { Card, Grid, Typography, Paper } from "@mui/material";
 import DisplayExperimentAndSamples from "./DisplayExperimentAndSamples";
 
 const DisplayStudy = ({ studyData }) => {
@@ -97,29 +97,31 @@ const DisplayStudy = ({ studyData }) => {
 
   return (
     <div>
-      <Card variant="outlined" sx={{ padding: 2 }}>
+      <Card variant="outlined" sx={{ padding:4, margin:15, marginTop:8, border:"groove"}}>
         <Grid
           container
           rowGap={1}
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           direction="column"
-          alignItems="center"
+          alignItems="left"
           justifyContent="center"
           spacing={2}
         >
-          <Grid item sx={{ mt: 1.5 }}>
-            <Typography variant="h4" color="blue-gray" align="center">
+          <Grid item sx={{ mt: 1.5 }} >
+            <Typography variant="h4" color="#008AAD" align="left" >
               Study Accession: {study.accession}
             </Typography>
           </Grid>
-          <Grid item xs={6}>
-            Organism: {study.organism}
+          <Grid item xs={6} >
+          <b>Description:</b> 
+          <br></br> {study.description}
           </Grid>
           <Grid item xs={6}>
-            Description: {study.description}
+            <b>Organism:</b> <br></br>{study.organism}
           </Grid>
           <Grid item xs={6}>
-            Publication: {study.publication}
+            <b>Publication:</b> 
+            <br></br> {study.publication}
           </Grid>
         </Grid>
       </Card>
