@@ -3,7 +3,13 @@ import { DataGrid } from "@mui/x-data-grid";
 import { 
   Grid,
   Card,
- } from "@mui/material";
+} from "@mui/material";
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Typography from '@mui/material/Typography';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
  const SamplesTable = (prop) => {
     // rows for samples table where each row corresponds to a sample
@@ -112,6 +118,13 @@ import {
     return (
       // display each sample as a row on mui DataGrid
       <div>
+        <Accordion>
+          <AccordionSummary
+          expandIcon={<ArrowDownwardIcon />}
+          aria-controls="samples-table-content"
+          id="samples-table-accordion">
+          <Typography>Samples</Typography>
+          </AccordionSummary>
         <Card variant="outlined" sx={{ padding:6 }} > 
           <Grid
             container
@@ -125,9 +138,16 @@ import {
               getRowId={(row) => row.sample_id}
               rows={rows}
               columns={columns}
+              initialState={{
+                pagination: {
+                  paginationModel: { pageSize: 5 },
+                },
+              }}
+              pageSizeOptions={[5, 10, 15, 20, 25]}
             />
           </Grid>
-          </Card>
+        </Card>
+        </Accordion>
       </div>
     );
   };

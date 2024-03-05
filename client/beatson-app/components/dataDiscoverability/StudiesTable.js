@@ -3,7 +3,13 @@ import { DataGrid } from "@mui/x-data-grid";
 import { 
   Grid,
   Card,
- } from "@mui/material";
+} from "@mui/material";
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Typography from '@mui/material/Typography';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 const StudiesTable = (prop) => {
   // rows for studies table where each row corresponds to a study
@@ -97,6 +103,13 @@ const StudiesTable = (prop) => {
   return (
     // display each study as a row on mui DataGrid
     <div>
+      <Accordion defaultExpanded>
+          <AccordionSummary
+          expandIcon={<ArrowDownwardIcon />}
+          aria-controls="studies-table-content"
+          id="studies-table-accordion">
+          <Typography>Studies</Typography>
+          </AccordionSummary>
       <Card variant="outlined" sx={{ padding:6 }} > 
         <Grid
           container
@@ -110,9 +123,16 @@ const StudiesTable = (prop) => {
             getRowId={(row) => row.accession}
             rows={rows}
             columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: { pageSize: 10 },
+              },
+            }}
+            pageSizeOptions={[5, 10, 15, 20, 25]}
           />
         </Grid>
         </Card>
+      </Accordion>
     </div>
   );
 };
