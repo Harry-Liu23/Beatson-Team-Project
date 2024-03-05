@@ -32,9 +32,6 @@ quality_next_lint:
     - npm install
   script:
     - npm run lint
-  only:
-    - merge_requests
-    - master
 
 # Uses pylint on all python files.
 quality_flask_neo4j_lint:
@@ -48,9 +45,6 @@ quality_flask_neo4j_lint:
     - pip install -r requirements.txt
     - pip install .
     - pylint --output-format=parseable server
-  only:
-    - merge_requests
-    - master
 
 # Test phase.
 # Tests using jest ran, node_modules form build phase used.
@@ -63,7 +57,6 @@ test_frontend:
   before_script:
     - cd client/beatson-app
   script:
-    - echo "starting tests for frontend"
     - npm install
     - npm test
 
