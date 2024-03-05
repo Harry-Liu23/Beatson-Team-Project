@@ -60,4 +60,12 @@ describe('SampleForm', () => {
         fireEvent.click(screen.getByRole('button', { name: /submit/i }));
         expect(BackendAPI.sendJsonToFlask).toBeDefined();
     });
+
+    it('Should show an error if submission fails due to incomplete data', () => {
+
+        fireEvent.click(screen.getByRole('button', { name: /submit/i }));
+        
+        expect(screen.findByDisplayValue('Submission Failed'));
+        expect(screen.findByDisplayValue('You did not enter values for all samples.'));
+    });
 });
