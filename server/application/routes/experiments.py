@@ -5,6 +5,7 @@ This script provides all experiment APIs.
 from flask import request, jsonify, json
 from . import app, experiment_dao, generic_dao,general_service_dao
 
+#This is the attribute name for the unique id of experiment
 class_identifier_key = 'experiment_id'
 
 @app.route('/delete_experiment/<experiment_id>', methods=['DELETE'])
