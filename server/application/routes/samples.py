@@ -3,7 +3,7 @@
 This script provides all the samples apis
 """
 from flask import request, jsonify, json
-from . import app, experiment_dao, generic_dao, general_service_dao
+from . import app, experiment_dao, generic_dao
 
 #This is the attribute name for the unique id of sample
 class_identifier_key = "sample_id"
@@ -55,7 +55,7 @@ def create_sample():
     # which is then used for linking
     # Create a relationship between the newly created
     # Sample node and the specified Experiment node
-    rel_result = general_service_dao.relationship_builder(
+    rel_result = generic_dao.relationship_builder(
         parent_node_type="Experiment",
         child_node_type="Sample",
         parent_id_field="experiment_id",
@@ -81,7 +81,7 @@ def get_sample(sample_id):
     Returns:
         JSON response containing the sample details or an error message if the sample is not found.
     """
-    sample_node = general_service_dao.get_node(
+    sample_node = generic_dao.get_node(
         identifier_value=sample_id,
         node_type="Sample",
         identifier_key=class_identifier_key)
@@ -103,7 +103,7 @@ def update_sample(sample_id):
     data = request.json
 
     # Assuming update_node returns a success indicator or result object
-    update_result = general_service_dao.update_node(
+    update_result = generic_dao.update_node(
         node_type='Sample',
         identifier_value=sample_id,
         identifier_key=class_identifier_key,
@@ -127,7 +127,7 @@ def delete_sample(sample_id):
     Returns:
         JSON response indicating the success or failure of the delete operation.
     """
-    deletion_result = general_service_dao.delete_node(
+    deletion_result = generic_dao.delete_node(
         node_type="Sample",
         identifier_value=sample_id,
         identifier_key=class_identifier_key)

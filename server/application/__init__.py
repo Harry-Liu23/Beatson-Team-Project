@@ -5,7 +5,7 @@ This set up the packging for imports within application package
 
 from flask import Flask, Response
 from neo4j import GraphDatabase
-from infrastructure.dao.study import sampleDao,studyDao,experimentDao,genericDao,generalServiceDao
+from infrastructure.dao.study import sampleDao,studyDao,experimentDao,genericDao
 
 #from application.keys import DATABASE_PASSWORD
 
@@ -31,7 +31,6 @@ sample_dao = sampleDao.sampleDao(driver)
 experiment_dao = experimentDao.experimentDao(driver)
 study_dao = studyDao.studyDao(driver)
 generic_dao = genericDao.genericDao(driver)
-general_service_dao = generalServiceDao.generalServiceDao(driver)
 
 
 # For adding data processing functions

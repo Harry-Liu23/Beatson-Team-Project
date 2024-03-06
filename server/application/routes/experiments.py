@@ -3,7 +3,7 @@
 This script provides all experiment APIs.
 """
 from flask import request, jsonify, json
-from . import app, experiment_dao, generic_dao,general_service_dao
+from . import app, experiment_dao, generic_dao
 
 #This is the attribute name for the unique id of experiment
 class_identifier_key = 'experiment_id'
@@ -20,7 +20,7 @@ def delete_experiment(experiment_id):
         JSON response indicating the success 
         or failure of the delete operation.
     """
-    deletion_success = general_service_dao.delete_node(
+    deletion_success = generic_dao.delete_node(
         node_type="Experiment", identifier_key="experiment_id",identifier_value=experiment_id)
     if deletion_success:
         return jsonify({"message": 
@@ -55,7 +55,7 @@ def create_experiment():
     generic_dao.create_node(
         node_type="Experiment", data=data_experiment_json)
     # Create a relationship between the newly created Experiment node and the specified Study node
-    general_service_dao.relationship_builder(
+    generic_dao.relationship_builder(
         parent_node_type="Study",
         child_node_type="Experiment",
         parent_identifier=accession,
@@ -80,7 +80,7 @@ def get_experiment(experiment_id):
         JSON response containing the experiment details or 
         an error message if the experiment is not found.
     """
-    exp_get_res = general_service_dao.get_node(
+    exp_get_res = generic_dao.get_node(
         identifier_key=class_identifier_key,
         identifier_value=experiment_id, node_type="Experiment")
     if exp_get_res:
@@ -101,7 +101,7 @@ def update_experiment(experiment_id):
     data = request.json
     try:
         # Assuming update_node returns a success indicator or result object
-        update_result = general_service_dao.update_node(
+        update_result = generic_dao.update_node(
             node_type='Experiment',
             identifier_key=class_identifier_key,
             identifier_value=experiment_id,

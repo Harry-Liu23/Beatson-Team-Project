@@ -3,7 +3,7 @@
 This script provides all dataset APIs.
 """
 from flask import request, jsonify, json
-from . import app, generic_dao, general_service_dao
+from . import app, generic_dao
 
 #This is the attribute name for the unique id of dataset
 class_identifier_key = "dataset_id"
@@ -31,7 +31,7 @@ def create_datasets():
     except Exception:
         pass
     generic_dao.create_node(node_type='Dataset',data=data_dataset_experiment)
-    general_service_dao.relationship_builder(relationship_type= "contains",
+    generic_dao.relationship_builder(relationship_type= "contains",
                                                   parent_node_type='Sample',
                                                   child_node_type='Dataset', 
                                                   parent_id_field='sample_id',
@@ -56,7 +56,7 @@ def update_datasets(dataset_id):
     """
     dataset_data = request.json
     try:
-        update_result = general_service_dao.update_node(
+        update_result = generic_dao.update_node(
             node_type='Dataset',
             identifier_value=dataset_id,
             identifier_key=class_identifier_key,
@@ -81,7 +81,7 @@ def get_dataset(dataset_id):
         JSON response containing the experiment details or 
         an error message if the experiment is not found.
     """
-    res_get_dataset = general_service_dao.get_node(node_type='Dataset',
+    res_get_dataset = generic_dao.get_node(node_type='Dataset',
                                            identifier_value=dataset_id,
                                            identifier_key=class_identifier_key)
     if res_get_dataset:
@@ -100,7 +100,7 @@ def delete_dataset(dataset_id):
         JSON response indicating the success 
         or failure of the delete operation.
     """
-    deletion_success = general_service_dao.delete_node(node_type="Dataset",
+    deletion_success = generic_dao.delete_node(node_type="Dataset",
                                                identifier_key=class_identifier_key,
                                                identifier_value=dataset_id)
     if deletion_success:
@@ -120,11 +120,13 @@ def get_sample_from_dataset(dataset_id):
         JSON response indicating the success 
         or failure of the delete operation.
     """
-    res_get_dataset = general_service_dao.get_node(node_type='Dataset',
+    res_get_dataset = generic_dao.get_node(node_type='Dataset',
                                                    identifier_key=class_identifier_key,
                                                    identifier_value=dataset_id)
     sample_id = json.loads(res_get_dataset)["s"]["sample_id"]
-    result = generic_dao.get_node(node_type="Sample",identifier=sample_id)
+    result = generic_dao.get_node(node_type="Sample",
+                                          identifier_value=sample_id,
+                                          identifier_key='sample_id')
     if result:
         return jsonify(result), 200
     return jsonify(result), 500

@@ -1,5 +1,5 @@
 from flask import json, request, jsonify
-from . import app,generic_dao,study_dao,general_service_dao
+from . import app,generic_dao,study_dao
 
 #This is the attribute name for the unique id of study
 class_identifier_key = "accession"
@@ -42,7 +42,7 @@ def get_study(accession):
     :param accession: The unique identifier for the study to retrieve.
     :return: A JSON response containing the study node's data, along with HTTP status code.
     """
-    study_node = general_service_dao.get_node(node_type="Study",
+    study_node = generic_dao.get_node(node_type="Study",
                                               identifier_key=class_identifier_key,
                                               identifier_value=accession)
     return jsonify(study_node),200  # Return the study node as JSON response
@@ -70,7 +70,7 @@ def update_study(accession):
     data = request.json
     try:
         # Assuming update_node returns a success indicator or result object
-        general_service_dao.update_node(node_type = 'Study',
+        generic_dao.update_node(node_type = 'Study',
                                 identifier_key = class_identifier_key,
                                 identifier_value = accession,
                                 updated_data = data)
@@ -117,7 +117,7 @@ def delete_study(accession):
     :return: A JSON response indicating whether the study was successfully deleted, 
              along with HTTP status code.
     """
-    deletion_success = general_service_dao.delete_node(node_type="Study",
+    deletion_success = generic_dao.delete_node(node_type="Study",
                                                 identifier_value=accession,
                                                 identifier_key=class_identifier_key)
     if deletion_success:
