@@ -5,6 +5,8 @@ This script provides all experiment APIs.
 from flask import request, jsonify, json
 from . import app, experiment_dao, generic_dao,general_service_dao
 
+class_identifier_key = 'experiment_id'
+
 @app.route('/delete_experiment/<experiment_id>', methods=['DELETE'])
 def delete_experiment(experiment_id):
     """
@@ -58,6 +60,7 @@ def create_experiment():
         parent_identifier=accession,
         child_identifier=experiment_id,
         parent_id_field="accession",
+        child_id_field=class_identifier_key,
         relationship_type="contains")
     response_data = {
         "message": f"Created experiment with ID: {experiment_id}, attached to study with accession: {accession}"
@@ -76,8 +79,9 @@ def get_experiment(experiment_id):
         JSON response containing the experiment details or 
         an error message if the experiment is not found.
     """
-    exp_get_res = generic_dao.get_node(
-        identifier=experiment_id, node_type="Experiment")
+    exp_get_res = general_service_dao.get_node(
+        identifier_key=class_identifier_key,
+        identifier_value=experiment_id, node_type="Experiment")
     if exp_get_res:
         return jsonify({'experiment': exp_get_res}), 200
     return jsonify(exp_get_res), 404
@@ -96,8 +100,11 @@ def update_experiment(experiment_id):
     data = request.json
     try:
         # Assuming update_node returns a success indicator or result object
-        update_result = generic_dao.update_node(
-            node_type='Experiment', identifier=experiment_id, updated_data=data)
+        update_result = general_service_dao.update_node(
+            node_type='Experiment',
+            identifier_key=class_identifier_key,
+            identifier_value=experiment_id,
+            updated_data=data)
 
         if update_result:
             # Adjust the response message as needed, based on how update_result is structured
