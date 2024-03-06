@@ -46,7 +46,7 @@ quality_flask_neo4j_lint:
   script:
     - pip install -r requirements.txt
     - pip install .
-    - pylint --output-format=parseable server
+    - pylint --output-format=parseable server | grep -oP '(?<=^Your\s+code\s+has\s+been\s+rated\s+at\s+)[0-9.]+(?=/10)'
 
 # Test phase.
 # Tests using jest ran, node_modules form build phase used.
