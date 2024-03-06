@@ -68,11 +68,9 @@ class genericDao:
             with self.driver.session() as session:
                 session.run(relation_query, parameters=parameters)
                 return True
-        else:
-            # Handle invalid node types
-            print(f"Invalid node type: {parent_node_type} or {child_node_type}")
-            return False
-
+        # Handle invalid node types
+        print(f"Invalid node type: {parent_node_type} or {child_node_type}")
+        return False
         
     def update_node(self,node_type, identifier, updated_data):
         """Dynamically alter the Study information with any updated information passed under `updated_data`."""
