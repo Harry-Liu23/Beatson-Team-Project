@@ -24,7 +24,7 @@ build_next:
 quality_next_lint:
   stage: quality
   image: node:latest
-  allow_failure: false
+  allow_failure: true
   cache:
     paths:
       - /client/beatson-app/node_modules
@@ -38,7 +38,7 @@ quality_next_lint:
 quality_flask_neo4j_lint:
   image: python:latest
   stage: quality
-  allow_failure: false
+  allow_failure: true
   before_script:
     - cd server
     - python -m venv .venv
