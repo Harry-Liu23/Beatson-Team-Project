@@ -48,7 +48,6 @@ class testStudy(unittest.TestCase):
             # Add other attributes to update if required
         }
         response = self.app.put(f'/update_study/{study_accession}', json=update_data)
-        # update_result = generic_dao.update_node(node_type = 'Study',identifier = "access", updated_data = update_data)
         self.assertEqual(response.status_code, 200) 
 
     def test_get_all_study(self):
