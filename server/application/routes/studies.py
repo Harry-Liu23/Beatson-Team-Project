@@ -1,6 +1,8 @@
 from flask import json, request, jsonify
 from . import app,generic_dao,study_dao,general_service_dao
 
+#This is the attribute name for the unique id of study
+class_identifier_key = "accession"
 
 @app.route('/create_study', methods=['POST'])
 def create_study():
@@ -19,7 +21,7 @@ def create_study():
     # Convert the study data to JSON string
     data_study_json = json.dumps(data_study)
     try:
-        temp_study_node = generic_dao.get_node(data_study_json.__getitem__("accession"))
+        temp_study_node = generic_dao.get_node(data_study_json.__getitem__(class_identifier_key))
         if temp_study_node is not None:
             response_data = {"error": "Study already exist!"}
             return jsonify(response_data),500
@@ -41,7 +43,7 @@ def get_study(accession):
     :return: A JSON response containing the study node's data, along with HTTP status code.
     """
     study_node = general_service_dao.get_node(node_type="Study",
-                                              identifier_key="accession",
+                                              identifier_key=class_identifier_key,
                                               identifier_value=accession)
     return jsonify(study_node),200  # Return the study node as JSON response
 
@@ -69,7 +71,7 @@ def update_study(accession):
     try:
         # Assuming update_node returns a success indicator or result object
         general_service_dao.update_node(node_type = 'Study',
-                                identifier_key = 'accession',
+                                identifier_key = class_identifier_key,
                                 identifier_value = accession,
                                 updated_data = data)
         response_data = {
@@ -117,7 +119,7 @@ def delete_study(accession):
     """
     deletion_success = general_service_dao.delete_node(node_type="Study",
                                                 identifier_value=accession,
-                                                identifier_key='accession')
+                                                identifier_key=class_identifier_key)
     if deletion_success:
         response_data = {
             "message": f"Study Node with accession {accession} deleted"

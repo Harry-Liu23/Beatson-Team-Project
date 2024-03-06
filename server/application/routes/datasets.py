@@ -3,7 +3,10 @@
 This script provides all dataset APIs.
 """
 from flask import request, jsonify, json
-from . import app, generic_dao
+from . import app, generic_dao, general_service_dao
+
+#This is the attribute name for the unique id of dataset
+class_identifier_key = "dataset_id"
 
 @app.route('/create_dataset', methods=['POST'])
 def create_datasets():
@@ -28,7 +31,7 @@ def create_datasets():
     except Exception:
         pass
     generic_dao.create_node(node_type='Dataset',data=data_dataset_experiment)
-    generic_dao.relationship_builder(relationship_type= "contains",
+    general_service_dao.relationship_builder(relationship_type= "contains",
                                                   parent_node_type='Sample',
                                                   child_node_type='Dataset', 
                                                   parent_identifier=accession,
