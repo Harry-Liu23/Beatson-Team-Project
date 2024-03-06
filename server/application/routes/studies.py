@@ -1,5 +1,5 @@
 from flask import json, request, jsonify
-from . import app,generic_dao,study_dao
+from . import app,generic_dao,study_dao,general_service_dao
 
 
 @app.route('/create_study', methods=['POST'])
@@ -40,7 +40,9 @@ def get_study(accession):
     :param accession: The unique identifier for the study to retrieve.
     :return: A JSON response containing the study node's data, along with HTTP status code.
     """
-    study_node = generic_dao.get_node(identifier=accession,node_type="Study")
+    study_node = general_service_dao.get_node(node_type="Study",
+                                              identifier_key="accession",
+                                              identifier_value=accession)
     return jsonify(study_node),200  # Return the study node as JSON response
 
 @app.route('/get_all_study', methods=['GET'])
@@ -66,8 +68,10 @@ def update_study(accession):
     data = request.json
     try:
         # Assuming update_node returns a success indicator or result object
-        generic_dao.update_node(node_type = 'Study',
-                                identifier = accession, updated_data = data)
+        general_service_dao.update_node(node_type = 'Study',
+                                identifier_key = 'accession',
+                                identifier_value = accession,
+                                updated_data = data)
         response_data = {
             "message": "Study node updated successfully."
         }
@@ -111,8 +115,9 @@ def delete_study(accession):
     :return: A JSON response indicating whether the study was successfully deleted, 
              along with HTTP status code.
     """
-    deletion_success = generic_dao.delete_node(node_type="Study",
-                                               identifier=accession)
+    deletion_success = general_service_dao.delete_node(node_type="Study",
+                                                identifier_value=accession,
+                                                identifier_key='accession')
     if deletion_success:
         response_data = {
             "message": f"Study Node with accession {accession} deleted"

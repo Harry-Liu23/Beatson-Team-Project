@@ -3,7 +3,7 @@
 This script provides all experiment APIs.
 """
 from flask import request, jsonify, json
-from . import app, experiment_dao, generic_dao
+from . import app, experiment_dao, generic_dao,general_service_dao
 
 @app.route('/delete_experiment/<experiment_id>', methods=['DELETE'])
 def delete_experiment(experiment_id):
@@ -17,8 +17,8 @@ def delete_experiment(experiment_id):
         JSON response indicating the success 
         or failure of the delete operation.
     """
-    deletion_success = generic_dao.delete_node(
-        node_type="Experiment", identifier=experiment_id)
+    deletion_success = general_service_dao.delete_node(
+        node_type="Experiment", identifier_key="experiment_id",identifier_value=experiment_id)
     if deletion_success:
         return jsonify({"message": 
                         f"Experiment id: {experiment_id} deleted successfully"}), 200
@@ -52,11 +52,12 @@ def create_experiment():
     generic_dao.create_node(
         node_type="Experiment", data=data_experiment_json)
     # Create a relationship between the newly created Experiment node and the specified Study node
-    generic_dao.relationship_builder(
+    general_service_dao.relationship_builder(
         parent_node_type="Study",
         child_node_type="Experiment",
         parent_identifier=accession,
         child_identifier=experiment_id,
+        parent_id_field="accession",
         relationship_type="contains")
     response_data = {
         "message": f"Created experiment with ID: {experiment_id}, attached to study with accession: {accession}"
@@ -104,10 +105,8 @@ def update_experiment(experiment_id):
                 "message": "Experiment node updated successfully."
             }
             return jsonify(response_data), 200
-        # This path might need adjustment based on how your DAO handles no-op updates or failures
         return jsonify({"error": "Failed to update experiment Node"}), 404
     except Exception as e:
-        # Handle any exceptions raised during the update process
         return jsonify({"error": str(e)}), 500
 
 @app.route('/count_samples/<experiment_id>', methods=['GET'])
