@@ -12,7 +12,7 @@ project_root = os.path.abspath(os.path.join(current_dir, '..', '..'))
 sys.path.insert(0, project_root)
 
 
-class test_dataset(unittest.TestCase):
+class TestDataset(unittest.TestCase):
     """Test case class for dataset operations."""
 
     def setUp(self):

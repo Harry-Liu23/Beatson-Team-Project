@@ -3,9 +3,14 @@ stages:
   - quality
   - test
 
+# Build phase.
+# Installs necessary dependencies and save in node_modules.
 build_next:
   stage: build
-  image: node
+  image: node:latest
+  cache:
+    paths:
+      - /client/beatson-app/node_modules
   before_script:
     - cd client/beatson-app
   script:
@@ -13,49 +18,49 @@ build_next:
     - npm install
     - npm run build
 
-build_flask_neo4j:
-  stage: build
-  image: python
-  before_script: cd server
-  script:
-    - echo "building flask and neo4j..."
-    - python -m venv /flask-neo4j-env
-    - ls
-    - source /flask-neo4j-env/bin/activate
-    - pip install -r "requirements.txt"
-  artifacts:
-    untracked: false
-    when: on_success
-    expire_in: 30 days
-    paths:
-      - "/flask-neo4j-env"
 
+# Quality assurance phase.
+# Uses node modules previously installed in build_next and run linting.
 quality_next_lint:
   stage: quality
+  image: node:latest
+  allow_failure: true
+  cache:
+    paths:
+      - /client/beatson-app/node_modules
+  before_script:
+    - cd client/beatson-app
+    - npm install
   script:
-    - echo "starting static analysis of next files"
+    - npm run lint
 
+# Uses pylint on all python files.
 quality_flask_neo4j_lint:
+  image: python:latest
   stage: quality
-  script:
-    - echo "starting static analysis of python files"
-
-test_frontend:
-  stage: test
-  script:
-    - echo "starting tests for frontend"
-
-test_flask_neo4j:
-  stage: test
+  allow_failure: true
   before_script:
     - cd server
+    - python -m venv .venv
+    - source .venv/bin/activate
   script:
-    - echo "starting test for flask and neo4j"
-    
-test_flask_app:
+    - pip install -r requirements.txt
+    - pip install .
+    - pylint --output-format=parseable server
+
+# Test phase.
+# Tests using jest ran, node_modules form build phase used.
+test_frontend:
   stage: test
+  image: node
+  cache:
+    paths:
+      - /client/beatson-app/node_modules
+  before_script:
+    - cd client/beatson-app
   script:
-    - echo "starting test for flask app"
-     
+    - npm install
+    - npm test
+
 before_script:
-   - echo DB_PASSWORD is $DB_PASSWORD
+    - echo DB_PASSWORD is $DB_PASSWORD

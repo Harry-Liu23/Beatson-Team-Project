@@ -12,7 +12,7 @@ project_root = os.path.abspath(os.path.join(current_dir, '..', '..'))
 sys.path.insert(0, project_root)
 
 
-class tests_all_delete(unittest.TestCase):
+class TestAllDelete(unittest.TestCase):
     """Test case class for deletion tests."""
 
     def setUp(self):

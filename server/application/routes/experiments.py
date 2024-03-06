@@ -40,18 +40,19 @@ def create_experiment():
     experiment_id = experiment_data.get('experiment_id', '')
 
     try:
-        temp_experiment = generic_dao.get_node(node_type="Experiment",identifier=experiment_id)
+        temp_experiment = generic_dao.get_node(node_type="Experiment",
+                                               identifier=experiment_id)
         if temp_experiment is not None:
             return jsonify({"message": "Error: Duplicated experiments"})
-    except Exception as e:
+    except Exception:
         pass
     # Convert the experiment data to a JSON string for the create_node method
     data_experiment_json = json.dumps(experiment_data)
     # Create an Experiment node
-    created_experiment_result = generic_dao.create_node(
+    generic_dao.create_node(
         node_type="Experiment", data=data_experiment_json)
     # Create a relationship between the newly created Experiment node and the specified Study node
-    rel_result = generic_dao.relationship_builder(
+    generic_dao.relationship_builder(
         parent_node_type="Study",
         child_node_type="Experiment",
         parent_identifier=accession,

@@ -2,7 +2,8 @@
 
 This script initializes the Flask application and handles its execution.
 """
-
+from application import app, session
+from application import driver
 import sys
 import os
 
@@ -14,9 +15,6 @@ project_root = os.path.abspath(os.path.join(current_dir, '..'))
 sys.path.insert(0, project_root)
 
 # Now, import application components
-from application import app, session
-from application import driver
-
 def main():
     """Main function to run the Flask application."""
     try:

@@ -19,7 +19,7 @@ def get_all_samples(experiment_id):
     samples = experiment_dao.get_all_samples(experiment_id)
     if samples:
         return jsonify(samples)  # Return samples as JSON response
-    
+
     return jsonify({"error": "No samples found for the given experiment_id"}), 404
 
 @app.route('/create_sample', methods=['POST'])
@@ -44,13 +44,13 @@ def create_sample():
     # Convert the sample data to JSON string for create_node method
     sample_data_json = json.dumps(sample_data)
     created_sample_result = generic_dao.create_node(
-        node_type="Sample", 
+        node_type="Sample",
         data=sample_data_json)
 
-    # Assuming create_node method returns 
-    # the newly created node's id or some identifier, 
+    # Assuming create_node method returns
+    # the newly created node's id or some identifier,
     # which is then used for linking
-    # Create a relationship between the newly created 
+    # Create a relationship between the newly created
     # Sample node and the specified Experiment node
     rel_result = generic_dao.relationship_builder(
         parent_node_type="Experiment",
@@ -59,7 +59,7 @@ def create_sample():
         child_identifier=sample_id,relationship_type="contains")
     if created_sample_result and rel_result:
         response_data = {
-            "message": f"Created sample with ID: {sample_id}, attached to experiment with ID: {experiment_id}"
+        "message": f"Created sample with ID: {sample_id}, attached to experiment with ID: {experiment_id}"
         }
         return jsonify(response_data), 200
     return jsonify({"error": "Failed to create sample or link it to the experiment"}), 200
@@ -97,7 +97,7 @@ def update_sample(sample_id):
     # Assuming update_node returns a success indicator or result object
     update_result = generic_dao.update_node(
         node_type='Sample',
-        identifier=sample_id, 
+        identifier=sample_id,
         updated_data=data)
     if update_result:
         # Adjust the response message as needed, based on how update_result is structured

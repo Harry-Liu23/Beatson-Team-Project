@@ -1,5 +1,5 @@
-from . import app,generic_dao,study_dao
 from flask import json, request, jsonify
+from . import app,generic_dao,study_dao
 
 
 @app.route('/create_study', methods=['POST'])
@@ -7,9 +7,11 @@ def create_study():
     """
     Creates a new study node based on the JSON data provided in the request.
     The function checks if the study already exists before creating a new one.
-    If the study exists, it returns an error; otherwise, it creates the study and returns the study's accession.
+    If the study exists, it returns an error; otherwise, 
+    it creates the study and returns the study's accession.
 
-    :return: A JSON response indicating whether the study was successfully created, along with HTTP status code.
+    :return: A JSON response indicating whether the study was successfully created, 
+             along with HTTP status code.
     """
     data = request.json
     # Assuming data contains necessary attributes for study
@@ -20,8 +22,8 @@ def create_study():
         temp_study_node = generic_dao.get_node(data_study_json.__getitem__("accession"))
         if temp_study_node is not None:
             response_data = {"error": "Study already exist!"}
-            return jsonify(response_data),500;
-    except Exception as e:
+            return jsonify(response_data),500
+    except Exception:
         pass
     # Create a study node
     created_study_accession = generic_dao.create_node(node_type="Study", data = data_study_json)
@@ -40,7 +42,7 @@ def get_study(accession):
     """
     study_node = generic_dao.get_node(identifier=accession,node_type="Study")
     return jsonify(study_node),200  # Return the study node as JSON response
-    
+
 @app.route('/get_all_study', methods=['GET'])
 def get_all_study():
     """
@@ -58,12 +60,14 @@ def update_study(accession):
     It assumes the update_node method returns a success indicator or result object.
 
     :param accession: The unique identifier for the study to update.
-    :return: A JSON response indicating whether the study was successfully updated, along with HTTP status code.
+    :return: A JSON response indicating whether the study was successfully updated, 
+             along with HTTP status code.
     """
     data = request.json
     try:
         # Assuming update_node returns a success indicator or result object
-        update_result = generic_dao.update_node(node_type = 'Study',identifier = accession, updated_data = data)
+        generic_dao.update_node(node_type = 'Study',
+                                identifier = accession, updated_data = data)
         response_data = {
             "message": "Study node updated successfully."
         }
@@ -86,7 +90,8 @@ def get_all_experiments(accession):
 @app.route('/count_experiments/<accession>', methods=['GET'])
 def count_experiments(accession):
     """
-    Counts the number of experiment nodes associated with a given study based on the study's accession.
+    Counts the number of experiment nodes associated 
+    with a given study based on the study's accession.
     
     :param accession: The unique identifier for the study whose experiments are to be counted.
     :return: A JSON response containing the number of experiments, along with HTTP status code.
@@ -96,16 +101,18 @@ def count_experiments(accession):
         return jsonify({"num_experiments": num_experiments}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
- 
+
 @app.route('/delete_study/<accession>', methods=['DELETE'])
 def delete_study(accession):
     """
     Deletes a study node based on the accession provided in the URL path.
 
     :param accession: The unique identifier for the study to delete.
-    :return: A JSON response indicating whether the study was successfully deleted, along with HTTP status code.
+    :return: A JSON response indicating whether the study was successfully deleted, 
+             along with HTTP status code.
     """
-    deletion_success = generic_dao.delete_node(node_type="Study",identifier=accession)
+    deletion_success = generic_dao.delete_node(node_type="Study",
+                                               identifier=accession)
     if deletion_success:
         response_data = {
             "message": f"Study Node with accession {accession} deleted"

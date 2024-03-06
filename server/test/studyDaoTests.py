@@ -13,7 +13,7 @@ project_root = os.path.abspath(os.path.join(current_dir, '..', '..'))
 sys.path.insert(0, project_root)
 
 
-class test_study(unittest.TestCase):
+class TestStudy(unittest.TestCase):
     """Test case class for study-related operations."""
 
     def setUp(self):
