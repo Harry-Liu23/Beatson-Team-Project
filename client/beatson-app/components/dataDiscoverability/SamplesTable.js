@@ -5,10 +5,8 @@ import {
   Card,
 } from "@mui/material";
 import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
  const SamplesTable = (prop) => {
@@ -22,6 +20,11 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
       {
         field: "sample_id",
         headerName: "Sample ID",
+        width: 130,
+      },
+      {
+        field: "related_study",
+        headerName: "Related Study",
         width: 130,
       },
       {
@@ -57,11 +60,6 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
       {
         field: "cell_line",
         headerName: "Cell Line",
-        width: 100,
-      },
-      {
-        field: "related_study",
-        headerName: "Related Study",
         width: 100,
       },
     ]);
@@ -101,6 +99,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
     // //get SamplesData when the samples table is first rendered
     useEffect(() => {
       getSamplesData();
+      addRelatedStudy();
     }, []);
   
     if (newChange !== prop.change) {
@@ -118,17 +117,19 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
     return (
       // display each sample as a row on mui DataGrid
       <div>
-        <Accordion>
+        <Accordion style={{boxShadow:"none"}}>
           <AccordionSummary
-          expandIcon={<ArrowDownwardIcon />}
+          expandIcon={<ArrowDropDownIcon />}
           aria-controls="samples-table-content"
-          id="samples-table-accordion">
-          <Typography>Samples</Typography>
+          id="samples-table-accordion"
+          sx={{flexDirection: "row-reverse", marginLeft:6}}>
+          <Typography variant="h5" color="#008AAD" align="right" sx={{padding:2}}>Samples</Typography>
+          
           </AccordionSummary>
-        <Card variant="outlined" sx={{ padding:6 }} > 
+        <Card variant="soft" sx={{ padding:6 }} > 
           <Grid
             container
-            rowGap={1}
+            rowGap={2}
             direction="column"
             alignItems="center"
             justifyContent="center"
@@ -140,7 +141,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
               columns={columns}
               initialState={{
                 pagination: {
-                  paginationModel: { pageSize: 5 },
+                  paginationModel: { pageSize: 10 },
                 },
               }}
               pageSizeOptions={[5, 10, 15, 20, 25]}

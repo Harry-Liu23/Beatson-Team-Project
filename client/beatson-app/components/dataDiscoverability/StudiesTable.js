@@ -5,10 +5,8 @@ import {
   Card,
 } from "@mui/material";
 import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 const StudiesTable = (prop) => {
@@ -86,6 +84,7 @@ const StudiesTable = (prop) => {
   // //get studies when the studies table is first rendered
   useEffect(() => {
     getStudiesData();
+    addNumExperiments();
   }, []);
 
   if (newChange !== prop.change) {
@@ -103,12 +102,13 @@ const StudiesTable = (prop) => {
   return (
     // display each study as a row on mui DataGrid
     <div>
-      <Accordion defaultExpanded>
+      <Accordion defaultExpanded style={{boxShadow:"none"}}>
           <AccordionSummary
-          expandIcon={<ArrowDownwardIcon />}
+          expandIcon={<ArrowDropDownIcon />}
           aria-controls="studies-table-content"
-          id="studies-table-accordion">
-          <Typography>Studies</Typography>
+          id="studies-table-accordion"
+          sx={{flexDirection: "row-reverse", marginLeft:6}}>
+          <Typography variant="h5" color="#008AAD" align="right" sx={{padding:2}}>Studies</Typography>
           </AccordionSummary>
       <Card variant="outlined" sx={{ padding:6 }} > 
         <Grid

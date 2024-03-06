@@ -11,6 +11,7 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import StudiesTable from "./StudiesTable";
 import SamplesTable from "./SamplesTable";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 //@app.route('/search_all_nodes/<search_string>',methods=['GET'])
 
@@ -18,7 +19,7 @@ import SamplesTable from "./SamplesTable";
 
 const SearchBar = () => {
     const [searchQuery, setSearchQuery] = useState("");
-    const [renderTable, setRenderTable] = useState(true);
+    const [renderTable, setRenderTable] = useState(false);
     const [studySend, setStudySend] = useState([]);
     const [sampleSend, setSampleSend] = useState([]);
     const [change, setChange] = useState(false);
@@ -58,6 +59,7 @@ const SearchBar = () => {
                 }
 
                 setChange(!change);
+                setRenderTable(true);
             }
             catch (error) {
                 console.error("Unable to fetch data: ", error);
@@ -67,6 +69,7 @@ const SearchBar = () => {
 
     return (
         <div>
+        {/* Render search bar */}
         <Box sx={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', padding: '1em'}}>
             <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
             <TextField
@@ -74,6 +77,8 @@ const SearchBar = () => {
                 label="Search" 
                 variant="standard" 
                 onChange={handleInputChange} 
+                // sx={{}}
+                size="l"
                 onKeyDown={(event) => {
                 if (event.key === 'Enter') {
                     event.preventDefault();
@@ -82,9 +87,21 @@ const SearchBar = () => {
             }}/>
             <Button type = "submit" onClick={handleSearchSubmit}>Search</Button>
         </Box>
+        
+        {/* Initial message to prompt user search */}
+        {!renderTable && 
+        <div>
+        <Box sx={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', padding: '1em', }}>
+        <Typography color="#696969">
+        <InfoOutlinedIcon/> Enter a search term above to find relevant data.
+        </Typography>
+        </Box>    
+        </div>
+        }
 
-        {renderTable && (<StudiesTable studies = {studySend} change = {change}/>)}
-        {renderTable && (<SamplesTable samples = {sampleSend} change = {change} />)}
+        {/* Render search results as and when */}  
+            {(renderTable && <StudiesTable studies = {studySend} change = {change}/>)}
+            {(renderTable && <SamplesTable samples = {sampleSend} change = {change} />)}
         </div>
     );
 }
