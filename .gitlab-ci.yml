@@ -35,18 +35,18 @@ quality_next_lint:
     - npm run lint
 
 # Uses pylint on all python files.
-quality_flask_neo4j_lint:
-  image: python:latest
-  stage: quality
-  allow_failure: true
-  before_script:
-    - cd server
-    - python -m venv .venv
-    - source .venv/bin/activate
-  script:
-    - pip install -r requirements.txt
-    - pip install .
-    - pylint --output-format=parseable server
+# quality_flask_neo4j_lint:
+#   image: python:latest
+#   stage: quality
+#   allow_failure: true
+#   before_script:
+#     - cd server
+#     - python -m venv .venv
+#     - source .venv/bin/activate
+#   script:
+#     - pip install -r requirements.txt
+#     - pip install .
+#     - pylint --output-format=parseable server
 
 # Test phase.
 # Tests using jest ran, node_modules form build phase used.
