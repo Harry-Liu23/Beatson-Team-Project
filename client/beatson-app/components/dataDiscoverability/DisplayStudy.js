@@ -42,22 +42,17 @@ const DisplayStudy = ({ studyData }) => {
           }
           const samples = await response.json();
           experimentWithSamples[experiment.experiment_id] = samples;
-          // console.log("sampleData", samples)
         })
       );
-      // setExperimentsWithSamples(experimentWithSamples);
     } catch (error) {
       console.error("Unable to fetch sample data: ", error);
     }
-    console.log("ExeprimentsWithSamples now set", experimentWithSamples);
     return experimentWithSamples;
   };
 
   //Gets all sample data for all experiments.
   const getAllSampleData = () => {
     const numberOfExperiments = sampleData.length;
-    // console.log("in getAllSampleData");
-    // console.log(numberOfExperiments);
   };
 
   // ensure experiment data is retrieved first before getting sample data
@@ -76,13 +71,9 @@ const DisplayStudy = ({ studyData }) => {
 
   const displayData = () => {
     const experimentAndSamplesComponents = [];
-    // for (const experiment in experiments) {
     experiments.forEach((experiment) => {
-      // console.log("Experiments", experiments)
       const expID = experiment.experiment_id;
       const samples = experimentWithSamples[expID];
-      console.log("Experiment", experiment);
-      console.log("Samples", samples);
       experimentAndSamplesComponents.push(
         <DisplayExperimentAndSamples
           experimentData={experiment}
@@ -90,7 +81,6 @@ const DisplayStudy = ({ studyData }) => {
         />
       );
     });
-    console.log("components", experimentAndSamplesComponents);
     return experimentAndSamplesComponents;
   };
 

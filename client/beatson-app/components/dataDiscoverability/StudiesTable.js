@@ -80,10 +80,11 @@ const StudiesTable = () => {
             rows={rows}
             columns={columns}
             onRowClick={(row) => {
+              const accession = row.id;
               Router.push({
-                pathname: '/study/${row.accession}',
+                pathname: `/study/${accession}`,
                 query: { study: JSON.stringify(row.row) },
-            });
+            },`study/${accession}` );
             }}
           />
         </Grid>

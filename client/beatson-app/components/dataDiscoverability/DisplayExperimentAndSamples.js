@@ -28,9 +28,7 @@ const DisplayExperimentAndSamples = (props) => {
 
   useEffect(() => {
     if (samples && samples.length > 0) {
-      console.log("First sample", samples[0]);
       const samplesKeys = Object.keys(samples[0]);
-      console.log("Keys from first sample", samplesKeys);
 
       const columnsFormat = samplesKeys.map((sampleKeys) => ({
         field: sampleKeys,
@@ -39,14 +37,9 @@ const DisplayExperimentAndSamples = (props) => {
           sampleKeys.slice(1).replace("_", " "),
         width: 200,
       }));
-      console.log("Formatted Columns", columnsFormat);
       setColumns(columnsFormat);
     }
   }, [samples]);
-
-  console.log("Experiment Data inside Display E+S", experiment);
-  console.log("Samples Data inside E+S", samples);
-  console.log("columnNames", columns);
 
   if (!samples || !experiment || columns.length < 1) {
     return <div>Loading Experiments and Samples...</div>;
