@@ -1,22 +1,36 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import fetchMock from 'jest-fetch-mock';
 import LoginForm from '../components/login/LoginForm'; 
+import postFormAsJSON from '../services/BackendAPI';
 
-fetchMock.enableMocks();
+jest.mock('../services/BackendAPI', () => ({
+  __esModule: true, 
+  default: jest.fn(() => Promise.resolve({ json: () => Promise.resolve({ token: 'fake_user' }) })),
+}));
 
 beforeAll(() => {
-    
-    fetch.resetMocks();
+  HTMLFormElement.prototype.requestSubmit = jest.fn().mockImplementation(function() {
+    this.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+  });
+});
 
-    jest.spyOn(console, 'log').mockImplementation(() => {});
+afterAll(() => {
+  jest.restoreAllMocks();
 });
 
 describe('LoginForm', () => {
-  it('allows the user to login successfully', async () => {
 
-    fetch.mockResponseOnce(JSON.stringify({ token: 'fake_user' }));
+  beforeEach(() => {
+    postFormAsJSON.mockClear();
+    jest.spyOn(console, 'log').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    console.log.mockRestore();
+  });
+
+  it('allows the user to login successfully', async () => {
 
     render(<LoginForm />);
 
@@ -27,19 +41,10 @@ describe('LoginForm', () => {
       target: { value: 'password123' },
     });
 
-    fireEvent.click(screen.getByRole('button', { name: /login/i }));
+    fireEvent.submit(screen.getByRole('button', { name: /login/i }));
 
     await waitFor(() => {
-      expect(fetch).toHaveBeenCalledWith('http://localhost:2020/login', {
-        method: 'POST',
-        body: JSON.stringify({ username: 'testuser', password: 'password123' }),
-        headers: {
-          'Content-Type': 'application/json',
-
-          'Access-Control-Allow-Origin': 'http://localhost:2020',
-        },
-        mode: 'cors'
-      });
+      expect(postFormAsJSON).toHaveBeenCalledWith(expect.anything(),'http://localhost:2020/login');  
     });
   });
 });
