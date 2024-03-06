@@ -11,7 +11,6 @@ const DisplayStudy = ({ studyData }) => {
 
   //Gets list of all experiments
   const getExperimentData = async () => {
-    // console.log("in getExperimentData function");
     try {
       const response = await fetch(
         `http://127.0.0.1:2020/get_all_experiments/${accession}`
@@ -97,7 +96,7 @@ const DisplayStudy = ({ studyData }) => {
 
   return (
     <div>
-      <Card variant="outlined" sx={{ padding:4, margin:15, marginTop:8, border:"groove"}}>
+      <Card variant="outlined" sx={{ padding:4, marginRight:15, marginLeft:15, marginBottom:5, marginTop:5, border:"groove"}}>
         <Grid
           container
           rowGap={1}

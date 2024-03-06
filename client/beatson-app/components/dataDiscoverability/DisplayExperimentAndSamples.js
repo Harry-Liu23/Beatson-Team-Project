@@ -7,6 +7,11 @@ import { DataGrid,
           GridToolbarExport, 
         } from '@mui/x-data-grid';
 import { useEffect, useState } from "react";
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+ 
 
 function ExportButtonDisplay() {
   return (
@@ -49,7 +54,21 @@ const DisplayExperimentAndSamples = (props) => {
 
   return (
     <div>
-      <Card variant="outlined" sx={{ padding: 4, paddingBottom:6, paddingTop:2, marginLeft:15, marginRight:15, marginBottom:8, border:"groove" }}>
+      <Accordion>
+      <AccordionSummary
+        expandIcon={<ArrowDropDownIcon/>}
+        aria-controls="experiment-content"
+        id="experiment-table-content"
+        sx={{flexDirection: "row-reverse", marginLeft:12}}
+        >
+          {/* <Grid item sx={{ mt: 1.5 }} > */}
+            <Typography variant="h5" color="#008AAD" align="right" sx={{padding:2}}>
+              Experiment ID: {experiment.experiment_id}
+            </Typography>
+          {/* </Grid> */}
+      </AccordionSummary>
+      <Card variant="outlined" sx={{ padding: 4, paddingBottom:6, marginLeft:15, marginRight:15, marginBottom:8, border:"groove" }}>
+        <AccordionDetails>
         <Grid
           container
           rowGap={1}
@@ -59,11 +78,11 @@ const DisplayExperimentAndSamples = (props) => {
           justifyContent="center"
           spacing={2}
         >
-          <Grid item sx={{ mt: 1.5 }} >
+          {/* <Grid item sx={{ mt: 1.5 }} >
             <Typography variant="h5" color="blue-gray" align="left">
               Experiment ID: {experiment.experiment_id}
             </Typography>
-          </Grid>
+          </Grid> */}
           <Grid item xs={6} paddingBottom={5}> 
             <b>Experiment Details:</b>
             <br></br> {experiment.description}
@@ -84,7 +103,9 @@ const DisplayExperimentAndSamples = (props) => {
             toolbar: ExportButtonDisplay,
           }}
         />
+        </AccordionDetails>
       </Card>
+      </Accordion>
     </div>
   );
 };
