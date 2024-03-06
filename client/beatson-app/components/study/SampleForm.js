@@ -222,12 +222,10 @@ const SampleForm = ({ samples, id }) => {
   };
 
   const processRowUpdate = (newRow) =>{
-    //console.log(newRow)
     var newRows = rows.slice();
-    //console.log(rows)
     for(var i = 0; i < rows.length; i++){
       if(rows[i]['sample_id'] == newRow['sample_id']){
-        newRows[i] = newRow
+        newRows[i] = newRow;
       }
     }
     setRows(newRows);
@@ -276,8 +274,6 @@ const SampleForm = ({ samples, id }) => {
           sampleJson["sample"]["experiment_id"] = expId;
           sampleJson["sample"]["sample_id"] = `${expId}-${row["sample_id"]}`;
         }
-        console.log(sampleJson);
-        console.log(datasetJson);
         sendJsonToFlask(sampleJson, "http://127.0.0.1:2020/create_sample");
         sendJsonToFlask(datasetJson, "http://127.0.0.1:2020/create_dataset");
       })
