@@ -93,6 +93,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
             addSample["related_study"] = data["s"]["accession"];
             returnSamples.push(addSample);
         }));
+        setNewChange(!newChange);
         return returnSamples;
     }
   
@@ -106,7 +107,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
       try {
         addRelatedStudy().then(samples => {;
         setRows(samples);
-        setNewChange(!newChange);
+        //setNewChange(!newChange);
       })
       }
       catch (error) {

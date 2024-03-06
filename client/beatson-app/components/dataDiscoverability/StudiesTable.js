@@ -78,6 +78,7 @@ const StudiesTable = (prop) => {
             addStudy["expNumber"] = data["num_experiments"];
             returnStudies.push(addStudy);
         }));
+        setNewChange(!newChange);
         return returnStudies;
   }
 
@@ -91,7 +92,7 @@ const StudiesTable = (prop) => {
     try {
       addNumExperiments().then(studies => {
       setRows(studies);
-      setNewChange(!newChange);
+      //setNewChange(!newChange);
     });
     }
     catch (error) {
