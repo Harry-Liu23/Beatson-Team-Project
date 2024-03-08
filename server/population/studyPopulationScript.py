@@ -26,7 +26,7 @@ class PopulateStudies(unittest.TestCase):
                 self.assertEqual(response.status_code, 200)
 
     def test_populate_studies(self):
-        node_types = ["study", "experiment", "sample"]
+        node_types = ["study", "experiment", "sample", "dataset"]
         for node_type in node_types:
             data_dir = os.path.join(current_dir, f'data/{node_type}')
             node_files = os.listdir(data_dir)

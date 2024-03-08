@@ -1,0 +1,15 @@
+{
+  "sample": {
+    "sample_id": "SRX1234566",
+    "group": "Control Group",
+    "project": "PRJ7890128",
+    "description": "Normal tissue sample for comparison in copy number variation analysis.",
+    "organism": "Homo sapiens",
+    "tissue": "Normal Tissue",
+    "sex": "male",
+    "cell_line": "undefined",
+    "mouse_model": "undefined",
+    "biometric_provider": "ILLUMINA HiSeq X Ten",
+    "experiment_id": "ERX7890124"
+  }
+}
