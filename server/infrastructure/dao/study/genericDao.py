@@ -14,10 +14,12 @@ class genericDao:
         """
         Create a node in the database.
 
-        :param node_type: Type of the node (e.g., 'Study' or 'Sample').
-        :param data: A json stream includes the mandatory fields.
-        :param extra: A json stream includes any additional arbitary fields types/columns user wants to add.
-        :return: The result of the database operation.
+        Args: 
+            node_type: Type of the node (e.g., 'Study' or 'Sample').
+            data: A json stream includes the mandatory fields.
+            extra: A json stream includes any additional arbitary fields types/columns user wants to add.
+        Return: 
+            The result of the database operation.
         """
 
         data = json.loads(data)
