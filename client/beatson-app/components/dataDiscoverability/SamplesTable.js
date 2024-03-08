@@ -3,16 +3,20 @@ import { DataGrid } from "@mui/x-data-grid";
 import { 
   Grid,
   Card,
+  Box,
 } from "@mui/material";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+
 
  const SamplesTable = (prop) => {
     // rows for samples table where each row corresponds to a sample
     const [rows, setRows] = useState([]);
     const [newChange, setNewChange] = useState(prop.change);
+    const [results, setResults] = useState(false);
   
   
     // define columns for samples table
@@ -63,19 +67,13 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
         width: 100,
       },
     ]);
-  
-    // if change to search has changed then call get studies data
-  
-    // retrieve all samples from Neo4J via Flask
-    const getSamplesData = () => {
-      setRows(prop.samples);
-    }
 
-    //add related study ID property to json sample objects
-    const addRelatedStudy = async () => {
+    //Generate samples table and add related study to each row
+    const populateTable = async () => {
         const newSamples = prop.samples;
         const returnSamples = [];
 
+        //API call to add related study to each row
         await Promise.all(newSamples.map(async (sample) => {
             let addSample = sample;
             let data = "";
@@ -89,36 +87,49 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
             catch (error) {
                 console.log("error" + error);
             }
-
             addSample["related_study"] = data["s"]["accession"];
             returnSamples.push(addSample);
         }));
+
+        //newChange used to trigger re-render
         setNewChange(!newChange);
         return returnSamples;
     }
-  
-    // //get SamplesData when the samples table is first rendered
+    
+    //function to handle no results
+    const checkResults = () => {
+      if (rows == []) {
+        setResults(true);
+      } else {
+        setResults(false);
+      }
+    }
+
     useEffect(() => {
-      getSamplesData();
-      addRelatedStudy();
-    }, []);
+    //get samples data when the samples table is first rendered
+      populateTable().then(samples => {;
+        setRows(samples);})
+      }, []
+    );
   
+    //handle re-render of table upon new search
     if (newChange !== prop.change) {
       try {
-        addRelatedStudy().then(samples => {;
+        populateTable().then(samples => {;
         setRows(samples);
-        //setNewChange(!newChange);
+        // checkResults();
       })
       }
       catch (error) {
         console.log("No studies found " + error);
       }
     }
+
   
     return (
       // display each sample as a row on mui DataGrid
       <div>
-        <Accordion style={{boxShadow:"none"}}>
+        <Accordion style={{boxShadow:"none"}} defaultExpanded>
           <AccordionSummary
           expandIcon={<ArrowDropDownIcon />}
           aria-controls="samples-table-content"
@@ -127,7 +138,8 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
           <Typography variant="h5" color="#008AAD" align="right" sx={{padding:2}}>Samples</Typography>
           
           </AccordionSummary>
-        <Card variant="soft" sx={{ padding:6 }} > 
+        <Card variant="soft" sx={{ padding:6 }}>
+          {results && 
           <Grid
             container
             rowGap={2}
@@ -136,7 +148,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
             justifyContent="center"
             spacing={2}
           >
-            <DataGrid
+            <DataGrid 
               getRowId={(row) => row.sample_id}
               rows={rows}
               columns={columns}
@@ -148,6 +160,18 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
               pageSizeOptions={[5, 10, 15, 20, 25]}
             />
           </Grid>
+        }
+
+          {/* If no results found, display message */}
+          {!results && 
+              <div>
+                <Box sx={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', padding: '1em', }}>
+                <Typography color="#696969">
+                <InfoOutlinedIcon/> No results found.
+                </Typography>
+                </Box>    
+              </div>
+          }
         </Card>
         </Accordion>
       </div>

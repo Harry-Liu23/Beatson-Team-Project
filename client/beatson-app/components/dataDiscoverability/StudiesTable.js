@@ -49,18 +49,12 @@ const StudiesTable = (prop) => {
     },
   ]);
 
-  // if change to search has changed then call get studies data
-
-  // retrieve all studies from Neo4J via Flask
-  const getStudiesData = () => {
-    setRows(prop.studies);
-
-  }
-
-  const addNumExperiments = async () => {
+  //Generate studies table and add number of experiments to each row
+  const populateTable = async () => {
     const newStudies = prop.studies;
     const returnStudies = [];
 
+        //API call to add number of experiments to each study
         await Promise.all(newStudies.map(async (study) => {
             let addStudy = study;
             let data = "";
@@ -75,24 +69,27 @@ const StudiesTable = (prop) => {
                 console.log("error" + error);
             }
 
+            //update each table entry with retrieved number of experiments
             addStudy["expNumber"] = data["num_experiments"];
             returnStudies.push(addStudy);
         }));
+        
+        //newChange switch used to trigger re-render
         setNewChange(!newChange);
         return returnStudies;
   }
 
-  // //get studies when the studies table is first rendered
+  //get studies & calculate numExperiments when the table is first rendered
   useEffect(() => {
-    getStudiesData();
-    addNumExperiments();
+    populateTable().then(studies => {
+      setRows(studies); })
   }, []);
 
+  //handle re-render of table upon new search
   if (newChange !== prop.change) {
     try {
-      addNumExperiments().then(studies => {
+      populateTable().then(studies => {
       setRows(studies);
-      //setNewChange(!newChange);
     });
     }
     catch (error) {
