@@ -1,3 +1,8 @@
+"""
+This class loads all the tests and run them at once.
+Load more unite test class if needed
+"""
+
 import unittest
 from . import studyDaoTests, experimentDaoTests, sampleDaoTests, searchesTests,allDeleteTests, datasetDaoTests
 

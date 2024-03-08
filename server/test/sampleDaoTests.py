@@ -1,8 +1,3 @@
-"""Module docstring.
-
-This is sample unit test class.
-"""
-
 import sys
 import os
 import unittest
@@ -14,18 +9,14 @@ sys.path.insert(0, project_root)
 
 
 class TestSample(unittest.TestCase):
-    """Test case class for sample operations."""
 
     def setUp(self):
-        """Set up test environment."""
         self.app = app.test_client()
 
     def tearDown(self):
-        """Tear down test environment."""
         pass
 
     def test_create_sample_node(self):
-        """Test creation of sample node."""
         data = {
             "sample": {
                 "name": "Sample Name",
@@ -46,13 +37,11 @@ class TestSample(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_get_sample(self):
-        """Test retrieval of sample."""
         sample_id = "123"
         response = self.app.get(f'/get_sample/{sample_id}')
         self.assertEqual(response.status_code, 200)
 
     def test_update_sample(self):
-        """Test updating of sample."""
         sample_id = "123"
         update_data = {
             'description': 'Updated Description',
@@ -63,13 +52,11 @@ class TestSample(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_get_all_sample(self):
-        """Test retrieval of all samples."""
         experiment_id = "101"
         response = self.app.get(f'/get_all_samples/{experiment_id}')
         self.assertEqual(response.status_code, 200)
 
     def test_count_samples(self):
-        """Test counting of samples."""
         experiment_id = '101'
         response = self.app.get(f'/count_samples/{experiment_id}')
         self.assertEqual(response.status_code, 200)

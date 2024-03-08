@@ -1,7 +1,3 @@
-"""Module docstring.
-
-This file set up a package structure for installing and packaging
-"""
 from setuptools import setup, find_packages
 
 setup(

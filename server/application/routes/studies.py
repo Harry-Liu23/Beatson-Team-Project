@@ -16,10 +16,10 @@ def create_study():
              along with HTTP status code.
     """
     data = request.json
-    # Assuming data contains necessary attributes for study
     data_study = data.get('study')
-    # Convert the study data to JSON string
     data_study_json = json.dumps(data_study)
+    # The try/except was built to pass, receiving empty node may return error which may break code
+    # Try to get the node with its unique id, if passes then create node
     try:
         temp_study_node = generic_dao.get_node(data_study_json.__getitem__(class_identifier_key))
         if temp_study_node is not None:
@@ -27,7 +27,6 @@ def create_study():
             return jsonify(response_data),500
     except Exception:
         pass
-    # Create a study node
     created_study_accession = generic_dao.create_node(node_type="Study", data = data_study_json)
     response_data = {
         "message": f"Study Node created with accession: {created_study_accession}"
@@ -45,7 +44,7 @@ def get_study(accession):
     study_node = generic_dao.get_node(node_type="Study",
                                               identifier_key=class_identifier_key,
                                               identifier_value=accession)
-    return jsonify(study_node),200  # Return the study node as JSON response
+    return jsonify(study_node),200
 
 @app.route('/get_all_study', methods=['GET'])
 def get_all_study():
@@ -69,7 +68,6 @@ def update_study(accession):
     """
     data = request.json
     try:
-        # Assuming update_node returns a success indicator or result object
         generic_dao.update_node(node_type = 'Study',
                                 identifier_key = class_identifier_key,
                                 identifier_value = accession,
@@ -79,7 +77,6 @@ def update_study(accession):
         }
         return jsonify(response_data), 200
     except Exception as e:
-        # Handle any exceptions raised during the update process
         return jsonify({"error": str(e)}), 500
 
 @app.route('/get_all_experiments/<accession>')

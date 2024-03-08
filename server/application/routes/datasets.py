@@ -10,12 +10,6 @@ class_identifier_key = "dataset_id"
 
 @app.route('/create_dataset', methods=['POST'])
 def create_datasets():
-    """
-    Create a new dataset and link it to a sample.
-
-    Returns:
-        JSON response indicating the success or failure of the operation.
-    """
     dataset_data = request.json
     dataset = dataset_data.get('dataset')
     data_dataset_experiment = json.dumps(dataset)
@@ -50,9 +44,6 @@ def update_datasets(dataset_id):
 
     Args:
         dataset_id (str): The ID of the dataset to update.
-
-    Returns:
-        JSON response indicating the success or failure of the update operation.
     """
     dataset_data = request.json
     try:
@@ -76,10 +67,6 @@ def get_dataset(dataset_id):
 
     Args:
         dataset_id (str): The ID of the dataset to retrieve.
-
-    Returns:
-        JSON response containing the experiment details or 
-        an error message if the experiment is not found.
     """
     res_get_dataset = generic_dao.get_node(node_type='Dataset',
                                            identifier_value=dataset_id,
@@ -95,10 +82,6 @@ def delete_dataset(dataset_id):
 
     Args:
         dataset_id (str): The ID of the dataset to be deleted.
-
-    Returns:
-        JSON response indicating the success 
-        or failure of the delete operation.
     """
     deletion_success = generic_dao.delete_node(node_type="Dataset",
                                                identifier_key=class_identifier_key,
@@ -115,10 +98,6 @@ def get_sample_from_dataset(dataset_id):
 
     Args:
         dataset_id (str): The ID of the dataset.
-
-    Returns:
-        JSON response indicating the success 
-        or failure of the delete operation.
     """
     res_get_dataset = generic_dao.get_node(node_type='Dataset',
                                                    identifier_key=class_identifier_key,

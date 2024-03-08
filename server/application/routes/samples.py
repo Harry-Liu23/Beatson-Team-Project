@@ -21,7 +21,7 @@ def get_all_samples(experiment_id):
     """
     samples = experiment_dao.get_all_samples(experiment_id)
     if samples:
-        return jsonify(samples)  # Return samples as JSON response
+        return jsonify(samples)
 
     return jsonify({"error": "No samples found for the given experiment_id"}), 404
 
@@ -35,26 +35,18 @@ def create_sample():
     """
     data = request.json
 
-    # Extract sample and sample_id_info data from the request
     sample_data = data.get('sample', {})
     experiment_id = sample_data.get('experiment_id', '')
     sample_id = str(sample_data.get('sample_id', ''))
 
-    # Check if 'experiment_id' is provided
     if not experiment_id:
         return jsonify({"error": "Missing experiment_id in sample_data"}), 400
 
-    # Convert the sample data to JSON string for create_node method
     sample_data_json = json.dumps(sample_data)
     created_sample_result = generic_dao.create_node(
         node_type="Sample",
         data=sample_data_json)
 
-    # Assuming create_node method returns
-    # the newly created node's id or some identifier,
-    # which is then used for linking
-    # Create a relationship between the newly created
-    # Sample node and the specified Experiment node
     rel_result = generic_dao.relationship_builder(
         parent_node_type="Experiment",
         child_node_type="Sample",
@@ -102,14 +94,12 @@ def update_sample(sample_id):
     """
     data = request.json
 
-    # Assuming update_node returns a success indicator or result object
     update_result = generic_dao.update_node(
         node_type='Sample',
         identifier_value=sample_id,
         identifier_key=class_identifier_key,
         updated_data=data)
     if update_result:
-        # Adjust the response message as needed, based on how update_result is structured
         response_data = {
             "message": "Sample node updated successfully."
         }

@@ -16,9 +16,6 @@ def search_in_field(node_type, node_field, search_string):
         node_type(str): type of node
         node_field(str): field/attribute of the node you wanna search
         search_string(str): the string you wanna search for
-
-    Returns:
-        JSON response of the node
     """
     response = generic_dao.general_search_in_field(node_field=node_field,
                                                    node_type=node_type,
@@ -34,9 +31,6 @@ def search_all_fields(node_type,search_string):
     Args:
         node_type(str): type of node
         search_string(str): the string you wanna search for
-
-    Returns:
-        JSON response of the node
     """
     response = generic_dao.general_search_all_fields(node_type=node_type,
                                                      search_string=search_string)
@@ -49,9 +43,6 @@ def search_all_nodes(search_string):
 
     Args:
         search_string(str): the string you wanna search for
-
-    Returns:
-        JSON response of the node
     """
     response = generic_dao.general_search_all_nodes(search_string=search_string)
     return jsonify(response), 200
@@ -68,26 +59,21 @@ def create_node(node_type):
     Returns:
         JSON response of the node
     """
-    # Ensure the request is JSON
     if not request.is_json:
         return jsonify({"error": "Request must be JSON"}), 400
 
     data = request.get_json()
 
-    # Convert the incoming JSON data to a string, if necessary
     data_json = json.dumps(data) if not isinstance(data, str) else data
 
-    # Call the DAO method to create a node with the given type and data
     try:
         create_result = generic_dao.create_node(node_type=node_type, data=data_json)
         if create_result:
-            # Assuming create_result contains the ID or some identifier of the created node
             return jsonify({
                 "message": f"Node of type '{node_type}' created successfully.", "id": create_result
                 }), 201
         return jsonify({"error": "Failed to create node."}), 500
     except Exception:
-        # Log the exception, if logging is set up
         return jsonify({"error": "An error occurred while creating the node."}), 500
 
 @app.route('/general_create_relation/<parent_node_type>/<child_node_type>/<parent_id_field>/<child_id_field>/<parent_identifier>/<child_identifier>/<relationship_type>', 
@@ -120,15 +106,12 @@ def create_relation(parent_node_type,
 
     data = request.get_json()
 
-    # Extract relationship type from the request if not provided in URL
     relationship_type = data.get('relationship_type', relationship_type)
 
-    # Validate required fields
     if not relationship_type:
         return jsonify({"error": "Missing required field: relationship_type"}), 400
 
     try:
-        # Call the method to create a relationship
         create_result = generic_dao.relationship_builder(parent_node_type=parent_node_type,
                                                          child_node_type=child_node_type,
                                                          parent_id_field=parent_id_field,
@@ -140,7 +123,6 @@ def create_relation(parent_node_type,
             return jsonify({"message": "Relationship created successfully."}), 201
         return jsonify({"error": "Failed to create relationship."}), 500
     except Exception as e:
-        # Log the exception if logging is set up
         return jsonify({"error": f"An error occurred while creating the relationship: {str(e)}"}), 500
 
 
@@ -152,9 +134,6 @@ def get_parent_node(child_node_type, child_identifier_value):
     Args:
         child_node_type: the type of child node
         child_identifier_value: the id of the child node
-
-    Returns:
-        The parent node in json format
     """
     parent_node_type = ""
     parent_identifier_key = ""
@@ -187,9 +166,6 @@ def get_parent_node(child_node_type, child_identifier_value):
 def get_all_node_by_type(node_type):
     """
     Get all nodes with given type
-
-    Returns:
-        JSON response indicating the success or failure of the operation.
     """
     all_nodes_by_type = generic_dao.get_all_node_by_type(
         node_type
@@ -205,10 +181,6 @@ def get_node(node_type, identifier_key, identifier_value):
         node_type: the node type
         identifier_key: the attribute name of the unique id field
         identifier_value: the actual value of the unique id
-
-    Returns:
-        JSON response containing the node details or 
-        an error message if the experiment is not found.
     """
     res = generic_dao.get_node(node_type=node_type,
                                                identifier_key=identifier_key,
@@ -226,10 +198,6 @@ def delete_node(node_type,identifier_key,identifier_value):
         node_type: the node type
         identifier_key: the attribute name of the unique id field
         identifier_value: the actual value of the unique id
-
-    Returns:
-        JSON response containing delete success or 
-        an error message if the experiment is not found.
     """
     res = generic_dao.delete_node(node_type=node_type,
                                                identifier_key=identifier_key,
@@ -247,10 +215,6 @@ def update_node(node_type,identifier_key,identifier_value):
         node_type: the node type
         identifier_key: the attribute name of the unique id field
         identifier_value: the actual value of the unique id
-
-    Returns:
-        JSON response containing delete success or 
-        an error message if the experiment is not found.
     """
     data = request.json
     try:
@@ -263,6 +227,6 @@ def update_node(node_type,identifier_key,identifier_value):
                 "message": "Node updated successfully."
             }
             return jsonify(response_data), 200
-        return jsonify({"error": "Failed to update experiment Node"}), 404
+        return jsonify({"error": "Failed to update experiment Node"}), 500
     except Exception as e:
         return jsonify({"error": str(e)}), 500
