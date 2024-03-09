@@ -18,8 +18,6 @@ class genericDao:
             node_type: Type of the node (e.g., 'Study' or 'Sample').
             data: A json stream includes the mandatory fields.
             extra: A json stream includes any additional arbitary fields types/columns user wants to add.
-        Return: 
-            The result of the database operation.
         """
 
         data = json.loads(data)
@@ -91,7 +89,6 @@ class genericDao:
             return records
 
     def update_node(self, node_type, identifier_key, identifier_value, updated_data):
-        """Dynamically update node information based on 'updated_data'."""
         # Initialize the dynamic parts of the query
         update_query = f"MATCH (s:{node_type} {{{identifier_key}: $identifier_value}}) "
         parameters = {'identifier_value': identifier_value}

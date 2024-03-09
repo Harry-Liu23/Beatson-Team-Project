@@ -12,12 +12,6 @@ class_identifier_key = "sample_id"
 def get_all_samples(experiment_id):
     """
     Retrieve all samples associated with a given experiment ID.
-
-    Args:
-        experiment_id (str): The ID of the experiment.
-
-    Returns:
-        JSON response containing the list of samples or an error message if no samples are found.
     """
     samples = experiment_dao.get_all_samples(experiment_id)
     if samples:
@@ -29,9 +23,6 @@ def get_all_samples(experiment_id):
 def create_sample():
     """
     Create a new sample and link it to an experiment.
-
-    Returns:
-        JSON response indicating the success or failure of the operation.
     """
     data = request.json
 
@@ -66,12 +57,6 @@ def create_sample():
 def get_sample(sample_id):
     """
     Retrieve a sample by its ID.
-
-    Args:
-        sample_id (str): The ID of the sample.
-
-    Returns:
-        JSON response containing the sample details or an error message if the sample is not found.
     """
     sample_node = generic_dao.get_node(
         identifier_value=sample_id,
@@ -85,12 +70,6 @@ def get_sample(sample_id):
 def update_sample(sample_id):
     """
     Update a sample by its ID.
-
-    Args:
-        sample_id (str): The ID of the sample.
-    
-    Returns:
-        JSON response indicating the success or failure of the update operation.
     """
     data = request.json
 
@@ -110,12 +89,6 @@ def update_sample(sample_id):
 def delete_sample(sample_id):
     """
     Delete a sample by its ID.
-
-    Args:
-        sample_id (str): The ID of the sample.
-
-    Returns:
-        JSON response indicating the success or failure of the delete operation.
     """
     deletion_result = generic_dao.delete_node(
         node_type="Sample",

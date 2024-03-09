@@ -11,9 +11,6 @@ class_identifier_key = 'experiment_id'
 def delete_experiment(experiment_id):
     """
     Delete an experiment by its ID.
-
-    Args:
-        experiment_id (str): The ID of the experiment to be deleted.
     """
     deletion_success = generic_dao.delete_node(
         node_type="Experiment", identifier_key="experiment_id",identifier_value=experiment_id)
@@ -57,9 +54,6 @@ def create_experiment():
 def get_experiment(experiment_id):
     """
     Retrieve an experiment by its ID.
-
-    Args:
-        experiment_id (str): The ID of the experiment to retrieve.
     """
     exp_get_res = generic_dao.get_node(
         identifier_key=class_identifier_key,
@@ -72,9 +66,6 @@ def get_experiment(experiment_id):
 def update_experiment(experiment_id):
     """
     Update an experiment by its ID.
-
-    Args:
-        experiment_id (str): The ID of the experiment to update.
     """
     data = request.json
     try:
@@ -97,13 +88,6 @@ def update_experiment(experiment_id):
 def count_samples(experiment_id):
     """
     Count the number of samples associated with an experiment.
-
-    Args:
-        experiment_id (str): The ID of the experiment.
-
-    Returns:
-        JSON response containing the number of samples 
-        or an error message if an exception occurs.
     """
     try:
         num_samples = experiment_dao.count_num_samples(experiment_id)

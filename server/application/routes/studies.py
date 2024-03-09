@@ -11,10 +11,6 @@ def create_study():
     The function checks if the study already exists before creating a new one.
     If the study exists, it returns an error; otherwise, 
     it creates the study and returns the study's accession.
-
-    Return: 
-        A JSON response indicating whether the study was successfully created, 
-             along with HTTP status code.
     """
     data = request.json
     data_study = data.get('study')
@@ -36,14 +32,6 @@ def create_study():
 
 @app.route('/get_study/<accession>', methods=['GET'])
 def get_study(accession):
-    """
-    Retrieves a study node based on the accession provided in the URL path.
-    
-    Args: 
-        accession: The unique identifier for the study to retrieve.
-    Return: 
-        A JSON response containing the study node's data, along with HTTP status code.
-    """
     study_node = generic_dao.get_node(node_type="Study",
                                               identifier_key=class_identifier_key,
                                               identifier_value=accession)
@@ -53,25 +41,12 @@ def get_study(accession):
 def get_all_study():
     """
     Retrieves all study nodes from the database.
-    
-    Return: 
-        A JSON response containing all study nodes, along with HTTP status code.
     """
     all_study_nodes = study_dao.get_all_study_nodes()
     return jsonify({"study":all_study_nodes}),200
 
 @app.route('/update_study/<accession>', methods=['PUT'])
 def update_study(accession):
-    """
-    Updates an existing study node based on the accession provided and the JSON data given in the request.
-    It assumes the update_node method returns a success indicator or result object.
-
-    Args: 
-        accession: The unique identifier for the study to update.
-    Return: 
-        A JSON response indicating whether the study was successfully updated, 
-             along with HTTP status code.
-    """
     data = request.json
     try:
         generic_dao.update_node(node_type = 'Study',
@@ -89,11 +64,6 @@ def update_study(accession):
 def get_all_experiments(accession):
     """
     Retrieves all experiment nodes associated with a given study based on the study's accession.
-    
-    Args: 
-        accession: The unique identifier for the study whose experiments are to be retrieved.
-
-    Return: A JSON response containing all related experiment nodes, along with HTTP status code.
     """
     all_experiments = study_dao.get_all_experiments(accession)
     return jsonify({"experiments" : all_experiments}), 200
@@ -103,11 +73,6 @@ def count_experiments(accession):
     """
     Counts the number of experiment nodes associated 
     with a given study based on the study's accession.
-    
-    Args: 
-        accession: The unique identifier for the study whose experiments are to be counted.
-
-    Return: A JSON response containing the number of experiments, along with HTTP status code.
     """
     try:
         num_experiments = study_dao.count_num_experiments(accession)
@@ -119,12 +84,6 @@ def count_experiments(accession):
 def delete_study(accession):
     """
     Deletes a study node based on the accession provided in the URL path.
-
-    Args: 
-        accession: The unique identifier for the study to delete.
-
-    Return: A JSON response indicating whether the study was successfully deleted, 
-             along with HTTP status code.
     """
     deletion_success = generic_dao.delete_node(node_type="Study",
                                                 identifier_value=accession,

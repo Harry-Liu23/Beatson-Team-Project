@@ -2,6 +2,17 @@
 
 This script provides APIs for things like searches, 
 or any generic node creation and manipulation.
+
+There are a few args names defined, if it is the parameters of some function
+refer to below, unless specifically defined in the method decoration
+args:
+    Args:
+    node_type: the node type
+    identifier_key: the attribute name of the unique id field
+    identifier_value: the actual value of the unique id
+    search_string(str): the string you wanna search for
+    child_node_type: the type of child node
+    child_identifier_value: the id of the child node
 """
 from flask import json, request, jsonify
 from . import app,generic_dao
@@ -9,13 +20,7 @@ from . import app,generic_dao
 @app.route('/search_in_field/<node_type>/<node_field>/<search_string>', methods=['GET'])
 def search_in_field(node_type, node_field, search_string):
     """
-    Search node that contains a given string,
-    needs to specify the field and node type
-
-    Args:
-        node_type(str): type of node
-        node_field(str): field/attribute of the node you wanna search
-        search_string(str): the string you wanna search for
+    Search whether certain field of a node type contians a given string
     """
     response = generic_dao.general_search_in_field(node_field=node_field,
                                                    node_type=node_type,
@@ -25,12 +30,7 @@ def search_in_field(node_type, node_field, search_string):
 @app.route('/search_all_fields/<node_type>/<search_string>', methods=['GET'])
 def search_all_fields(node_type,search_string):
     """
-    Search node that contains a given string,
-    needs to specify the node type
-
-    Args:
-        node_type(str): type of node
-        search_string(str): the string you wanna search for
+    Search any node of a node type that contains a given string
     """
     response = generic_dao.general_search_all_fields(node_type=node_type,
                                                      search_string=search_string)
@@ -39,10 +39,7 @@ def search_all_fields(node_type,search_string):
 @app.route('/search_all_nodes/<search_string>',methods=['GET'])
 def search_all_nodes(search_string):
     """
-    Search node that contains a given string
-
-    Args:
-        search_string(str): the string you wanna search for
+    Search for any node that contains a given string
     """
     response = generic_dao.general_search_all_nodes(search_string=search_string)
     return jsonify(response), 200
@@ -51,13 +48,6 @@ def search_all_nodes(search_string):
 def create_node(node_type):
     """
     Create node you wanna create
-
-    Args:
-        node_type(str): type of node
-        search_string(str): the string you wanna search for
-
-    Returns:
-        JSON response of the node
     """
     if not request.is_json:
         return jsonify({"error": "Request must be JSON"}), 400
@@ -130,10 +120,6 @@ def create_relation(parent_node_type,
 def get_parent_node(child_node_type, child_identifier_value):
     """
     Get the parent node given a child node
-
-    Args:
-        child_node_type: the type of child node
-        child_identifier_value: the id of the child node
     """
     parent_node_type = ""
     parent_identifier_key = ""
@@ -176,11 +162,6 @@ def get_all_node_by_type(node_type):
 def get_node(node_type, identifier_key, identifier_value):
     """
     Retrieve a node by its ID.
-
-    Args:
-        node_type: the node type
-        identifier_key: the attribute name of the unique id field
-        identifier_value: the actual value of the unique id
     """
     res = generic_dao.get_node(node_type=node_type,
                                                identifier_key=identifier_key,
@@ -191,14 +172,6 @@ def get_node(node_type, identifier_key, identifier_value):
 
 @app.route('/generic_delete_node/<node_type>/<identifier_key>/<identifier_value>',methods=['DELETE'])
 def delete_node(node_type,identifier_key,identifier_value):
-    """
-    Delete a node by its ID.
-
-    Args:
-        node_type: the node type
-        identifier_key: the attribute name of the unique id field
-        identifier_value: the actual value of the unique id
-    """
     res = generic_dao.delete_node(node_type=node_type,
                                                identifier_key=identifier_key,
                                                identifier_value=identifier_value)
@@ -208,14 +181,6 @@ def delete_node(node_type,identifier_key,identifier_value):
 
 @app.route('/generic_update_node/<node_type>/<identifier_key>/<identifier_value>',methods=['PUT'])
 def update_node(node_type,identifier_key,identifier_value):
-    """
-    Update a node by its ID.
-
-    Args:
-        node_type: the node type
-        identifier_key: the attribute name of the unique id field
-        identifier_value: the actual value of the unique id
-    """
     data = request.json
     try:
         update_result = generic_dao.update_node(node_type=node_type,
