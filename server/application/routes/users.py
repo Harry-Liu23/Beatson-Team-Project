@@ -9,9 +9,6 @@ from . import app
 def login():
     """
     login api
-
-    Returns:
-        JSON response indicating the success or failure of the operation.
     """
     print("Post Recived")
     print(request.json)
