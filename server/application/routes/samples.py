@@ -10,9 +10,6 @@ class_identifier_key = "sample_id"
 
 @app.route('/get_all_samples/<experiment_id>', methods=['GET'])
 def get_all_samples(experiment_id):
-    """
-    Retrieve all samples associated with a given experiment ID.
-    """
     samples = experiment_dao.get_all_samples(experiment_id)
     if samples:
         return jsonify(samples)
@@ -21,9 +18,6 @@ def get_all_samples(experiment_id):
 
 @app.route('/create_sample', methods=['POST'])
 def create_sample():
-    """
-    Create a new sample and link it to an experiment.
-    """
     data = request.json
 
     sample_data = data.get('sample', {})
@@ -55,9 +49,6 @@ def create_sample():
 
 @app.route('/get_sample/<sample_id>', methods=['GET'])
 def get_sample(sample_id):
-    """
-    Retrieve a sample by its ID.
-    """
     sample_node = generic_dao.get_node(
         identifier_value=sample_id,
         node_type="Sample",
@@ -68,9 +59,6 @@ def get_sample(sample_id):
 
 @app.route('/update_sample/<sample_id>', methods=['PUT'])
 def update_sample(sample_id):
-    """
-    Update a sample by its ID.
-    """
     data = request.json
 
     update_result = generic_dao.update_node(
@@ -87,9 +75,6 @@ def update_sample(sample_id):
 
 @app.route('/delete_sample/<sample_id>', methods=['DELETE'])
 def delete_sample(sample_id):
-    """
-    Delete a sample by its ID.
-    """
     deletion_result = generic_dao.delete_node(
         node_type="Sample",
         identifier_value=sample_id,

@@ -39,12 +39,6 @@ def create_datasets():
 
 @app.route("/update_dataset/<dataset_id>", methods=['PUT'])
 def update_datasets(dataset_id):
-    """
-    Update an dataset by its ID.
-
-    Args:
-        dataset_id (str): The ID of the dataset to update.
-    """
     dataset_data = request.json
     try:
         update_result = generic_dao.update_node(
@@ -62,12 +56,6 @@ def update_datasets(dataset_id):
 
 @app.route("/get_dataset/<dataset_id>", methods=['GET'])
 def get_dataset(dataset_id):
-    """
-    Retrieve an dataset by its ID.
-
-    Args:
-        dataset_id (str): The ID of the dataset to retrieve.
-    """
     res_get_dataset = generic_dao.get_node(node_type='Dataset',
                                            identifier_value=dataset_id,
                                            identifier_key=class_identifier_key)
@@ -77,12 +65,6 @@ def get_dataset(dataset_id):
 
 @app.route("/delete_dataset/<dataset_id>", methods=['DELETE'])
 def delete_dataset(dataset_id):
-    """
-    Delete an dataset by its ID.
-
-    Args:
-        dataset_id (str): The ID of the dataset to be deleted.
-    """
     deletion_success = generic_dao.delete_node(node_type="Dataset",
                                                identifier_key=class_identifier_key,
                                                identifier_value=dataset_id)

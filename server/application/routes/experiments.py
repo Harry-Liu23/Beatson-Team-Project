@@ -9,9 +9,6 @@ class_identifier_key = 'experiment_id'
 
 @app.route('/delete_experiment/<experiment_id>', methods=['DELETE'])
 def delete_experiment(experiment_id):
-    """
-    Delete an experiment by its ID.
-    """
     deletion_success = generic_dao.delete_node(
         node_type="Experiment", identifier_key="experiment_id",identifier_value=experiment_id)
     if deletion_success:
@@ -52,9 +49,6 @@ def create_experiment():
 
 @app.route('/get_experiment/<experiment_id>', methods=['GET'])
 def get_experiment(experiment_id):
-    """
-    Retrieve an experiment by its ID.
-    """
     exp_get_res = generic_dao.get_node(
         identifier_key=class_identifier_key,
         identifier_value=experiment_id, node_type="Experiment")
@@ -64,9 +58,6 @@ def get_experiment(experiment_id):
 
 @app.route('/update_experiment/<experiment_id>', methods=['PUT'])
 def update_experiment(experiment_id):
-    """
-    Update an experiment by its ID.
-    """
     data = request.json
     try:
         update_result = generic_dao.update_node(

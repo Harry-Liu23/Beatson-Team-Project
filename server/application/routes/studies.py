@@ -39,9 +39,6 @@ def get_study(accession):
 
 @app.route('/get_all_study', methods=['GET'])
 def get_all_study():
-    """
-    Retrieves all study nodes from the database.
-    """
     all_study_nodes = study_dao.get_all_study_nodes()
     return jsonify({"study":all_study_nodes}),200
 
@@ -82,9 +79,6 @@ def count_experiments(accession):
 
 @app.route('/delete_study/<accession>', methods=['DELETE'])
 def delete_study(accession):
-    """
-    Deletes a study node based on the accession provided in the URL path.
-    """
     deletion_success = generic_dao.delete_node(node_type="Study",
                                                 identifier_value=accession,
                                                 identifier_key=class_identifier_key)

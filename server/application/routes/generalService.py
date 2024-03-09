@@ -46,9 +46,6 @@ def search_all_nodes(search_string):
 
 @app.route('/create_node/<node_type>',methods = ['POST'])
 def create_node(node_type):
-    """
-    Create node you wanna create
-    """
     if not request.is_json:
         return jsonify({"error": "Request must be JSON"}), 400
 
@@ -76,8 +73,6 @@ def create_relation(parent_node_type,
                     child_identifier,
                     relationship_type):
     """
-    Give two nodes and relate them
-
     Args:
         parent_node_type: The node type of the parent node
         child_node_type: The node type of the child node
@@ -118,9 +113,6 @@ def create_relation(parent_node_type,
 
 @app.route('/get_parent_node/<child_node_type>/<child_identifier_value>',methods=['GET'])
 def get_parent_node(child_node_type, child_identifier_value):
-    """
-    Get the parent node given a child node
-    """
     parent_node_type = ""
     parent_identifier_key = ""
     child_identifier_key = ""
@@ -150,9 +142,6 @@ def get_parent_node(child_node_type, child_identifier_value):
 
 @app.route('/get_all_node_by_type/<node_type>',methods=['GET'])
 def get_all_node_by_type(node_type):
-    """
-    Get all nodes with given type
-    """
     all_nodes_by_type = generic_dao.get_all_node_by_type(
         node_type
     )
@@ -160,9 +149,6 @@ def get_all_node_by_type(node_type):
 
 @app.route('/generic_get_node/<node_type>/<identifier_key>/<identifier_value>',methods=['GET'])
 def get_node(node_type, identifier_key, identifier_value):
-    """
-    Retrieve a node by its ID.
-    """
     res = generic_dao.get_node(node_type=node_type,
                                                identifier_key=identifier_key,
                                                identifier_value=identifier_value)
