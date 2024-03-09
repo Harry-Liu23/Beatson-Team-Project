@@ -1,0 +1,9 @@
+{
+  "study": {
+    "accession": "E-MTAB-7002",
+    "study_type": "ChIP-seq",
+    "publication": "Genomics Research Institute",
+    "organism": "Caenorhabditis elegans",
+    "description": "Investigation of chromatin interactions in C. elegans using ChIP-seq."
+  }
+}

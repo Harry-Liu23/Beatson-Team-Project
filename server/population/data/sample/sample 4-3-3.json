@@ -1,0 +1,15 @@
+{
+  "sample": {
+    "sample_id": "SRX1234569",
+    "group": "Control Group",
+    "project": "PRJ7890131",
+    "description": "Normal tissue sample for comparison in structural variation and rearrangement analysis.",
+    "organism": "Homo sapiens",
+    "tissue": "Normal Tissue",
+    "sex": "female",
+    "cell_line": "undefined",
+    "mouse_model": "undefined",
+    "biometric_provider": "ILLUMINA NovaSeq 6000",
+    "experiment_id": "ERX7890125"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "sample": {
+    "sample_id": "SRX1234563",
+    "group": "Control Group",
+    "project": "PRJ7890125",
+    "description": "Normal tissue sample for comparison in somatic mutation analysis.",
+    "organism": "Homo sapiens",
+    "tissue": "Normal Tissue",
+    "sex": "female",
+    "cell_line": "undefined",
+    "mouse_model": "undefined",
+    "biometric_provider": "ILLUMINA NovaSeq 6000",
+    "experiment_id": "ERX7890123"
+  }
+}
