@@ -1,15 +1,14 @@
 import sys
 import os
- 
+import unittest
+from application import app
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.abspath(os.path.join(current_dir, '..', '..'))
 sys.path.insert(0, project_root)
 
-import unittest
-from application import app
 
-
-class testSearches(unittest.TestCase):
+class TestAllSearches(unittest.TestCase):
 
     def setUp(self):
         self.app = app.test_client()

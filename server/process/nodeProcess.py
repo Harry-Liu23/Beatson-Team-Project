@@ -7,6 +7,7 @@ def serialize_node(node):
     return serialized_node
 
 def get_node_type_and_data(data):
+    """get you the node_type and the node itself"""
     if not data:
         return None, None
 
