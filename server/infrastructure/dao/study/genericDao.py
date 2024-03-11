@@ -1,6 +1,6 @@
 import flask as flask
 from flask import json
-from server.process.nodeProcess import serialize_node, group_by_key,serialize_node_with_label
+from process.nodeProcess import serialize_node, group_by_key,serialize_node_with_label
 
 
 class genericDao:
