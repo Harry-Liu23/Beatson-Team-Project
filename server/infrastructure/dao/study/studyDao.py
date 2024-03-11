@@ -1,5 +1,5 @@
 import flask as flask
-from server.process.nodeProcess import serialize_node
+from process.nodeProcess import serialize_node
 
 
 class studyDao:

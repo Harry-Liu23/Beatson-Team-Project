@@ -33,6 +33,7 @@ def serialize_node_with_label(record):
     return serialized_node
 
 def get_node_type_and_data(data):
+    """get you the node_type and the node itself"""
     if not data:
         return None, None
 
