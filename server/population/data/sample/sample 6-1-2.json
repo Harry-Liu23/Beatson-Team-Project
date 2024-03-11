@@ -1,0 +1,15 @@
+{
+  "sample": {
+    "sample_id": "SRX5678911",
+    "group": "Treatment Group A",
+    "project": "PRJ3456799",
+    "description": "Treatment sample A for Histone H3K4me3 ChIP-seq analysis in C. elegans.",
+    "organism": "Caenorhabditis elegans",
+    "tissue": "Whole Organism",
+    "sex": "male",
+    "cell_line": "undefined",
+    "mouse_model": "undefined",
+    "biometric_provider": "ILLUMINA HiSeq 2500",
+    "experiment_id": "ERX9876544"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "sample": {
+    "sample_id": "SRX1234562",
+    "group": "Cancer Group B",
+    "project": "PRJ7890124",
+    "description": "Tumor sample from patient B for somatic mutation analysis.",
+    "organism": "Homo sapiens",
+    "tissue": "Cancer Tissue",
+    "sex": "male",
+    "cell_line": "undefined",
+    "mouse_model": "undefined",
+    "biometric_provider": "ILLUMINA NovaSeq 6000",
+    "experiment_id": "ERX7890123"
+  }
+}
