@@ -19,19 +19,6 @@ def serialize_node_with_label(record):
         serialized_node[label][key] = value
     return serialized_node
 
-
-# This currently only works for search_all_nodes for genericDao
-def serialize_node_with_label(record):
-    node_data = record["n"]
-    labels = record["labels"]
-    label = labels[0] if labels else "UnknownLabel"  # Use the first label if available, or use "UnknownLabel"
-    
-    serialized_node = {label: {}}
-    for key, value in node_data.items():
-        # Convert Node properties to native Python types if needed
-        serialized_node[label][key] = value
-    return serialized_node
-
 def get_node_type_and_data(data):
     """get you the node_type and the node itself"""
     if not data:
