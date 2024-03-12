@@ -1,9 +1,15 @@
-from . import app
-from flask import request,jsonify
+"""Module docstring.
 
+This script provides all the user apis
+"""
+from flask import request,jsonify
+from . import app
 
 @app.route("/login", methods=['POST'])
 def login():
+    """
+    login api
+    """
     print("Post Recived")
     print(request.json)
     # [TODO]
