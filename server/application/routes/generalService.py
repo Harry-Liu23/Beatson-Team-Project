@@ -63,7 +63,7 @@ def create_node(node_type):
     except Exception:
         return jsonify({"error": "An error occurred while creating the node."}), 500
 
-@app.route('/general_create_relation/<parent_node_type>/<child_node_type>/<parent_id_field>/<child_id_field>/<parent_identifier>/<child_identifier>/<relationship_type>', 
+@app.route('/create_relation/<parent_node_type>/<child_node_type>/<parent_id_field>/<child_id_field>/<parent_identifier>/<child_identifier>/<relationship_type>', 
            methods=['POST'])
 def create_relation(parent_node_type,
                     child_node_type,

@@ -88,4 +88,3 @@ const ExperimentForm = ({ id }) => {
 };
 
 export default ExperimentForm;
-``

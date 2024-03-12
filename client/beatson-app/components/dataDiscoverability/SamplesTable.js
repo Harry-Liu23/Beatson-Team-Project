@@ -8,32 +8,32 @@ import Typography from "@mui/material/Typography";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
-const StudiesTable = (prop) => {
-  // rows for studies table where each row corresponds to a study
+const SamplesTable = (prop) => {
+  // rows for samples table where each row corresponds to a sample
   const [rows, setRows] = useState([]);
   const [newChange, setNewChange] = useState(prop.change);
   let results = false;
 
-  // define columns for studies table
+  // define columns for samples table
   const [columns, setColumns] = useState([
     {
-      field: "accession",
-      headerName: "Accession",
+      field: "sample_id",
+      headerName: "Sample ID",
       flex: 1,
     },
     {
-      field: "study_type",
-      headerName: "Study Type",
+      field: "related_study",
+      headerName: "Related Study",
       flex: 1,
     },
     {
-      field: "organism",
-      headerName: "Organism",
+      field: "group",
+      headerName: "Group",
       flex: 1,
     },
     {
-      field: "publication",
-      headerName: "Publication",
+      field: "project",
+      headerName: "Project",
       flex: 1,
     },
     {
@@ -42,29 +42,45 @@ const StudiesTable = (prop) => {
       flex: 1,
     },
     {
-      field: "expNumber",
-      headerName: "Number of Experiments",
+      field: "organism",
+      headerName: "Organism",
+      flex: 1,
+    },
+    {
+      field: "tissue",
+      headerName: "Tissue",
+      flex: 1,
+    },
+    {
+      field: "sex",
+      headerName: "Sex",
+      flex: 1,
+    },
+    {
+      field: "cell_line",
+      headerName: "Cell Line",
       flex: 1,
     },
   ]);
 
-  //Generate studies table and add number of experiments to each row
+  //Generate samples table and add related study to each row
   const populateTable = async () => {
-    const newStudies = prop.studies;
-    const returnStudies = [];
+    const newSamples = prop.samples;
+    const returnSamples = [];
 
-    //API call to add number of experiments to each study
+    //API call to add related study to each row
     await Promise.all(
-      newStudies.map(async (study) => {
-        let addStudy = study;
+      newSamples.map(async (sample) => {
+        let addSample = sample;
         let data = "";
         try {
           const response = await fetch(
-            "http://127.0.0.1:2020/count_experiments/" + study.accession
+            "http://127.0.0.1:2020/get_parent_node/Experiment/" +
+              sample.experiment_id
           );
           if (response.status !== 200) {
             throw new Error(
-              "Unable to fetch study containing that text: ",
+              "Unable to fetch studies containing that text: ",
               data.message
             );
           }
@@ -72,16 +88,14 @@ const StudiesTable = (prop) => {
         } catch (error) {
           console.log("error" + error);
         }
-
-        //update each table entry with retrieved number of experiments
-        addStudy["expNumber"] = data["num_experiments"];
-        returnStudies.push(addStudy);
+        addSample["related_study"] = data["s"]["accession"];
+        returnSamples.push(addSample);
       })
     );
 
-    //newChange switch used to trigger re-render
+    //newChange used to trigger re-render
     setNewChange(!newChange);
-    return returnStudies;
+    return returnSamples;
   };
 
   //Deciding results flag
@@ -93,33 +107,33 @@ const StudiesTable = (prop) => {
     }
   };
 
-  //get studies & calculate numExperiments when the table is first rendered
   useEffect(() => {
-    populateTable().then((studies) => {
-      setRows(studies);
+    //get samples data when the samples table is first rendered
+    populateTable().then((samples) => {
+      setRows(samples);
     });
   }, []);
 
   //handle re-render of table upon new search
   if (newChange !== prop.change) {
     try {
-      populateTable().then((studies) => {
-        setRows(studies);
+      populateTable().then((samples) => {
+        setRows(samples);
       });
     } catch (error) {
-      console.log("No studies found " + error);
+      console.log("No samples found " + error);
     }
   }
   checkResults(rows);
 
   return (
-    // display each study as a row on mui DataGrid
+    // display each sample as a row on mui DataGrid
     <div>
-      <Accordion defaultExpanded style={{ boxShadow: "none" }}>
+      <Accordion style={{ boxShadow: "none" }} defaultExpanded>
         <AccordionSummary
           expandIcon={<ArrowDropDownIcon />}
-          aria-controls="studies-table-content"
-          id="studies-table-accordion"
+          aria-controls="samples-table-content"
+          id="samples-table-accordion"
           sx={{ flexDirection: "row-reverse", marginLeft: 6 }}
         >
           <Typography
@@ -128,7 +142,7 @@ const StudiesTable = (prop) => {
             align="right"
             sx={{ padding: 2 }}
           >
-            Studies
+            Samples
           </Typography>
         </AccordionSummary>
 
@@ -147,7 +161,7 @@ const StudiesTable = (prop) => {
             {results && (
               <Grid
                 container
-                rowGap={1}
+                rowGap={2}
                 direction="column"
                 alignItems="center"
                 justifyContent="center"
@@ -157,7 +171,7 @@ const StudiesTable = (prop) => {
 
             {results && (
               <DataGrid
-                getRowId={(row) => row.accession}
+                getRowId={(row) => row.sample_id}
                 rows={rows}
                 columns={columns}
                 initialState={{
@@ -193,4 +207,4 @@ const StudiesTable = (prop) => {
   );
 };
 
-export default StudiesTable;
+export default SamplesTable;

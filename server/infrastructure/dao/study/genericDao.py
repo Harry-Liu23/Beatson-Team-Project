@@ -1,6 +1,6 @@
 import flask as flask
 from flask import json
-from process.nodeProcess import serialize_node
+from process.nodeProcess import serialize_node, group_by_key,serialize_node_with_label
 
 
 class genericDao:
@@ -79,13 +79,13 @@ class genericDao:
         query = (
         f"MATCH (n)"
         f"WHERE any(key in keys(n) WHERE toLower(n[key]) CONTAINS toLower('{search_string}'))"
-        "RETURN n"
-
+        "RETURN n, labels(n) as labels"
         )
 
         with self.driver.session() as session:
             result = session.run(query)
-            records = [serialize_node(record["n"]) for record in result]
+            records = [serialize_node_with_label(record) for record in result]
+            records = group_by_key(records)
             return records
 
     def update_node(self, node_type, identifier_key, identifier_value, updated_data):
@@ -146,3 +146,12 @@ class genericDao:
         with self.driver.session() as session:
             session.run(delete_query, parameters=parameters)
             return True
+
+
+    def get_study_from_experiment(self, identifier):
+        print(identifier)
+        query = "MATCH (s:Study)-[:contains]->(e:Experiment {experiment_id: $identifier}) RETURN s;"
+        print(query)
+        with self.driver.session() as session:
+            result = session.run(query)
+            return result
