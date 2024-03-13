@@ -1,0 +1,16 @@
+version: '3'
+services:
+  react-app:
+    build: ./client/beatson-app
+    ports:
+      - "3000:3000"
+  flask-server:
+    build: ./server
+    ports:
+      - "5000:5000"
+  neo4j:
+    image: neo4j:latest
+    environment:
+      NEO4J_AUTH: none
+    ports:
+      - "7687:7687"
