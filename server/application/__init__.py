@@ -24,6 +24,7 @@ app.after_request(_add_cors)
 DATABASE_USERNAME = "neo4j"
 DATABASE_URI = "bolt://localhost:7687"
 DATABASE_PASSWORD = "12345678"
+# DATABASE_PASSWORD = os.environ.get('DB_PASSWORD')
 
 driver = GraphDatabase.driver(DATABASE_URI, auth=(DATABASE_USERNAME,DATABASE_PASSWORD))
 session = driver.session()
