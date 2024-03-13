@@ -42,6 +42,8 @@ SOFTWATHERE.
 ## System architecture
 ![system_architecture](system_architecture.png)
 
+
+<br/><br/>
 ## Running front-end guide
 
 #### Front-end file structure
@@ -58,7 +60,7 @@ Frontend file structure includes six package/modules:
 5. **services** - Modules within this package should work as data processing and tool smith for other modules.
 6. **tests** - This is the unit tests package for the front-end.
 
-#### 
+<br/><br/>
 
 #### 0\. Download / installing required packages
 
@@ -75,6 +77,7 @@ https://pypi.org/project/nodeenv/
 The `package.json` file in `client/beatson-app` includes all the dependencies for running front-end.
 
 To install them, run `npm install` by itself under the `client/beatson-app` folder.
+<br/><br/>
 
 #### 1\. Connecting to Frontend Server:
 
@@ -84,7 +87,7 @@ Running `npm build` then `npm run start` would start up the front-end client.
 * Or build and run the project in development/debug mode: `npm run dev`
 
 Bare in mind to have full functionality you need to have the back-end server running.
-
+<br/><br/>
 
 ## Running backend and backend API guide
 
@@ -113,7 +116,7 @@ Backend file structure includes five levels:
   this loads all the tests and run them in specific order.
 
   (Order matters! An experiment type can't exist without a study type as its parent node)
-
+<br/><br/>
 ### 0\. Download / installing required packages
 
 I use pip to manage packages. However, there are other ways to manage/download packages.
@@ -130,7 +133,7 @@ nodeenv==1.8.0
 pytz==2024.1
 Werkzeug==3.0.1
 ```
-
+<br/><br/>
 ### 1\. Connecting to Backend Server:
 
 Start up the backend server:
@@ -153,7 +156,7 @@ Under the folder \\sh01-main, run the server:
 
 * `python -m server.run`
 * Or `python -m run` in the \\sh01-main\\server
-
+<br/><br/>
 ### 2\. Making session calls to the server
 
 Make calls to port 2020.
@@ -197,7 +200,7 @@ Logic in this part is simple - calling the components modules to display them.
 #### 3\. Services developing guide
 
 Any data processing (including sorting, formatting, or any other sort) should be kept in this folder. There isn't a universal logic, since data processing can be of any type.
-
+<br/><br/>
 ### Backend develop guide
 
 ### 1\. Surface level developer guide
