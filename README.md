@@ -1,7 +1,7 @@
 # SH01-main
 
 ## Name
-Beatson Data Portal Project (provisonal)
+Beatson Data Portal Project (provisional)
 
 ## Description
 This projects aims to bring standardisation to the uploading process of research relating to biological data and the Mouse Model Network (MMN). It will also allow for effective access and discoveriblity of this data in a web-based portal.
@@ -50,7 +50,7 @@ SOFTWATHERE.
 
 Frontend file structure includes six package/modules:
 
-1. **components –** contains all react components used on pages for the web app, note that a new folder should be created to further group together related components especially if they will be used on the same page related modules.
+1. **components –** contains all React components used on pages for the web app. Note that a new folder should be created to group together related components, especially if they will be used on the same page.
 
 2. **pages –** contains all individual pages which will be rendered on the website, note that the name of the page file (as well as additional folders they are placed in) will be the same as its url path.
 
@@ -68,9 +68,7 @@ Before running anything, make sure you have npm and node-js installed.
 
 https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 
-Or, if running node website on the same server, it is better to to run node.js
-
-virtual environment.
+Alternatively, if running node website on the same server, it is better to to run node.js virtual environment.
 
 https://pypi.org/project/nodeenv/
 
@@ -226,9 +224,9 @@ comes into place, only amend the code provided by generalService.
 
 ### 2\. Infrastructure level developer guide:
 
-As were mentioned, this level should only contains modules that either commnicates to database (database DAOs)
+As mentioned, this level should only contains modules that either commnicates to database (database DAOs)
 
-or any other commnication to external applications other than front-end applications.
+or facilitate any other communication with external applications, other than with front-end applications.
 
 A typical module/function in infrastructure level run in the following logic:
 
@@ -236,7 +234,7 @@ A typical module/function in infrastructure level run in the following logic:
 2. It format a query to Neo4j, using query parameters either provided by surface level or itself.
 3. It runs the query.
 4. If the return of the function is a node, it should be processed
-5. Data process using toolsmith level (if needed) can come between any steps above.
+5. Data processing using the toolsmith level (if needed) can be inserted between any of the steps above.
 
 ### 3\. Toolsmith level developer guide
 
@@ -250,7 +248,7 @@ This level stores example data into them for testing, can be discarded if no tes
 
 For future development:
 
-Be sure to save the data into according folders, if any new folder created, ammend the population script or write your own population script.
+Be sure to save the data into the corresponding folders. If any new folder is created, amend the population script or write your own.
 
 ### Appendix 1:
 
@@ -261,4 +259,4 @@ Be sure to save the data into according folders, if any new folder created, amme
 
    However, if any new level comes up, you need to add them to setting.py.
 
-   setting.py will be automatically run when executing pip install . under the server folder (refers to "Running backend and backend API guide")
+   setting.py will be automatically run when executing `pip install .` under the server folder (refers to "Running backend and backend API guide")
