@@ -41,7 +41,7 @@ describe('StudiesTable', () => {
 
     fetchMock.mockResponseOnce(JSON.stringify(mockStudyData));
 
-    render(<StudiesTable />);
+    render(<StudiesTable studies={mockStudyData.study}/>);
 
     const columnHeaders = [
         'Accession', 'Study Type', 'Publication', 'Organism','Description',

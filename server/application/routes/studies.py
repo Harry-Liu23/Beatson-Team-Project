@@ -18,7 +18,7 @@ def create_study():
     # The try/except was built to pass, receiving empty node may return error which may break code
     # Try to get the node with its unique id, if passes then create node
     try:
-        temp_study_node = generic_dao.get_node(data_study_json.__getitem__(class_identifier_key))
+        temp_study_node = generic_dao.get_node(node_type="Study",identifier=data_study.__getitem__(class_identifier_key))
         if temp_study_node is not None:
             response_data = {"error": "Study already exist!"}
             return jsonify(response_data),500
