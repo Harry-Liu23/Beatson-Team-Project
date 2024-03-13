@@ -25,12 +25,9 @@ const ExperimentForm = ({ id }) => {
 
   const submitExperiment = () => {
       setRenderSampleForm(true);
-      const experimentFormJson = experimentFormat(expTitle, expDesc, accession)
+      const experimentFormJson = experimentFormat(expTitle, expDesc, accession);
       sendJsonToFlask(experimentFormJson, 'http://127.0.0.1:2020/create_experiment');
-  }
-
-  const handleSubmission = () => {
-    setSubmitted(true);
+      setSubmitted(true);
   }
 
   //Render form
@@ -104,7 +101,7 @@ const ExperimentForm = ({ id }) => {
       
        
       {renderSampleForm && <SampleForm samples={numSamples} id={expTitle} />}
-      {
+      {!submitted &&
         <Grid item>
           <Button onClick={() => submitExperiment()}>
             Create Sample Form
