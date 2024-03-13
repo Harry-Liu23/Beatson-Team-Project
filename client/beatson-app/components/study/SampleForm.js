@@ -125,6 +125,18 @@ const SampleForm = ({ samples, id }) => {
       editable: true,
       width: 70,
     },
+    {
+      field: "information_type",
+      headerName : "Information Type",
+      editable : true,
+      width : 150
+    },
+    {
+      field : "dataset_type",
+      headerName : " Dataset Type",
+      editable: true,
+      width: 150
+    }
   ]);
 
   // SampleForm add/remove column and row logic
@@ -210,7 +222,6 @@ const SampleForm = ({ samples, id }) => {
   };
 
   const processRowUpdate = (newRow) =>{
-    console.log(newRow)
     var newRows = rows.slice();
     for(var i = 0; i < rows.length; i++){
       if(rows[i]['sample_id'] == newRow['sample_id']){
@@ -247,14 +258,24 @@ const SampleForm = ({ samples, id }) => {
       setSampleSubmitDialog(true);
     }
     else {
-      rows.forEach((sample) => {
-        let sampleFormJson = {};
-        let sampleCopy = Object.assign({}, sample);
-        sampleCopy["experiment_id"] = id;
-        let sample_id = sampleCopy["sample_id"];
-        sampleCopy["sample_id"] = `${id}-${sample_id}`  
-        sampleFormJson["sample"] = sampleCopy;
-        sendJsonToFlask(sampleFormJson, 'http://127.0.0.1:2020/create_sample')
+      rows.forEach((row) => {
+        let sampleJson = {"sample" : {}}
+        let datasetJson = {"dataset" : {}}
+        let datasetValues = ["dataset_type", "information_type"]
+        for( const[key,value] of Object.entries(row)){
+          if(!datasetValues.includes(`${key}`)){
+            sampleJson["sample"][`${key}`]=`${value}`;
+          }else{
+            datasetJson["dataset"][`${key}`] = `${value}`;
+          }
+
+          datasetJson["dataset"]["sample_id"] = `${expId}-${row["sample_id"]}`;
+          datasetJson["dataset"]["dataset_id"] = `${datasetJson["dataset"]["sample_id"]}-dataset`;
+          sampleJson["sample"]["experiment_id"] = expId;
+          sampleJson["sample"]["sample_id"] = `${expId}-${row["sample_id"]}`;
+        }
+        sendJsonToFlask(sampleJson, "http://127.0.0.1:2020/create_sample");
+        sendJsonToFlask(datasetJson, "http://127.0.0.1:2020/create_dataset");
       })
     }
   }
