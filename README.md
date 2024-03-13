@@ -131,7 +131,6 @@ nodeenv==1.8.0
 pytz==2024.1
 Werkzeug==3.0.1
 ```
-<br/><br/>
 ### 1\. Connecting to Backend Server:
 
 Start up the backend server:
