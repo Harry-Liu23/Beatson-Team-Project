@@ -1,0 +1,15 @@
+{
+  "sample": {
+    "sample_id": "SRX1234568",
+    "group": "Tumor Group D",
+    "project": "PRJ7890130",
+    "description": "Cancer sample D for structural variation and rearrangement analysis.",
+    "organism": "Homo sapiens",
+    "tissue": "Cancer Tissue",
+    "sex": "male",
+    "cell_line": "undefined",
+    "mouse_model": "undefined",
+    "biometric_provider": "ILLUMINA NovaSeq 6000",
+    "experiment_id": "ERX7890125"
+  }
+}

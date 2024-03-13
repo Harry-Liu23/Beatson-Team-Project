@@ -1,5 +1,5 @@
 import flask as flask
-from server.process.nodeProcess import serialize_node
+from process.nodeProcess import serialize_node
 
 
 class studyDao:
@@ -32,7 +32,7 @@ class studyDao:
     def count_num_experiments(self, accession):
         """Count the number of experiments attached to a Study"""
         count_query = (
-            "MATCH (study:Study {accession: $accession})-[:CONTAINS]->(experiment:Experiment) "
+            "MATCH (study:Study {accession: $accession})-[*1]-(experiment:Experiment) "
             "RETURN COUNT(experiment) AS num_experiments"
         )
 

@@ -1,0 +1,15 @@
+{
+  "sample": {
+    "sample_id": "SRX1234565",
+    "group": "Tumor Group B",
+    "project": "PRJ7890127",
+    "description": "Cancer sample B for copy number variation analysis.",
+    "organism": "Homo sapiens",
+    "tissue": "Cancer Tissue",
+    "sex": "female",
+    "cell_line": "undefined",
+    "mouse_model": "undefined",
+    "biometric_provider": "ILLUMINA HiSeq X Ten",
+    "experiment_id": "ERX7890124"
+  }
+}
