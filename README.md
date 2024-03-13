@@ -118,6 +118,8 @@ Backend file structure includes five levels:
 ### 0\. Download / installing required packages
 
 I use pip to manage packages. However, there are other ways to manage/download packages.
+In the server folder, do:
+`pip install -r /requirements.txt`
 
 ```plaintext
 blinker==1.7.0
