@@ -8,6 +8,7 @@ import {
   Card,
   TextField,
   spacing,
+  Item,
 } from "@mui/material";
 import { studyFormat } from "../../services/JsonFormatting";
 import sendJsonToFlask from "../../services/BackendAPI";
@@ -21,6 +22,7 @@ const StudyForm = () => {
   const [description, setDescription] = useState("");
   const [expNumber, setExpNumber] = useState(0);
   const [renderExpForm, setRenderExpForm] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const generateExperimentForms = () => {
     const experimentForms = [];
@@ -31,7 +33,12 @@ const StudyForm = () => {
     return experimentForms
   };
 
+  const handleSubmission = () => {
+    setSubmitted(true);
+  }
+
   const createExperimentButton = () => {
+    handleSubmission();
     setRenderExpForm(true);
     const studyFormJson = studyFormat(accession, studyType, publication, organism, description);
     sendJsonToFlask(studyFormJson, 'http://127.0.0.1:2020/create_study');
@@ -50,55 +57,89 @@ const StudyForm = () => {
           spacing={2}
         >
           <Grid item sx={{ mt: 1.5 }}>
-            <Typography variant="h4" color="blue-gray" align="center">
+            <Typography variant="h4" color="#008AAD" align="" >
               Study Details
             </Typography>
           </Grid>
-
-          {/* below grid items are the study detail fields */}
-          <Grid item xs={6}>
-            <TextField
-              id="accession"
-              label="Accession"
-              variant="outlined"
-              onChange={() => setAccession(event.target.value)}
-            />
-          </Grid>
-
-          <Grid item>
+          
+          <Grid 
+            container
+            item
+            rowSpacing={{xs: 1}}
+            direction="row"
+            alignItems="center"
+            justifyContent="center"  
+          >
+            {/* below grid items are the study detail fields */}
+            <Grid item xs={2}>
+              <TextField
+                id="accession"
+                label="Accession"
+                variant="outlined"
+                inputProps={
+                  { readOnly: submitted }
+                }
+                onChange={() => setAccession(event.target.value)}
+              />
+            </Grid>
+            <Grid item>
             <TextField
               id="studyType"
               label="Study Type"
               variant="outlined"
               onChange={() => setStudyType(event.target.value)}
+              inputProps={
+                { readOnly: submitted }
+              }
             />
+            </Grid>
           </Grid>
 
-          <Grid item>
-            <TextField
-              id="publication"
-              label="Publication"
-              variant="outlined"
-              onChange={() => setPublication(event.target.value)}
-            />
-          </Grid>
+          
+          <Grid 
+            container
+            item
+            rowSpacing={{xs: 1}}
+            direction="row"
+            alignItems="center"
+            justifyContent="center"  
+          >
+            <Grid item xs={2}>
+              <TextField
+                id="publication"
+                label="Publication"
+                variant="outlined"
+                inputProps={
+                  { readOnly: submitted }
+                }
+                onChange={() => setPublication(event.target.value)}
+              />
+            </Grid>
 
-          <Grid item>
-            <TextField
-              id="organism"
-              label="Organism"
-              variant="outlined"
-              onChange={() => setOrganism(event.target.value)}
-            />
+            <Grid item>
+              <TextField
+                id="organism"
+                label="Organism"
+                variant="outlined"
+                inputProps={
+                  { readOnly: submitted }
+                }
+                onChange={() => setOrganism(event.target.value)}
+              />
+            </Grid>
           </Grid>
-
-          <Grid item>
-            <TextField
-              id="description"
-              label="Description"
-              variant="outlined"
-              onChange={() => setDescription(event.target.value)}
-            />
+          
+          <Grid item xs={6}>
+              <TextField
+                id="description"
+                label="Description"
+                variant="outlined"
+                multiline={true}
+                inputProps={
+                  { readOnly: submitted }
+                }
+                onChange={() => setDescription(event.target.value)}
+              />
           </Grid>
 
           <Grid item>
@@ -106,17 +147,18 @@ const StudyForm = () => {
               id="expNumber"
               label="Number of Experiments"
               variant="outlined"
+              inputProps={
+                { readOnly: submitted }
+              }
               onChange={() => setExpNumber(+event.target.value)}
             />
           </Grid>
-        </Grid>
-      </Card>
 
-      {renderExpForm &&
+          {renderExpForm &&
         generateExperimentForms().map((form, index) => (
           <div key={index}>{form}</div>
         ))}
-      {
+        {!submitted &&
         <Grid item>
           <Button
             onClick={() => {
@@ -127,6 +169,9 @@ const StudyForm = () => {
           </Button>
         </Grid>
       }
+        </Grid>
+
+      </Card>
     </div>
   );
 };

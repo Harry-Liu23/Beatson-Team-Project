@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import { experimentFormat } from "../../services/JsonFormatting";
 import sendJsonToFlask from "../../services/BackendAPI";
+import {Accordion, AccordionSummary, AccordionDetails} from "@mui/material";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 const ExperimentForm = ({ id }) => {
   //Experiment attribute vars
@@ -19,6 +21,7 @@ const ExperimentForm = ({ id }) => {
   const [expDesc, setExpDesc] = useState("");
   const [numSamples, setNumSamples] = useState(0);
   const [renderSampleForm, setRenderSampleForm] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const submitExperiment = () => {
       setRenderSampleForm(true);
@@ -26,10 +29,29 @@ const ExperimentForm = ({ id }) => {
       sendJsonToFlask(experimentFormJson, 'http://127.0.0.1:2020/create_experiment');
   }
 
+  const handleSubmission = () => {
+    setSubmitted(true);
+  }
+
   //Render form
   return (
     <div>
-      <Card variant="outlined" sx={{ padding:2 }} >
+      <Accordion>
+      <AccordionSummary
+        expandIcon={<ArrowDropDownIcon/>}
+        aria-controls="experiment-content"
+        id="experiment-table-content"
+        sx={{flexDirection: "row-reverse", marginLeft:12}}
+        >
+        <Grid item sx={{ mt: 1.5 }}>
+            <Typography variant="h5" color="#008AAD" align="right" sx={{padding:2}}>
+              Experiment ID: {expId}
+            </Typography>
+          </Grid>
+        </AccordionSummary>
+
+      <Card variant="outlined" sx={{ padding: 4, paddingBottom:6, marginLeft:15, marginRight:15, marginBottom:8, border:"groove" }}>
+      <AccordionDetails>
         <Grid
           container
           rowGap={1}
@@ -39,11 +61,7 @@ const ExperimentForm = ({ id }) => {
           justifyContent="center"
           spacing={2}
         >
-          <Grid item sx={{ mt: 1.5 }}>
-            <Typography variant="h4" color="blue-gray" align="center">
-              Experiment {expId}
-            </Typography>
-          </Grid>
+          
 
           {/* below grid items are the experiment attribute fields */}
           <Grid item xs={6}>
@@ -51,6 +69,9 @@ const ExperimentForm = ({ id }) => {
               id={`expTitle-${expId}`}
               label="Title"
               variant="outlined"
+              inputProps={
+                { readOnly: submitted }
+              }
               onChange={() => setExpTitle(event.target.value)}
             />
           </Grid>
@@ -60,6 +81,9 @@ const ExperimentForm = ({ id }) => {
               id={`expDesc-${expId}`}
               label="Description"
               variant="outlined"
+              inputProps={
+                { readOnly: submitted }
+              }
               onChange={() => setExpDesc(event.target.value)}
             />
           </Grid>
@@ -69,11 +93,15 @@ const ExperimentForm = ({ id }) => {
               id={`sampleNumber-${expId}`}
               label="Number of Samples"
               variant="outlined"
+              inputProps={
+                { readOnly: submitted }
+              }
               onChange={() => setNumSamples(+event.target.value)}
             />
           </Grid>
         </Grid>
-      </Card>
+      
+      
        
       {renderSampleForm && <SampleForm samples={numSamples} id={expTitle} />}
       {
@@ -83,6 +111,9 @@ const ExperimentForm = ({ id }) => {
           </Button>
         </Grid>
       }
+    </AccordionDetails>
+    </Card>
+    </Accordion>
     </div>
   );
 };
