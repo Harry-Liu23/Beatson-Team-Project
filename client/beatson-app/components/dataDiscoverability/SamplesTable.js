@@ -7,11 +7,14 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import Router from 'next/router';
 
 const SamplesTable = (prop) => {
   // rows for samples table where each row corresponds to a sample
   const [rows, setRows] = useState([]);
   const [newChange, setNewChange] = useState(prop.change);
+  const samples = prop.samples;
+  const [study, setStudy] = useState();
   let results = false;
 
   // define columns for samples table
@@ -65,12 +68,10 @@ const SamplesTable = (prop) => {
 
   //Generate samples table and add related study to each row
   const populateTable = async () => {
-    const newSamples = prop.samples;
     const returnSamples = [];
-
     //API call to add related study to each row
     await Promise.all(
-      newSamples.map(async (sample) => {
+      samples.map(async (sample) => {
         let addSample = sample;
         let data = "";
         try {
@@ -106,6 +107,27 @@ const SamplesTable = (prop) => {
       results = true;
     }
   };
+
+  const getStudyDetails = async (sample) => {
+    const studyAccession = sample.row.related_study;
+    let data = "";
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:2020/get_study/${studyAccession}`
+      );
+      if (response.status !== 200) {
+        throw new Error(
+          "Unable to fetch studies containing that text: ",
+          data.message
+        );
+      }
+      data = await response.json();
+    } catch (error) {
+      console.log("error" + error);
+    }
+    const studyDetails = JSON.parse(data).s;
+    return studyDetails;
+  }
 
   useEffect(() => {
     //get samples data when the samples table is first rendered
@@ -174,6 +196,15 @@ const SamplesTable = (prop) => {
                 getRowId={(row) => row.sample_id}
                 rows={rows}
                 columns={columns}
+                onRowClick={async (row) => {
+                  const study = await getStudyDetails(row);
+                  if(study){
+                    Router.push({
+                      pathname: `/study/${study.accession}`,
+                      query: { study: JSON.stringify(study) },
+                  },`study/${study.accession}` );                  
+                  }
+                }}
                 initialState={{
                   pagination: {
                     paginationModel: { pageSize: 10 },
