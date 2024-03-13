@@ -161,6 +161,13 @@ const StudiesTable = (prop) => {
                 getRowId={(row) => row.accession}
                 rows={rows}
                 columns={columns}
+                onRowClick={(row) => {
+                  const accession = row.id;
+                  Router.push({
+                    pathname: `/study/${accession}`,
+                    query: { study: JSON.stringify(row.row) },
+                },`study/${accession}` );
+                }}
                 initialState={{
                   pagination: {
                     paginationModel: { pageSize: 10 },
