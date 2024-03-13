@@ -57,7 +57,7 @@ const StudyForm = () => {
           spacing={2}
         >
           <Grid item sx={{ mt: 1.5 }}>
-            <Typography variant="h4" color="#008AAD" align="" >
+            <Typography variant="h4" color="#008AAD" align="center" >
               Study Details
             </Typography>
           </Grid>
@@ -65,13 +65,12 @@ const StudyForm = () => {
           <Grid 
             container
             item
-            rowSpacing={{xs: 1}}
             direction="row"
             alignItems="center"
             justifyContent="center"  
           >
             {/* below grid items are the study detail fields */}
-            <Grid item xs={2}>
+            <Grid item p={1}>
               <TextField
                 id="accession"
                 label="Accession"
@@ -82,15 +81,15 @@ const StudyForm = () => {
                 onChange={() => setAccession(event.target.value)}
               />
             </Grid>
-            <Grid item>
+            <Grid item p={1}>
             <TextField
               id="studyType"
               label="Study Type"
               variant="outlined"
-              onChange={() => setStudyType(event.target.value)}
               inputProps={
                 { readOnly: submitted }
               }
+              onChange={() => setStudyType(event.target.value)}
             />
             </Grid>
           </Grid>
@@ -99,12 +98,11 @@ const StudyForm = () => {
           <Grid 
             container
             item
-            rowSpacing={{xs: 1}}
             direction="row"
             alignItems="center"
             justifyContent="center"  
           >
-            <Grid item xs={2}>
+            <Grid item p={1}>
               <TextField
                 id="publication"
                 label="Publication"
@@ -116,7 +114,7 @@ const StudyForm = () => {
               />
             </Grid>
 
-            <Grid item>
+            <Grid item p={1}>
               <TextField
                 id="organism"
                 label="Organism"
@@ -136,7 +134,13 @@ const StudyForm = () => {
                 variant="outlined"
                 multiline={true}
                 inputProps={
-                  { readOnly: submitted }
+                  { readOnly: submitted,
+                    // basing this off size of grid containers size would be better but no solution can be found
+                    style: {
+                      height: '10vh',
+                      width: '30vw',
+                    } 
+                  }
                 }
                 onChange={() => setDescription(event.target.value)}
               />

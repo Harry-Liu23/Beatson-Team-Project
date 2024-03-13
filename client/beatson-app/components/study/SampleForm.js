@@ -20,6 +20,7 @@ const SampleForm = ({ samples, id }) => {
   const [numSamples, setNumSamples] = useState(samples);
   const expId = id;
   const [sampleSubmitDialog, setSampleSubmitDialog] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   // Initalise empty rows
   useEffect(() => {
@@ -277,6 +278,7 @@ const SampleForm = ({ samples, id }) => {
         sendJsonToFlask(sampleJson, "http://127.0.0.1:2020/create_sample");
         sendJsonToFlask(datasetJson, "http://127.0.0.1:2020/create_dataset");
       })
+      setSubmitted(true);
     }
   }
 
@@ -301,9 +303,11 @@ const SampleForm = ({ samples, id }) => {
           <Button onClick={() => setOpenDialog(true)}>
             Add/Remove Characteristics
           </Button>
-          <Button id={`submit-${expId}`} onClick={() => submitSamples()}>
-            Submit
-          </Button>
+          {!submitted &&
+            <Button id={`submit-${expId}`} onClick={() => submitSamples()}>
+              Submit
+            </Button>
+          }
 
           <Dialog open={sampleSubmitDialog}>
             <DialogTitle>Submission Failed</DialogTitle>
