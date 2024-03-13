@@ -54,11 +54,9 @@ const DisplayExperimentAndSamples = (props) => {
         id="experiment-table-content"
         sx={{flexDirection: "row-reverse", marginLeft:12}}
         >
-          {/* <Grid item sx={{ mt: 1.5 }} > */}
             <Typography variant="h5" color="#008AAD" align="right" sx={{padding:2}}>
               Experiment ID: {experiment.experiment_id}
             </Typography>
-          {/* </Grid> */}
       </AccordionSummary>
       <Card variant="outlined" sx={{ padding: 4, paddingBottom:6, marginLeft:15, marginRight:15, marginBottom:8, border:"groove" }}>
         <AccordionDetails>
@@ -71,11 +69,6 @@ const DisplayExperimentAndSamples = (props) => {
           justifyContent="center"
           spacing={2}
         >
-          {/* <Grid item sx={{ mt: 1.5 }} >
-            <Typography variant="h5" color="blue-gray" align="left">
-              Experiment ID: {experiment.experiment_id}
-            </Typography>
-          </Grid> */}
           <Grid item xs={6} paddingBottom={5}> 
             <b>Experiment Details:</b>
             <br></br> {experiment.description}

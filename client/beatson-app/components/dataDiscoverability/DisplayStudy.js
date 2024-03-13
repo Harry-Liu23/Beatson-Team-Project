@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, Grid, Typography, Paper } from "@mui/material";
+import { Card, Grid, Typography } from "@mui/material";
 import DisplayExperimentAndSamples from "./DisplayExperimentAndSamples";
 
 const DisplayStudy = ({ studyData }) => {
