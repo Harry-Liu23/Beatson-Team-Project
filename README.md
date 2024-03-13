@@ -40,7 +40,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWATHERE.
 
 ## System architecture
-![system_architecture](sh01-main/system_architecture.png)
+![system_architecture](system_architecture.png)
 
 ## Running front-end guide
 
