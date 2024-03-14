@@ -7,10 +7,26 @@ services:
   flask-server:
     build: ./server
     ports:
-      - "5000:5000"
+      - "2020:2020"
+    command: /bin/sh -c "python -m run"
+    depends_on:
+      - neo4j
   neo4j:
-    image: neo4j:latest
+    image: ${NEO4J_DOCKER_IMAGE:-neo4j:latest}
     environment:
-      NEO4J_AUTH: none
+      - NEO4J_AUTH=neo4j/12345678
+    # hostname: neo4j
+    # networks:
+    #   neo4j-internal:
+    #     aliases:
+    #       - neo4j-network
     ports:
-      - "7687:7687"
+    - "7474:7474"
+    - "7687:7687"
+
+    volumes:
+      - ./server/neo4j.conf:/conf/neo4j.conf
+      - ./data/neo4j:/data
+      - ./logs/neo4j:/logs
+      - ./conf/neo4j:/conf
+      - ./import/neo4j:/import

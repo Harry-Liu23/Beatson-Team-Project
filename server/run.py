@@ -19,7 +19,7 @@ def main():
     """Main function to run the Flask application."""
     try:
         # Runs app and ensures resources are released properly upon termination
-        app.run(port=2020, host="127.0.0.1", debug=True)
+        app.run(port=2020, host="0.0.0.0", debug=True)
     finally:
         print("Shutting down")
         driver.close()

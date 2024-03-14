@@ -21,8 +21,8 @@ def _add_cors(t: Response):
 app.after_request(_add_cors)
 
 # REMOVE THIS BEFORE DEPLOYMENT
-DATABASE_USERNAME = "beatson-sh01"
-DATABASE_URI = "bolt://localhost:7687"
+DATABASE_USERNAME = "neo4j"
+DATABASE_URI = "bolt://neo4j:7687"
 DATABASE_PASSWORD = "12345678"
 # DATABASE_PASSWORD = os.environ.get('DB_PASSWORD')
 
