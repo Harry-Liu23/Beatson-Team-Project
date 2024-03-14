@@ -61,7 +61,7 @@ const StudiesTable = (prop) => {
         let data = "";
         try {
           const response = await fetch(
-            "http://127.0.0.1:2020/count_experiments/" + study.accession
+            `http://127.0.0.1:2020/count_experiments/${study.accession}`
           );
           if (response.status !== 200) {
             throw new Error(

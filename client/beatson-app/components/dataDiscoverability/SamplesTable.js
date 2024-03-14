@@ -76,8 +76,7 @@ const SamplesTable = (prop) => {
         let data = "";
         try {
           const response = await fetch(
-            "http://127.0.0.1:2020/get_parent_node/Experiment/" +
-              sample.experiment_id
+            `http://127.0.0.1:2020/get_parent_node/Experiment/${sample.experiment_id}`
           );
           if (response.status !== 200) {
             throw new Error(
