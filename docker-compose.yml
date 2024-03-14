@@ -15,11 +15,6 @@ services:
     image: ${NEO4J_DOCKER_IMAGE:-neo4j:latest}
     environment:
       - NEO4J_AUTH=neo4j/12345678
-    # hostname: neo4j
-    # networks:
-    #   neo4j-internal:
-    #     aliases:
-    #       - neo4j-network
     ports:
     - "7474:7474"
     - "7687:7687"
