@@ -201,9 +201,9 @@ const SamplesTable = (prop) => {
                     Router.push({
                       pathname: `/study/${study.accession}`,
                       query: { study: JSON.stringify(study) },
-                  },`study/${study.accession}` );                  
-                  }
-                }}
+                      }, `study/${study.accession}`);                  
+                    }
+                  }}
                 initialState={{
                   pagination: {
                     paginationModel: { pageSize: 10 },
