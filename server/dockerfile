@@ -1,0 +1,15 @@
+FROM python:3.10-slim
+WORKDIR /app
+
+# First, copy only the requirements.txt file and install the Python dependencies.
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+# Next, copy the entire project (including setup.py) into the container.
+COPY . .
+
+# Now, run pip install . This will install your project/package.
+RUN pip install .
+
+EXPOSE 2020
+CMD ["python","-m", "run"]
