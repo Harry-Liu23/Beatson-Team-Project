@@ -30,6 +30,7 @@ client/beatson-app/out/
 
 # production
 client/beatson-app/build
+conf/
 
 # misc
 .DS_Store
