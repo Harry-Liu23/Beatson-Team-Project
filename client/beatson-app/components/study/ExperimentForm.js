@@ -4,7 +4,15 @@ import SampleForm from "./SampleForm";
 import { Button, Grid, Typography, Card, TextField } from "@mui/material";
 import { experimentFormat } from "../../services/JsonFormatting";
 import sendJsonToFlask from "../../services/BackendAPI";
-import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const ExperimentForm = ({ id }) => {
@@ -16,15 +24,32 @@ const ExperimentForm = ({ id }) => {
   const [numSamples, setNumSamples] = useState(0);
   const [renderSampleForm, setRenderSampleForm] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errorDialog, setErrorDialog] = useState(false);
 
   const submitExperiment = () => {
-    setRenderSampleForm(true);
-    const experimentFormJson = experimentFormat(expTitle, expDesc, accession);
-    sendJsonToFlask(
-      experimentFormJson,
-      "http://127.0.0.1:2020/create_experiment"
-    );
-    setSubmitted(true);
+    if (!validateInput()) {
+      setErrorDialog(true);
+    } else {
+      setSubmitted(true);
+      setRenderSampleForm(true);
+      const experimentFormJson = experimentFormat(expTitle, expDesc, accession);
+      sendJsonToFlask(
+        experimentFormJson,
+        "http://127.0.0.1:2020/create_experiment"
+      );
+    }
+  };
+
+  const validateInput = () => {
+    let validationErrors = true;
+    const fieldList = [expTitle, expDesc, numSamples];
+    for (let i = 0; i < fieldList.length; i++) {
+      if (fieldList[i] == "") {
+        validationErrors = false;
+        break;
+      }
+    }
+    return validationErrors;
   };
 
   //Render form
@@ -37,7 +62,7 @@ const ExperimentForm = ({ id }) => {
           id="experiment-table-content"
           sx={{ flexDirection: "row-reverse", marginLeft: 16 }}
         >
-          <Grid item sx={{mt:1.5}}>
+          <Grid item sx={{ mt: 1.5 }}>
             <Typography
               variant="h5"
               color="#008AAD"
@@ -52,7 +77,7 @@ const ExperimentForm = ({ id }) => {
           <Card
             variant="plain"
             sx={{
-              padding:1,
+              padding: 1,
               marginLeft: 15,
               marginRight: 15,
             }}
@@ -66,7 +91,7 @@ const ExperimentForm = ({ id }) => {
               spacing={2}
             >
               {/* below grid items are the experiment attribute fields */}
-              <Grid item xs={6} sm={6} md={6} >
+              <Grid item xs={6} sm={6} md={6}>
                 <TextField
                   id={`expTitle-${expId}`}
                   label="Title"
@@ -97,19 +122,32 @@ const ExperimentForm = ({ id }) => {
                   onChange={() => setExpDesc(event.target.value)}
                 />
               </Grid>
-
             </Grid>
           </Card>
+
+          <Dialog open={errorDialog}>
+            <DialogTitle>Submission Failed</DialogTitle>
+            <DialogContent>
+              You did not enter values for all fields.
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setErrorDialog(false)}>Close</Button>
+            </DialogActions>
+          </Dialog>
+
           {renderSampleForm && (
             <SampleForm samples={numSamples} id={expTitle} />
           )}
           {!submitted && (
-            <Grid item sx={{
-              padding: 2,
-              marginLeft: 13,
-              marginRight: 15,
-              marginBottom: 8,
-            }}>
+            <Grid
+              item
+              sx={{
+                padding: 2,
+                marginLeft: 13,
+                marginRight: 15,
+                marginBottom: 8,
+              }}
+            >
               <Button onClick={() => submitExperiment()}>
                 Create Sample Form
               </Button>

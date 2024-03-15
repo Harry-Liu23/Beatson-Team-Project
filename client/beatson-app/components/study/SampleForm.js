@@ -319,7 +319,7 @@ const SampleForm = ({ samples, id }) => {
         >
           <Grid item sx={{ m: 2 }}>
             <Typography variant="h5" color="#008AAD" align="left">
-              Sample Details {expId}
+              Sample Details: {expId}
             </Typography>
           </Grid>
 
@@ -374,7 +374,11 @@ const SampleForm = ({ samples, id }) => {
           onProcessRowUpdateError={onProcessRowUpdateError}
         />
         {!submitted && (
-          <Button sx={{marginTop:2}}id={`submit-${expId}`} onClick={() => submitSamples()}>
+          <Button
+            sx={{ marginTop: 2 }}
+            id={`submit-${expId}`}
+            onClick={() => submitSamples()}
+          >
             Submit
           </Button>
         )}
