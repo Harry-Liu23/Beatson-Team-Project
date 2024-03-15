@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
+import Router from 'next/router';
 import { Grid, Card, Box } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -60,7 +61,7 @@ const StudiesTable = (prop) => {
         let data = "";
         try {
           const response = await fetch(
-            "http://127.0.0.1:2020/count_experiments/" + study.accession
+            `http://127.0.0.1:2020/count_experiments/${study.accession}`
           );
           if (response.status !== 200) {
             throw new Error(
@@ -160,6 +161,13 @@ const StudiesTable = (prop) => {
                 getRowId={(row) => row.accession}
                 rows={rows}
                 columns={columns}
+                onRowClick={(row) => {
+                  const accession = row.id;
+                  Router.push({
+                    pathname: `/study/${accession}`,
+                    query: { study: JSON.stringify(row.row) },
+                },`study/${accession}` );
+                }}
                 initialState={{
                   pagination: {
                     paginationModel: { pageSize: 10 },
