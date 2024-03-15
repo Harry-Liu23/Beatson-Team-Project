@@ -9,6 +9,7 @@ import {
   TextField,
   spacing,
   Item,
+  Item,
 } from "@mui/material";
 import { studyFormat } from "../../services/JsonFormatting";
 import sendJsonToFlask from "../../services/BackendAPI";
@@ -23,6 +24,7 @@ const StudyForm = () => {
   const [expNumber, setExpNumber] = useState(0);
   const [renderExpForm, setRenderExpForm] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const generateExperimentForms = () => {
     const experimentForms = [];
@@ -30,11 +32,7 @@ const StudyForm = () => {
       const combinedID = `${accession}-${i}`;
       experimentForms.push(<ExperimentForm id={combinedID} />);
     }
-    return experimentForms;
-  };
-
-  const handleSubmission = () => {
-    setSubmitted(true);
+    return experimentForms
   };
 
   const createExperimentButton = () => {
@@ -142,7 +140,7 @@ const StudyForm = () => {
           </Grid>
       </Card>
 
-      {renderExpForm &&
+          {renderExpForm &&
         generateExperimentForms().map((form, index) => (
           <div key={index}>{form}</div>
         ))}

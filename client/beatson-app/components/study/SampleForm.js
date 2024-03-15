@@ -22,6 +22,7 @@ const SampleForm = ({ samples, id }) => {
   const expId = id;
   const [sampleSubmitDialog, setSampleSubmitDialog] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   // Initalise empty rows
   useEffect(() => {

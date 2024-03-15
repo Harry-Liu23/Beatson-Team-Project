@@ -16,6 +16,7 @@ const ExperimentForm = ({ id }) => {
   const [numSamples, setNumSamples] = useState(0);
   const [renderSampleForm, setRenderSampleForm] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const submitExperiment = () => {
     setRenderSampleForm(true);
