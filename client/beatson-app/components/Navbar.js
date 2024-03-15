@@ -1,8 +1,10 @@
 import Link from'next/link';
-import AppBar from '@mui/material/AppBar';
-import Box from'@mui/material/Box';
-import Toolbar from'@mui/material/Toolbar';
-import Button from'@mui/material/Button';
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Button,
+} from "@mui/material";
 import UploadIcon from '@mui/icons-material/Upload';
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';

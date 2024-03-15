@@ -5,11 +5,12 @@ import postFormAsJSON from '../../services/BackendAPI'
 import {
     Button,
     Grid,
-    Typography,
     Card,
     TextField,
-    spacing,
-    button,
+    MenuItem,
+    InputLabel,
+    FormControl,
+    Select,
   } from "@mui/material";
 import LoginIcon from '@mui/icons-material/Login';
 
@@ -35,6 +36,10 @@ const LoginForm = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [institution, setInstitution] = useState("");
+
+    const handleChange = (event) => {
+        setInstitution(event.target.value);
+      };
 
     return (
         <div>
@@ -64,6 +69,31 @@ const LoginForm = () => {
                             variant="outlined"
                             onChange={() => setPassword(event.target.value)}
                         />
+                    </Grid>
+                    
+                    <Grid item xs={6}>
+                        <FormControl   sx={{ minWidth: 225}} >
+                            <InputLabel id="select">
+                                Institution
+                            </InputLabel>
+                            <Select
+                                labelId="select-Label"
+                                id="institution"
+                                value={institution}
+                                label="Institution"
+                                onChange={handleChange}
+                            >
+                                <MenuItem value={"ICR"}>The Institute of Cancer Research</MenuItem>
+                                <MenuItem value={"CRUKScot"}>CRUK Scotland Institute</MenuItem>
+                                <MenuItem value={"MRCHGU"}>MRC Human Genetics Unit</MenuItem>
+                                <MenuItem value={"MRCHarwell"}>Mary Lyon Centre at MRC Harwell</MenuItem>
+                                <MenuItem value={"QueenSquare"}>Queen Square Insitute of Neurology</MenuItem>
+                                <MenuItem value={"UofG"}>University of Glasgow</MenuItem>
+                                <MenuItem value={"UofE"}>University of Edinburgh</MenuItem>
+                                <MenuItem value={"KCL"}>King's College London</MenuItem>
+                                <MenuItem value={"UofY"}>University of York</MenuItem>
+                            </Select>
+                        </FormControl>
                     </Grid>
 
                     <Grid item xs={6}>
