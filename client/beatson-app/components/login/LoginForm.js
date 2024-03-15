@@ -1,7 +1,6 @@
 "use client";
 import {useState } from 'react';
 import styles from '../../styles/LoginForm.module.css';
-import postFormAsJSON from '../../services/BackendAPI'
 import {
     Button,
     Grid,
@@ -24,22 +23,33 @@ FormEvent and url (string) that handles the post request and returns
 the response.
 */
 
-async function handleSubmit(event){
-
-    const data = await postFormAsJSON(event,'http://localhost:2020/login')
-    console.log(JSON.stringify(data.json()))
-}
 
 const LoginForm = () => {
 
     /* saves the user's inputs */
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [institution, setInstitution] = useState("");
+    const [signup, setSignup] = useState(false);
 
-    const handleChange = (event) => {
+    const handleLogin = (event) => {
+        /* Backend implementation to be completed */
+        console.log(email);
+    }
+    
+    const handleSignup = (event) => {
+        /* Backend implementation to be completed */
+        console.log(email);
+        console.log(institution);
+    }
+
+    const handleChange = () => {
         setInstitution(event.target.value);
-      };
+    };
+    
+    const handleNoAccount = () => {
+        setSignup(true);
+    };
 
     return (
         <div>
@@ -55,10 +65,10 @@ const LoginForm = () => {
                 >
                     <Grid item xs={6}>
                         <TextField
-                            id="username"
-                            label="Username"
+                            id="email"
+                            label="Email"
                             variant="outlined"
-                            onChange={() => setUsername(event.target.value)}
+                            onChange={() => setEmail(event.target.value)}
                         />
                     </Grid>
 
@@ -66,49 +76,84 @@ const LoginForm = () => {
                         <TextField
                             id="password"
                             label="Password"
+                            type="password"
                             variant="outlined"
                             onChange={() => setPassword(event.target.value)}
                         />
                     </Grid>
-                    
-                    <Grid item xs={6}>
-                        <FormControl   sx={{ minWidth: 225}} >
-                            <InputLabel id="select">
-                                Institution
-                            </InputLabel>
-                            <Select
-                                labelId="select-Label"
-                                id="institution"
-                                value={institution}
-                                label="Institution"
-                                onChange={handleChange}
-                            >
-                                <MenuItem value={"ICR"}>The Institute of Cancer Research</MenuItem>
-                                <MenuItem value={"CRUKScot"}>CRUK Scotland Institute</MenuItem>
-                                <MenuItem value={"MRCHGU"}>MRC Human Genetics Unit</MenuItem>
-                                <MenuItem value={"MRCHarwell"}>Mary Lyon Centre at MRC Harwell</MenuItem>
-                                <MenuItem value={"QueenSquare"}>Queen Square Insitute of Neurology</MenuItem>
-                                <MenuItem value={"UofG"}>University of Glasgow</MenuItem>
-                                <MenuItem value={"UofE"}>University of Edinburgh</MenuItem>
-                                <MenuItem value={"KCL"}>King's College London</MenuItem>
-                                <MenuItem value={"UofY"}>University of York</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Grid>
 
-                    <Grid item xs={6}>
-                        <Button 
-                            className={styles.button}
-                            color="inherit" 
-                            size="large" 
-                            variant="contained"
-                            startIcon={<LoginIcon/>} 
-                            onClick= {() => {
-                                handleSubmit();
-                            }}>
-                            Login      
-                        </Button> 
-                    </Grid>
+                    { !signup &&
+                        <Grid item xs={6}>
+                            <Button 
+                                    color="inherit" 
+                                    size="small" 
+                                    variant="text"
+                                    onClick= {() => {
+                                        handleNoAccount();
+                                    }}>
+                                    Don't have an account?     
+                                </Button> 
+                        </Grid>
+                    }
+                    
+                    {signup &&
+                        <Grid item xs={6}>
+                            <FormControl   sx={{ minWidth: 225}} >
+                                <InputLabel id="select">
+                                    Institution
+                                </InputLabel>
+                                <Select
+                                    labelId="select-Label"
+                                    id="institution"
+                                    value={institution}
+                                    label="Institution"
+                                    onChange={handleChange}
+                                >
+                                    <MenuItem value={"ICR"}>The Institute of Cancer Research</MenuItem>
+                                    <MenuItem value={"CRUKScot"}>CRUK Scotland Institute</MenuItem>
+                                    <MenuItem value={"MRCHGU"}>MRC Human Genetics Unit</MenuItem>
+                                    <MenuItem value={"MRCHarwell"}>Mary Lyon Centre at MRC Harwell</MenuItem>
+                                    <MenuItem value={"QueenSquare"}>Queen Square Insitute of Neurology</MenuItem>
+                                    <MenuItem value={"UofG"}>University of Glasgow</MenuItem>
+                                    <MenuItem value={"UofE"}>University of Edinburgh</MenuItem>
+                                    <MenuItem value={"KCL"}>King's College London</MenuItem>
+                                    <MenuItem value={"UofY"}>University of York</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                    }
+
+                    {signup &&
+                        <Grid item xs={6}>
+                            <Button 
+                                className={styles.button}
+                                color="inherit" 
+                                size="large" 
+                                variant="contained"
+                                startIcon={<LoginIcon/>} 
+                                onClick= {() => {
+                                    handleSignup();
+                                }}>
+                                Sign Up      
+                            </Button> 
+                        </Grid>
+                    }
+
+                    {!signup &&
+                        <Grid item xs={6}>
+                            <Button 
+                                className={styles.button}
+                                color="inherit" 
+                                size="large" 
+                                variant="contained"
+                                startIcon={<LoginIcon/>} 
+                                onClick= {() => {
+                                    handleLogin();
+                                }}>
+                                Login      
+                            </Button> 
+                        </Grid>
+                    }
 
                 </Grid>
             </Card>
