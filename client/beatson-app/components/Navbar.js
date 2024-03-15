@@ -16,7 +16,7 @@ const Navbar = () => {
           <Toolbar className="page-header">   
           <ul className="list">
             <li>
-              <Button color="inherit" startIcon={<HomeIcon/>}>                        
+              <Button color="inherit" size="large" startIcon={<HomeIcon/>}>                        
                   <Link href="/">
                     Home
                   </Link>                    
@@ -24,7 +24,7 @@ const Navbar = () => {
             </li>
 
             <li>
-              <Button color="inherit" startIcon={<SearchIcon/>}>                        
+              <Button color="inherit" size="large" startIcon={<SearchIcon/>}>                        
                 <Link href="/discover_studies">
                   Discover Studies
                 </Link>                     
@@ -32,7 +32,7 @@ const Navbar = () => {
             </li>
 
             <li>
-              <Button color="inherit" startIcon={<UploadIcon/>}>                        
+              <Button color="inherit" size="large" startIcon={<UploadIcon/>}>                        
                 <Link href="/study_upload">
                   Upload a Study
                 </Link>                     
@@ -40,7 +40,7 @@ const Navbar = () => {
             </li>
 
             <li>
-              <Button color="inherit" startIcon={<LoginIcon/>}>                        
+              <Button color="inherit" size="large" startIcon={<LoginIcon/>}>                        
                 <Link href="/login">
                   Login
                 </Link>                     
