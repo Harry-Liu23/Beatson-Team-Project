@@ -9,6 +9,10 @@ __pycache__/
 *.pyc
 beatson_app.egg-info/
 server/build
+data/
+# Keep the data folder in population folder
+!population/data/
+logs/
 
 ## CLIENT
 # dependencies
