@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, use } from "react";
-import { DataGrid, useGridApiRef  } from "@mui/x-data-grid";
+import { DataGrid, useGridApiRef } from "@mui/x-data-grid";
 import {
   DialogContent,
   DialogTitle,
@@ -11,6 +11,7 @@ import {
   Typography,
   FormControlLabel,
   Checkbox,
+  Card,
 } from "@mui/material";
 import sendJsonToFlask from "../../services/BackendAPI";
 
@@ -51,103 +52,118 @@ const SampleForm = ({ samples, id }) => {
     {
       field: "sample_id",
       headerName: "Sample ID",
-      width: 100,
+      width: 80,
+      headerAlign: "center",
     },
     {
       field: "group",
       headerName: "Sample Group",
       editable: true,
-      width: 150,
+      width: 120,
+      headerAlign: "center",
     },
     {
       field: "project",
       headerName: "Sample Project",
       editable: true,
       width: 120,
-    },
-    {
-      field: "description",
-      headerName: "Description",
-      editable: true,
-      width: 100,
+      headerAlign: "center",
     },
     {
       field: "organism",
       headerName: "Organism",
       editable: true,
-      width: 80,
+      width: 120,
+      headerAlign: "center",
+    },
+    {
+      field: "description",
+      headerName: "Description",
+      editable: true,
+      width: 500,
+      headerAlign: "center",
     },
     {
       field: "tissue",
       headerName: "Tissue",
       editable: true,
-      width: 90,
+      width: 120,
+      headerAlign: "center",
     },
     {
       field: "sex",
       headerName: "Sex",
       editable: true,
-      width: 75,
+      width: 60,
+      headerAlign: "center",
     },
     {
       field: "cell_line",
       headerName: "Cell Line",
       editable: true,
       width: 100,
+      headerAlign: "center",
     },
     {
       field: "biometric_provider",
       headerName: "Biomaterial Provider",
       editable: true,
       width: 150,
+      headerAlign: "center",
     },
     {
       field: "mouse_model",
       headerName: "Mouse Model",
       editable: true,
       width: 100,
+      headerAlign: "center",
     },
     {
       field: "date",
       headerName: "Date",
       editable: true,
-      width: 60,
+      width: 120,
       type: "date",
+      headerAlign: "center",
     },
     {
       field: "biological_repeat",
       headerName: "Biological Repeat",
       editable: true,
       width: 150,
+      headerAlign: "center",
+    },
+    {
+      field: "information_type",
+      headerName: "Information Type",
+      editable: true,
+      width: 120,
+      headerAlign: "center",
+    },
+    {
+      field: "dataset_type",
+      headerName: " Dataset Type",
+      editable: true,
+      width: 120,
+      headerAlign: "center",
     },
     {
       field: "fastq",
       headerName: "FASTQ",
       editable: true,
       width: 70,
+      headerAlign: "center",
     },
-    {
-      field: "information_type",
-      headerName : "Information Type",
-      editable : true,
-      width : 150
-    },
-    {
-      field : "dataset_type",
-      headerName : " Dataset Type",
-      editable: true,
-      width: 150
-    }
   ]);
 
   // SampleForm add/remove column and row logic
   const createNewRow = (idValue) => {
-    const newRow = { sample_id : idValue };
+    const newRow = { sample_id: idValue };
     columns.forEach((column) => {
       if (column.field != "sample_id") {
         newRow[column.field] = null;
-    }
-  })
+      }
+    });
     return newRow;
   };
 
@@ -157,9 +173,9 @@ const SampleForm = ({ samples, id }) => {
 
   const addCharaceristicToRow = (characteristic) => {
     const rowUpdate = [...rows];
-    rowUpdate.forEach((row) => row[characteristic] = undefined);
+    rowUpdate.forEach((row) => (row[characteristic] = undefined));
     setRows(rowUpdate);
-  }
+  };
 
   const removeCharacteristicFromRow = (characteristic) => {
     rows.forEach((row) => delete row[characteristic]);
@@ -222,134 +238,147 @@ const SampleForm = ({ samples, id }) => {
     setOpenDialog(false);
   };
 
-  const processRowUpdate = (newRow) =>{
+  const processRowUpdate = (newRow) => {
     var newRows = rows.slice();
-    for(var i = 0; i < rows.length; i++){
-      if(rows[i]['sample_id'] == newRow['sample_id']){
+    for (var i = 0; i < rows.length; i++) {
+      if (rows[i]["sample_id"] == newRow["sample_id"]) {
         newRows[i] = newRow;
       }
     }
     setRows(newRows);
-  }
+  };
 
   const onProcessRowUpdateError = (params) => {
     // neccessary for processRowUpdate to work
-  }
+  };
 
   // checks all samples in the form are complete and not undefined which is the default value.
   // it adds these to cellValidationErrors object which contains list of neccessary data.
   const validateRows = () => {
-    let cellValidationErrors = { errors : [] };
+    let cellValidationErrors = { errors: [] };
     rows.forEach((row) => {
       const keys = Object.keys(row);
       keys.forEach((key) => {
-        if( row[key] == undefined){
-          const newError = '{ " ' + row['id'] + ' " : " Cell ' + key + '- Value is null " }';
-          cellValidationErrors['errors'].push(JSON.parse(newError));
+        if (row[key] == undefined) {
+          const newError =
+            '{ " ' + row["id"] + ' " : " Cell ' + key + '- Value is null " }';
+          cellValidationErrors["errors"].push(JSON.parse(newError));
         }
       });
     });
-    return cellValidationErrors
-  }
+    return cellValidationErrors;
+  };
 
   const submitSamples = () => {
     let cellValidateErrors = validateRows();
     // checks all samples have values
-    if (cellValidateErrors['errors'].length != 0) {
+    if (cellValidateErrors["errors"].length != 0) {
       setSampleSubmitDialog(true);
-    }
-    else {
+    } else {
       rows.forEach((row) => {
-        let sampleJson = {"sample" : {}}
-        let datasetJson = {"dataset" : {}}
-        let datasetValues = ["dataset_type", "information_type"]
-        for( const[key,value] of Object.entries(row)){
-          if(!datasetValues.includes(`${key}`)){
-            sampleJson["sample"][`${key}`]=`${value}`;
-          }else{
+        let sampleJson = { sample: {} };
+        let datasetJson = { dataset: {} };
+        let datasetValues = ["dataset_type", "information_type"];
+        for (const [key, value] of Object.entries(row)) {
+          if (!datasetValues.includes(`${key}`)) {
+            sampleJson["sample"][`${key}`] = `${value}`;
+          } else {
             datasetJson["dataset"][`${key}`] = `${value}`;
           }
 
           datasetJson["dataset"]["sample_id"] = `${expId}-${row["sample_id"]}`;
-          datasetJson["dataset"]["dataset_id"] = `${datasetJson["dataset"]["sample_id"]}-dataset`;
+          datasetJson["dataset"][
+            "dataset_id"
+          ] = `${datasetJson["dataset"]["sample_id"]}-dataset`;
           sampleJson["sample"]["experiment_id"] = expId;
           sampleJson["sample"]["sample_id"] = `${expId}-${row["sample_id"]}`;
         }
         sendJsonToFlask(sampleJson, "http://127.0.0.1:2020/create_sample");
         sendJsonToFlask(datasetJson, "http://127.0.0.1:2020/create_dataset");
-      })
+      });
       setSubmitted(true);
     }
-  }
+  };
 
   return (
     <div>
-      <Grid
-        container
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
+      <Card
+        variant="plain"
+        sx={{
+          padding: 1,
+          marginLeft: 15,
+          marginRight: 15,
+          marginTop: 1,
+        }}
       >
-        <Grid item sx={{ m: 2 }}>
-          <Typography variant="h4" color="blue-gray" align="center">
-            Sample Details {expId}
-          </Typography>
-        </Grid>
+        <Grid
+          container
+          direction="column"
+          alignItems="left"
+          justifyContent="center"
+        >
+          <Grid item sx={{ m: 2 }}>
+            <Typography variant="h5" color="#008AAD" align="left">
+              Sample Details {expId}
+            </Typography>
+          </Grid>
 
-        <Grid item>
-          <Button onClick={addNewRow}>
-            Add Sample
-          </Button>
-          <Button onClick={() => setOpenDialog(true)}>
-            Add/Remove Characteristics
-          </Button>
-          {!submitted &&
-            <Button id={`submit-${expId}`} onClick={() => submitSamples()}>
-              Submit
+          <Grid item>
+            <Button onClick={addNewRow}>Add Sample</Button>
+            <Button onClick={() => setOpenDialog(true)}>
+              Add/Remove Characteristics
             </Button>
-          }
 
-          <Dialog open={sampleSubmitDialog}>
-            <DialogTitle>Submission Failed</DialogTitle>
-            <DialogContent>You did not enter values for all samples.</DialogContent>
-            <DialogActions>
-              <Button onClick={() => setSampleSubmitDialog(false)}>Close</Button>
-            </DialogActions>
-          </Dialog>
+            <Dialog open={sampleSubmitDialog}>
+              <DialogTitle>Submission Failed</DialogTitle>
+              <DialogContent>
+                You did not enter values for all samples.
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setSampleSubmitDialog(false)}>
+                  Close
+                </Button>
+              </DialogActions>
+            </Dialog>
 
-          <Dialog open={openDialog}>
-            <DialogTitle>Select characteristic to add or remove</DialogTitle>
-            <DialogContent>
-              {Object.keys(additionalColumns).map((key, index) => {
-                return (
-                  <FormControlLabel
-                    key={key}
-                    control={
-                      <Checkbox
-                        checked={isChecked[index][1]}
-                        onClick={() => changeChecked(index, key)}
-                      />
-                    }
-                    label={additionalColumns[key].headerName}
-                  />
-                );
-              })}
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-              <Button onClick={submit}>Update Sample Characteristics</Button>
-            </DialogActions>
-          </Dialog>
-
-          <DataGrid 
-          rows={rows} 
+            <Dialog open={openDialog}>
+              <DialogTitle>Select characteristic to add or remove</DialogTitle>
+              <DialogContent>
+                {Object.keys(additionalColumns).map((key, index) => {
+                  return (
+                    <FormControlLabel
+                      key={key}
+                      control={
+                        <Checkbox
+                          checked={isChecked[index][1]}
+                          onClick={() => changeChecked(index, key)}
+                        />
+                      }
+                      label={additionalColumns[key].headerName}
+                    />
+                  );
+                })}
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+                <Button onClick={submit}>Update Sample Characteristics</Button>
+              </DialogActions>
+            </Dialog>
+          </Grid>
+        </Grid>
+        <DataGrid
+          rows={rows}
           columns={columns}
-          getRowId = {(row) => row.sample_id}
+          getRowId={(row) => row.sample_id}
           processRowUpdate={(newRow, oldRow) => processRowUpdate(newRow)}
           onProcessRowUpdateError={onProcessRowUpdateError}
-          />
-        </Grid>
-      </Grid>
+        />
+        {!submitted && (
+          <Button sx={{marginTop:2}}id={`submit-${expId}`} onClick={() => submitSamples()}>
+            Submit
+          </Button>
+        )}
+      </Card>
     </div>
   );
 };

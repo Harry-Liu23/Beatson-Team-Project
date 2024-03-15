@@ -86,30 +86,41 @@ const DisplayStudy = ({ studyData }) => {
 
   return (
     <div>
-      <Card variant="outlined" sx={{ padding:4, marginRight:15, marginLeft:15, marginBottom:5, marginTop:5, border:"groove"}}>
+      <Card
+        variant="outlined"
+        sx={{
+          padding: 4,
+          marginRight: 15,
+          marginLeft: 15,
+          marginBottom: 5,
+          marginTop: 5,
+          border: "groove",
+        }}
+      >
         <Grid
           container
-          rowGap={1}
+          rowSpacing={1}
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           direction="column"
           alignItems="left"
           justifyContent="center"
           spacing={2}
         >
-          <Grid item sx={{ mt: 1.5 }} >
-            <Typography variant="h4" color="#008AAD" align="left" >
+          <Grid item sx={{ mt: 1.5 }}>
+            <Typography variant="h4" color="#008AAD" align="left">
               Study Accession: {study.accession}
             </Typography>
           </Grid>
-          <Grid item xs={6} >
-          <b>Description:</b> 
-          <br></br> {study.description}
+          <Grid item xs={6}>
+            <b>Description:</b>
+            <br></br> {study.description}
           </Grid>
           <Grid item xs={6}>
-            <b>Organism:</b> <br></br>{study.organism}
+            <b>Organism:</b> <br></br>
+            {study.organism}
           </Grid>
           <Grid item xs={6}>
-            <b>Publication:</b> 
+            <b>Publication:</b>
             <br></br> {study.publication}
           </Grid>
         </Grid>
