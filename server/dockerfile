@@ -7,7 +7,6 @@ RUN pip install -r requirements.txt
 
 # Next it creates a enviroment variable letting flask know what route to pick for the db
 ENV DOCKER=true
-RUN echo $DOCKER
 
 # Next, copy the entire project (including setup.py) into the container.
 COPY . .

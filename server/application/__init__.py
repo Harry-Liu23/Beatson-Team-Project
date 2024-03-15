@@ -19,7 +19,7 @@ def _add_cors(t: Response):
     return t
 
 app.after_request(_add_cors)
-print(os.environ.get("DOCKER"))
+
 if os.environ.get("DOCKER") == "true":
     current_db_env = "DB:\tDOCKER"
     DATABASE_URI = "bolt://neo4j:7687"
