@@ -1,7 +1,11 @@
-from flask import Flask, Response 
-from neo4j import GraphDatabase 
-from server.infrastructure.dao.study import sampleDao,studyDao,experimentDao,genericDao
+"""Module decoration.
 
+This set up the packging for imports within application package
+"""
+import os
+from flask import Flask, Response
+from neo4j import GraphDatabase
+from infrastructure.dao.study import sampleDao,studyDao,experimentDao,genericDao
 
 #from application.keys import DATABASE_PASSWORD
 
@@ -18,8 +22,9 @@ app.after_request(_add_cors)
 
 # REMOVE THIS BEFORE DEPLOYMENT
 DATABASE_USERNAME = "neo4j"
-DATABASE_URI = "bolt://localhost:7687"
+DATABASE_URI = "bolt://neo4j:7687"
 DATABASE_PASSWORD = "12345678"
+# DATABASE_PASSWORD = os.environ.get('DB_PASSWORD')
 
 driver = GraphDatabase.driver(DATABASE_URI, auth=(DATABASE_USERNAME,DATABASE_PASSWORD))
 session = driver.session()
@@ -30,9 +35,7 @@ generic_dao = genericDao.genericDao(driver)
 
 
 # For adding data processing functions
-from server.process.nodeProcess import serialize_node
+from process.nodeProcess import serialize_node
 
 # Needs to exist after app and everything else being imported to routes.__init__ is defined
 from . import routes
-
-

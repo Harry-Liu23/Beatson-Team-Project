@@ -1,0 +1,9 @@
+{
+  "study": {
+    "accession": "E-MTAB-7001",
+    "study_type": "Whole Genome Sequencing",
+    "publication": "Research Institute XYZ",
+    "organism": "Homo sapiens",
+    "description": "Study on human cancer samples for whole genome sequencing."
+  }
+}

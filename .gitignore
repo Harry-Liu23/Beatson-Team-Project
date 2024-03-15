@@ -1,20 +1,20 @@
 ## GLOBAL
-
 # local env files
 .env*.local
 .vscode
 
 ## SERVER
-
 #runtime
 __pycache__/
 *.pyc
 beatson_app.egg-info/
 server/build
+data/
+# Keep the data folder in population folder
+!population/data/
+logs/
 
 ## CLIENT
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 client/beatson-app/node_modules
 client/beatson-app/.pnp
@@ -30,6 +30,7 @@ client/beatson-app/out/
 
 # production
 client/beatson-app/build
+conf/
 
 # misc
 .DS_Store

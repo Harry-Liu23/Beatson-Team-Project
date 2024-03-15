@@ -39,9 +39,18 @@ describe('StudiesTable', () => {
         ]
     };
 
+    fetchMock.mockIf(/^http:\/\/127\.0\.0\.1:2020\/count_experiments\//, (req) => {
+        const accession = req.url.split('/').pop();
+        return Promise.resolve({
+            body: JSON.stringify({ num_experiments: accession.length }),
+            status: 200,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    });
+
     fetchMock.mockResponseOnce(JSON.stringify(mockStudyData));
 
-    render(<StudiesTable />);
+    render(<StudiesTable studies={mockStudyData.study}/>);
 
     const columnHeaders = [
         'Accession', 'Study Type', 'Publication', 'Organism','Description',
