@@ -133,6 +133,8 @@ nodeenv==1.8.0
 pytz==2024.1
 Werkzeug==3.0.1
 ```
+If ran from docker this step is not needed.
+
 ### 1\. Connecting to Backend Server:
 
 Start up the backend server:
@@ -141,26 +143,25 @@ Before starting up, make sure that you boot up a virtual environment.
 
 Also, now start up a neo4j server, with the password match up the python file, server name now should be neo4j,
 
-and database URI should be bolt://[localhost:7687](http://localhost:7687).
+and database URI is dependant on wether it is ran from docker or by using flask development server.
 
 * Refer to this link for setup: https://neo4j.com/developer/neo4j-desktop/
 
 The first step to take is within the folder \\sh01-main\\server, input terminal command:
 
-* `pip install .`
+`python -m run` in the \\sh01-main\\server folder
 
-This will install all of the packages inside the server and store them as a pip package called beatson_app
+There is a population script that consist sample data.
 
-Under the folder \\sh01-main, run the server:
-
-* `python -m server.run`
-* Or `python -m run` in the \\sh01-main\\server
+* To run the below command in the flask container terminal if using docker<br/>
+* Or if using flask development server this can be run from a different terminal.<br/>
+`python -m population.studyPopulationScript`
 <br/><br/>
 ### 2\. Making session calls to the server
 
 Make calls to port 2020.
 
-### \*\*\*Make sure there's no space in keys: e.g. "cancer type" is not allowed, use "cancer_type"!\*\*\*
+**Make sure there's no space in keys: e.g. "cancer type" is not allowed, use "cancer_type"!**
 
 An example json file would be (this is just a guide, actual implementation can be changed through front-end)
 

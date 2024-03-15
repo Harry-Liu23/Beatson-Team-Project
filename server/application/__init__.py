@@ -20,9 +20,16 @@ def _add_cors(t: Response):
 
 app.after_request(_add_cors)
 
+if os.environ.get("DOCKER") == "true":
+    current_db_env = "DB:\tDOCKER"
+    DATABASE_URI = "bolt://neo4j:7687"
+else:
+    current_db_env = "DB\tLOCAL"
+    DATABASE_URI = "bolt://localhost:7687"
+print(current_db_env)
+
 # REMOVE THIS BEFORE DEPLOYMENT
 DATABASE_USERNAME = "neo4j"
-DATABASE_URI = "bolt://neo4j:7687"
 DATABASE_PASSWORD = "12345678"
 # DATABASE_PASSWORD = os.environ.get('DB_PASSWORD')
 
