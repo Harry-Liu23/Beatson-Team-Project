@@ -1,0 +1,27 @@
+version: '3'
+services:
+  react-app:
+    build: ./client/beatson-app
+    ports:
+      - "3000:3000"
+  flask-server:
+    build: ./server
+    ports:
+      - "2020:2020"
+    command: /bin/sh -c "python -m run"
+    depends_on:
+      - neo4j
+  neo4j:
+    image: ${NEO4J_DOCKER_IMAGE:-neo4j:latest}
+    environment:
+      - NEO4J_AUTH=neo4j/12345678
+    ports:
+    - "7474:7474"
+    - "7687:7687"
+
+    volumes:
+      - ./server/neo4j.conf:/conf/neo4j.conf
+      - ./data/neo4j:/data
+      - ./logs/neo4j:/logs
+      - ./conf/neo4j:/conf
+      - ./import/neo4j:/import
