@@ -7,7 +7,10 @@ import {
   Typography,
   Card,
   TextField,
-  spacing,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import { studyFormat } from "../../services/JsonFormatting";
 import sendJsonToFlask from "../../services/BackendAPI";
@@ -21,6 +24,8 @@ const StudyForm = () => {
   const [description, setDescription] = useState("");
   const [expNumber, setExpNumber] = useState(0);
   const [renderExpForm, setRenderExpForm] = useState(false);
+  const [errorDialog, setErrorDialog] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const generateExperimentForms = () => {
     const experimentForms = [];
@@ -28,84 +33,138 @@ const StudyForm = () => {
       const combinedID = `${accession}-${i}`;
       experimentForms.push(<ExperimentForm id={combinedID} />);
     }
-    return experimentForms
+    return experimentForms;
+  };
+
+  const handleSubmission = () => {
+    setSubmitted(true);
   };
 
   const createExperimentButton = () => {
-    setRenderExpForm(true);
-    const studyFormJson = studyFormat(accession, studyType, publication, organism, description);
-    sendJsonToFlask(studyFormJson, 'http://127.0.0.1:2020/create_study');
-  }
+    if (!validateInput()) {
+      setErrorDialog(true);
+    } else {
+      handleSubmission();
+      setRenderExpForm(true);
+      const studyFormJson = studyFormat(
+        accession,
+        studyType,
+        publication,
+        organism,
+        description
+      );
+      sendJsonToFlask(studyFormJson, "http://127.0.0.1:2020/create_study");
+    }
+  };
+
+  const validateInput = () => {
+    let validationErrors = true;
+    const fieldList = [
+      accession,
+      studyType,
+      publication,
+      organism,
+      description,
+      expNumber,
+    ];
+    for (let i = 0; i < fieldList.length; i++) {
+      if (fieldList[i] == "") {
+        validationErrors = false;
+        break;
+      }
+    }
+    return validationErrors;
+  };
 
   return (
     <div>
-      <Card variant="outlined" sx={{ padding:2 }} > 
+      <Card
+        variant="plain"
+        sx={{
+          padding: 2,
+          marginRight: 15,
+          marginLeft: 15,
+          marginTop: 2,
+        }}
+      >
         <Grid
           container
-          rowGap={1}
+          rowSpacing={2}
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          direction="column"
           alignItems="center"
           justifyContent="center"
           spacing={2}
         >
-          <Grid item sx={{ mt: 1.5 }}>
-            <Typography variant="h4" color="blue-gray" align="center">
+          <Grid item xs={12} sm={12} md={12} marginBottom={2}>
+            <Typography variant="h4" color="#008AAD" align="center">
               Study Details
             </Typography>
           </Grid>
 
           {/* below grid items are the study detail fields */}
-          <Grid item xs={6}>
+          <Grid item xs={6} sm={6} md={6} align="right">
             <TextField
               id="accession"
               label="Accession"
               variant="outlined"
+              fullWidth
+              inputProps={{ readOnly: submitted }}
               onChange={() => setAccession(event.target.value)}
             />
           </Grid>
-
-          <Grid item>
+          <Grid item xs={6} sm={6} md={6}>
             <TextField
               id="studyType"
               label="Study Type"
               variant="outlined"
+              fullWidth
+              inputProps={{ readOnly: submitted }}
               onChange={() => setStudyType(event.target.value)}
             />
           </Grid>
 
-          <Grid item>
+          <Grid item xs={6} sm={6} md={6} align="right">
             <TextField
               id="publication"
               label="Publication"
               variant="outlined"
+              fullWidth
+              inputProps={{ readOnly: submitted }}
               onChange={() => setPublication(event.target.value)}
             />
           </Grid>
 
-          <Grid item>
+          <Grid item xs={6} sm={6} md={6}>
             <TextField
               id="organism"
               label="Organism"
               variant="outlined"
+              fullWidth
+              inputProps={{ readOnly: submitted }}
               onChange={() => setOrganism(event.target.value)}
             />
           </Grid>
 
-          <Grid item>
+          <Grid item xs={12}>
             <TextField
               id="description"
               label="Description"
               variant="outlined"
+              multiline={true}
+              fullWidth
+              inputProps={{
+                readOnly: submitted,
+              }}
               onChange={() => setDescription(event.target.value)}
             />
           </Grid>
-
-          <Grid item>
+          <Grid item xs={12} align="left">
             <TextField
               id="expNumber"
               label="Number of Experiments"
               variant="outlined"
+              fullWidth
+              inputProps={{ readOnly: submitted }}
               onChange={() => setExpNumber(+event.target.value)}
             />
           </Grid>
@@ -116,17 +175,44 @@ const StudyForm = () => {
         generateExperimentForms().map((form, index) => (
           <div key={index}>{form}</div>
         ))}
-      {
-        <Grid item>
-          <Button
-            onClick={() => {
-              createExperimentButton();
+      {!submitted && (
+        <Grid
+          container
+          rowGap={1}
+          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          direction="column"
+          alignItems="left"
+          justifyContent="left"
+          spacing={2}
+        >
+          <Grid
+            item
+            sx={{
+              padding: 2,
+              marginLeft: 16,
+              marginRight: 15,
+              marginBottom: 8,
             }}
           >
-            Create Experiments
-          </Button>
+            <Dialog open={errorDialog}>
+              <DialogTitle>Submission Failed</DialogTitle>
+              <DialogContent>
+                You did not enter values for all fields.
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setErrorDialog(false)}>Close</Button>
+              </DialogActions>
+            </Dialog>
+            <Button
+              onClick={() => {
+                createExperimentButton();
+              }}
+            >
+              Create Experiments
+            </Button>
+          </Grid>
         </Grid>
-      }
+      )}
     </div>
   );
 };
