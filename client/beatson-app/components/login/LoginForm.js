@@ -91,7 +91,7 @@ const LoginForm = () => {
                                     onClick= {() => {
                                         handleNoAccount();
                                     }}>
-                                    Don't have an account?     
+                                    Don&apos;t have an account?     
                                 </Button> 
                         </Grid>
                     }
@@ -116,7 +116,7 @@ const LoginForm = () => {
                                     <MenuItem value={"QueenSquare"}>Queen Square Insitute of Neurology</MenuItem>
                                     <MenuItem value={"UofG"}>University of Glasgow</MenuItem>
                                     <MenuItem value={"UofE"}>University of Edinburgh</MenuItem>
-                                    <MenuItem value={"KCL"}>King's College London</MenuItem>
+                                    <MenuItem value={"KCL"}>King&apos;s College London</MenuItem>
                                     <MenuItem value={"UofY"}>University of York</MenuItem>
                                 </Select>
                             </FormControl>
