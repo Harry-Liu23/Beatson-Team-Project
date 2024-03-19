@@ -43,7 +43,7 @@ const LoginForm = () => {
         console.log(institution);
     }
 
-    const handleChange = () => {
+    const handleChange = (event) => {
         setInstitution(event.target.value);
     };
     
